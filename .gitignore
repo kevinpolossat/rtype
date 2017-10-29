@@ -20,6 +20,7 @@ x86/
 bld/
 [Oo]bj/
 [Ll]og/
+*.exe
 
 # Visual Studio 2015 cache/options directory
 .vs/
