@@ -1,0 +1,46 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 3.2.1)
+project(rtype CXX)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(SOURCES
+        #[[add source files here]])
+
+# Download and unpack googletest at configure time
+configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
+execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+execute_process(COMMAND "${CMAKE_COMMAND}" --build .
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+
+# Prevent GoogleTest from overriding compiler/linker options
+# when building with Visual Studio
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+
+# Add googletest directly to build. This adds
+# the following targets: gtest, gtest_main, gmock
+# and gmock_main
+add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
+        "${CMAKE_BINARY_DIR}/googletest-build")
+
+add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
+target_sources(rtype PRIVATE ${SOURCES})
+target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src)
+# IN CASE IF WE NEED TO CHANGE BINARY NAME
+#set_target_properties(rtype PROPERTIES OUTPUT_NAME "pbrain-gomoku")
+
+enable_testing()
+#test executable
+add_executable(rtype_test
+        ${PROJECT_SOURCE_DIR}/test/test.cc
+        #[[add test source files here]])
+
+target_include_directories(rtype_test
+        PRIVATE "${gtest_SOURCE_DIR}/include"
+        PRIVATE "${gmock_SOURCE_DIR}/include"
+        PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(rtype_test PRIVATE gmock_main)
+target_sources(rtype_test PRIVATE ${SOURCES})
+
+add_test(NAME testing_rtype_test COMMAND rtype_test)
