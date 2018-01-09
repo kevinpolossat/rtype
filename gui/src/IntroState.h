@@ -3,35 +3,38 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "IGameState.h"
+#include "AGameState.h"
+#include "IntroWorld.h"
 
-class IntroState : public IGameState {
+class IntroState : public AGameState {
+	enum ButtonId {
+		START,
+		QUIT
+	};
+
 public:
-	IntroState();
+	IntroState() = default;
 	IntroState(IntroState const & other) = delete;
 	IntroState(IntroState const && other) = delete;
-	~IntroState();
+	~IntroState() = default;
 
 	IntroState & operator=(IntroState const & other) = delete;
 	IntroState & operator=(IntroState const && other) = delete;
 
-	bool Init() override;
+	bool Init(GameEngine & engine) override;
 	void Clear() override;
 
 	void Pause() override;
 	void Resume() override;
 
-	void HandleEvents(GameEngine & game) override;
-	void Update(GameEngine const & game) override;
-	void Display(GameEngine & game) override;
-
-	static IntroState & Instance();
+	void HandleEvents(GameEngine & engine) override;
+	void Update(GameEngine const & engine) override;
+	void Display(GameEngine & engine, const float interpolation) override;
 
 private:
-	static IntroState instance_;
-
-	sf::Text text_;
-	sf::Font font_;
+	void HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent const & event);
+	
+	IntroWorld world_;
 };
 
 #endif /*INTROSTATE_H_*/

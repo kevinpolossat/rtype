@@ -2,24 +2,15 @@
 #include "PlayState.h"
 #include "GameEngine.h"
 
-IntroState IntroState::instance_;
-
-IntroState::IntroState() {
-}
-
-IntroState::~IntroState() {
-}
-
-bool IntroState::Init() {
-	if (!font_.loadFromFile("resources/arial.ttf")) {
-		return false;
-	}
-	text_.setFont(font_);
-	text_.setString("Hello world");
+bool IntroState::Init(GameEngine & engine) {
+	engine.Rm().LoadFont("arial", "resources/arial.ttf");
+	world_.CreateButton({ 300, 0 }, { "Start", "arial" }, { START });
+	world_.CreateButton({ 300, 100 }, { "Quit", "arial" }, { QUIT });
 	return true;
 }
 
 void IntroState::Clear() {
+	world_.Reset();
 }
 
 void IntroState::Pause() {
@@ -28,15 +19,40 @@ void IntroState::Pause() {
 void IntroState::Resume() {
 }
 
-void IntroState::HandleEvents(GameEngine & game) {
+void IntroState::HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
+	for (uint32_t id = 0; id < settings::ENTITY_COUNT; ++id) {
+		Entity & entity = world_.Entities(id);
+		Text & text = world_.Texts(id);
+		Input & input = world_.Inputs(id);
+		Position & position = world_.Positions(id);
+		if (event.button == sf::Mouse::Button::Left && (entity & component::button) == component::button) {
+			sf::Text t(text.text, engine.Rm().Font(text.fontName));
+			t.setPosition(position.x, position.y);
+			if (t.getGlobalBounds().contains(event.x, event.y)) {
+				switch (input.id) {
+				case START:
+					engine.PushState("Play");
+					break;
+				case QUIT:
+					engine.Window().close();
+					break;
+				default:
+					break;
+				}
+			}
+		}
+	}
+}
+
+void IntroState::HandleEvents(GameEngine & engine) {
 	sf::Event event;
-	while (game.Window().pollEvent(event)) {
+	while (engine.Window().pollEvent(event)) {
 		switch (event.type) {
 		case sf::Event::Closed:
-			game.Window().close();
+			engine.Window().close();
 			break;
-		case sf::Event::KeyPressed:
-			game.ChangeState(&PlayState::Instance());
+		case sf::Event::MouseButtonPressed:
+			HandleClick_(engine, event.mouseButton);
 		default:
 			break;
 		}
@@ -46,10 +62,15 @@ void IntroState::HandleEvents(GameEngine & game) {
 void IntroState::Update(GameEngine const & game) {
 }
 
-void IntroState::Display(GameEngine & game) {
-	game.Window().draw(text_);
-}
-
-IntroState & IntroState::Instance() {
-	return instance_;
+void IntroState::Display(GameEngine & engine, const float) {
+	for (uint32_t id = 0; id < settings::ENTITY_COUNT; ++id) {
+		Entity & entity = world_.Entities(id);
+		Text & text = world_.Texts(id);
+		Position & position = world_.Positions(id);
+		if ((entity & component::button) == component::button) {
+			sf::Text t(text.text, engine.Rm().Font(text.fontName));
+			t.setPosition(position.x, position.y);
+			engine.Window().draw(t);
+		}
+	}
 }

@@ -3,34 +3,34 @@
 
 #include <SFML\Graphics.hpp>
 
-#include "IGameState.h"
+#include "AGameState.h"
+#include "PlayWorld.h"
 
-class PlayState : public IGameState {
+class PlayState : public AGameState {
 public:
 	PlayState();
 	PlayState(PlayState const & other) = delete;
 	PlayState(PlayState const && other) = delete;
-	~PlayState();
+	~PlayState() = default;
 
 	PlayState & operator=(PlayState const & other) = delete;
 	PlayState & operator=(PlayState const && other) = delete;
 
-	bool Init() override;
+	bool Init(GameEngine & engine) override;
 	void Clear() override;
 
 	void Pause() override;
 	void Resume() override;
 
-	void HandleEvents(GameEngine & game) override;
-	void Update(GameEngine const & game) override;
-	void Display(GameEngine & game) override;
-
-	static PlayState & Instance();
+	void HandleEvents(GameEngine & engine) override;
+	void Update(GameEngine const & engine) override;
+	void Display(GameEngine & engine, const float interpolation) override;
 
 private:
-	static PlayState instance_;
+	void HandlePlayerMovement_(sf::Event::KeyEvent const & event);
+	void HandleQuit_(GameEngine & engine, sf::Event::KeyEvent const & event);
 
-	sf::CircleShape circle_;
+	PlayWorld world_;
 };
 
 #endif /*PLAYSTATE_H_*/

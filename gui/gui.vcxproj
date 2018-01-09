@@ -19,16 +19,26 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\AWorld.cc" />
     <ClCompile Include="src\GameEngine.cc" />
     <ClCompile Include="src\IntroState.cc" />
+    <ClCompile Include="src\IntroWorld.cc" />
     <ClCompile Include="src\main.cc" />
     <ClCompile Include="src\PlayState.cc" />
+    <ClCompile Include="src\PlayWorld.cc" />
+    <ClCompile Include="src\ResourcesManager.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\AGameState.h" />
+    <ClInclude Include="src\AWorld.h" />
+    <ClInclude Include="src\Components.h" />
     <ClInclude Include="src\GameEngine.h" />
     <ClInclude Include="src\IntroState.h" />
     <ClInclude Include="src\IGameState.h" />
+    <ClInclude Include="src\IntroWorld.h" />
     <ClInclude Include="src\PlayState.h" />
+    <ClInclude Include="src\PlayWorld.h" />
+    <ClInclude Include="src\ResourcesManager.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
