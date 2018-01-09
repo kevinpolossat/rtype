@@ -16,7 +16,7 @@ public:
 	IntroState() = default;
 	IntroState(IntroState const & other) = delete;
 	IntroState(IntroState const && other) = delete;
-	~IntroState() = default;
+	~IntroState() override = default;
 
 	IntroState & operator=(IntroState const & other) = delete;
 	IntroState & operator=(IntroState const && other) = delete;
@@ -27,9 +27,9 @@ public:
 	void Pause() override;
 	void Resume() override;
 
-	void HandleEvents(GameEngine & engine) override;
+	void HandleEvent(GameEngine & engine, sf::Event const & event) override;
 	void Update(GameEngine const & engine) override;
-	void Display(GameEngine & engine, const float interpolation) override;
+	void Display(GameEngine & engine, float interpolation) override;
 
 private:
 	void HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent const & event);

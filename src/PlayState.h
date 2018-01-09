@@ -22,7 +22,7 @@ public:
 	void Pause() override;
 	void Resume() override;
 
-	void HandleEvents(GameEngine & engine) override;
+	void HandleEvent(GameEngine & engine, sf::Event const & event) override;
 	void Update(GameEngine const & engine) override;
 	void Display(GameEngine & engine, const float interpolation) override;
 

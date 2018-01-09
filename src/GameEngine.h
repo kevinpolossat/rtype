@@ -6,6 +6,8 @@
 #include <stack>
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include <chrono>
 
 #include "ResourcesManager.h"
 #include "AGameState.h"
@@ -35,7 +37,7 @@ public:
 private:
 	void HandleEvents_();
 	void Update_();
-	void Display_(float const interpolation);
+	void Display_(float interpolation);
 
 	std::unordered_map<std::string, std::shared_ptr<AGameState>> states_;
 	std::stack<std::shared_ptr<AGameState>> stack_;

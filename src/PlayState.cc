@@ -51,20 +51,17 @@ void PlayState::HandleQuit_(GameEngine & engine, sf::Event::KeyEvent const & eve
 	}
 }
 
-void PlayState::HandleEvents(GameEngine & engine) {
-	sf::Event event;
-	while (engine.Window().pollEvent(event)) {
-		switch (event.type) {
-			case sf::Event::Closed:
-				engine.Window().close();
-				break;
-			case sf::Event::KeyPressed:
-				HandlePlayerMovement_(event.key);
-				HandleQuit_(engine, event.key);
-				break;
-			default:
-				break;
-		}
+void PlayState::HandleEvent(GameEngine & engine, sf::Event const & event) {
+	switch (event.type) {
+		case sf::Event::Closed:
+			engine.Window().close();
+			break;
+		case sf::Event::KeyPressed:
+			HandlePlayerMovement_(event.key);
+			HandleQuit_(engine, event.key);
+			break;
+		default:
+			break;
 	}
 }
 

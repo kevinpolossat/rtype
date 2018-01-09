@@ -1,9 +1,4 @@
-#include <iostream>
-#include <chrono>
-
 #include "GameEngine.h"
-#include "IntroState.h"
-#include "PlayState.h"
 
 GameEngine::~GameEngine() {
 	while (!stack_.empty()) {
@@ -98,7 +93,17 @@ void GameEngine::Run(std::string const & initState) {
 }
 
 void GameEngine::HandleEvents_() {
-	stack_.top()->HandleEvents(*this);
+	sf::Event event;
+	while (window_.pollEvent(event)) {
+		switch (event.type) {
+			case sf::Event::Closed:
+				window_.close();
+				break;
+			default:
+				stack_.top()->HandleEvent(*this, event);
+				break;
+		}
+	}
 }
 
 void GameEngine::Update_() {

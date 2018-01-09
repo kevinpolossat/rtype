@@ -44,18 +44,12 @@ void IntroState::HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent c
 	}
 }
 
-void IntroState::HandleEvents(GameEngine & engine) {
-	sf::Event event;
-	while (engine.Window().pollEvent(event)) {
-		switch (event.type) {
-		case sf::Event::Closed:
-			engine.Window().close();
-			break;
+void IntroState::HandleEvent(GameEngine & engine, sf::Event const & event) {
+	switch (event.type) {
 		case sf::Event::MouseButtonPressed:
 			HandleClick_(engine, event.mouseButton);
 		default:
 			break;
-		}
 	}
 }
 

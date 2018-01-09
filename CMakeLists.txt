@@ -8,6 +8,8 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED audio graphics window system)
 
 set(SOURCES
+		${CMAKE_SOURCE_DIR}/src/AGameState.h
+		${CMAKE_SOURCE_DIR}/src/Components.h
 		${CMAKE_SOURCE_DIR}/src/AWorld.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine.cc
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
