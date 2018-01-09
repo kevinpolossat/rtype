@@ -1,7 +1,7 @@
 #ifndef INTROSTATE_H_
 #define INTROSTATE_H_
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "AGameState.h"
 #include "IntroWorld.h"

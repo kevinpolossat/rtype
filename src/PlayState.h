@@ -1,7 +1,7 @@
 #ifndef PLAYSTATE_H_
 #define PLAYSTATE_H_
 
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "AGameState.h"
 #include "PlayWorld.h"

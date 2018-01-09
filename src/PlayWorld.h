@@ -13,7 +13,7 @@ public:
 	PlayWorld & operator=(PlayWorld const & other) = delete;
 	PlayWorld & operator=(PlayWorld const && other) = delete;
 
-	uint32_t PlayWorld::CreatePlayer(Position const & position, Velocity const & velocities);
+	uint32_t CreatePlayer(Position const & position, Velocity const & velocities);
 
 	Position & Positions(uint32_t id);
 	Velocity & Velocities(uint32_t id);

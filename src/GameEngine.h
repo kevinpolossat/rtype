@@ -5,7 +5,7 @@
 #include <memory>
 #include <stack>
 #include <unordered_map>
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 
 #include "ResourcesManager.h"
 #include "AGameState.h"

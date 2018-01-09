@@ -8,6 +8,13 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED audio graphics window system)
 
 set(SOURCES
+		${CMAKE_SOURCE_DIR}/src/AWorld.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine.cc
+		${CMAKE_SOURCE_DIR}/src/IntroState.cc
+		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
+		${CMAKE_SOURCE_DIR}/src/PlayState.cc
+		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
+		${CMAKE_SOURCE_DIR}/src/ResourcesManager.cc
         #[[add source files here]])
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -29,6 +36,7 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
 add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
 target_sources(rtype PRIVATE ${SOURCES})
 target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src)
+target_link_libraries(rtype ${SFML_LIBRARIES})
 # IN CASE IF WE NEED TO CHANGE BINARY NAME
 #set_target_properties(rtype PROPERTIES OUTPUT_NAME "binary_name")
 
@@ -42,7 +50,7 @@ target_include_directories(rtype_test
         PRIVATE "${gtest_SOURCE_DIR}/include"
         PRIVATE "${gmock_SOURCE_DIR}/include"
         PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(rtype_test PRIVATE gmock_main)
+target_link_libraries(rtype_test PRIVATE gmock_main ${SFML_LIBRARIES})
 target_sources(rtype_test PRIVATE ${SOURCES})
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)
