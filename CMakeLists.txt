@@ -3,11 +3,13 @@ project(rtype CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
+
+find_package(SFML 2 REQUIRED audio graphics window system)
 
 set(SOURCES
         #[[add source files here]])
 
-# Download and unpack googletest at configure time
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -28,7 +30,7 @@ add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
 target_sources(rtype PRIVATE ${SOURCES})
 target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src)
 # IN CASE IF WE NEED TO CHANGE BINARY NAME
-#set_target_properties(rtype PROPERTIES OUTPUT_NAME "pbrain-gomoku")
+#set_target_properties(rtype PROPERTIES OUTPUT_NAME "binary_name")
 
 enable_testing()
 #test executable
