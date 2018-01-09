@@ -8,10 +8,10 @@
 
 class PlayState : public AGameState {
 public:
-	PlayState();
+	PlayState() = default;
 	PlayState(PlayState const & other) = delete;
 	PlayState(PlayState const && other) = delete;
-	~PlayState() = default;
+	~PlayState() override = default;
 
 	PlayState & operator=(PlayState const & other) = delete;
 	PlayState & operator=(PlayState const && other) = delete;
@@ -24,7 +24,7 @@ public:
 
 	void HandleEvent(GameEngine & engine, sf::Event const & event) override;
 	void Update(GameEngine const & engine) override;
-	void Display(GameEngine & engine, const float interpolation) override;
+	void Display(GameEngine & engine, float interpolation) override;
 
 private:
 	void HandlePlayerMovement_(sf::Event::KeyEvent const & event);

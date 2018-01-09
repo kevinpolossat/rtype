@@ -8,7 +8,7 @@ public:
 	PlayWorld() = default;
 	PlayWorld(PlayWorld const & other) = delete;
 	PlayWorld(PlayWorld const && other) = delete;
-	~PlayWorld() = default;
+	~PlayWorld() override = default;
 
 	PlayWorld & operator=(PlayWorld const & other) = delete;
 	PlayWorld & operator=(PlayWorld const && other) = delete;
@@ -17,11 +17,10 @@ public:
 
 	Position & Positions(uint32_t id);
 	Velocity & Velocities(uint32_t id);
-	Input & Inputs(uint32_t id);
 
 private:
-	std::array<Position, settings::ENTITY_COUNT> positions_;
-	std::array<Velocity, settings::ENTITY_COUNT> velocities_;
+	std::array<Position, settings::ENTITY_COUNT> positions_{};
+	std::array<Velocity, settings::ENTITY_COUNT> velocities_{};
 };
 
 #endif /* PLAYWORLD_H_ */

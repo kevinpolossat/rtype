@@ -1,5 +1,5 @@
 #ifndef RESOURCES_MANAGER_H_
-#define RESSOURCES_MANAGER_H_
+#define RESOURCES_MANAGER_H_
 
 #include <unordered_map>
 #include <SFML/Graphics.hpp>

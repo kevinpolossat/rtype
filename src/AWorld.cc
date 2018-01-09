@@ -2,7 +2,7 @@
 
 uint32_t AWorld::GetEmptyIndex_() const {
 	auto it = std::find(std::begin(entities_), std::end(entities_), component::none);
-	return it != std::end(entities_) ? it - std::begin(entities_) : settings::ENTITY_COUNT;
+	return it != std::end(entities_) ? static_cast<uint32_t >(it - std::begin(entities_)) : settings::ENTITY_COUNT;
 }
 
 void AWorld::Reset() {

@@ -8,7 +8,7 @@ public:
 	IntroWorld() = default;
 	IntroWorld(IntroWorld const & other) = delete;
 	IntroWorld(IntroWorld const && other) = delete;
-	~IntroWorld() = default;
+	~IntroWorld() override = default;
 
 	IntroWorld & operator=(IntroWorld const & other) = delete;
 	IntroWorld & operator=(IntroWorld const && other) = delete;

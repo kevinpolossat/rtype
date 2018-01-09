@@ -17,7 +17,7 @@ public:
 	AWorld & operator=(AWorld const && other) = delete;
 
 	void Reset();
-	void RemoveEntity(uint32_t const id);
+	void RemoveEntity(uint32_t id);
 
 	Entity & Entities(uint32_t id);
 

@@ -87,7 +87,7 @@ void GameEngine::Run(std::string const & initState) {
 		}
 
 		interpolation = std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() + std::chrono::duration<float, std::milli>(msToSkip) - nextGameTick)
-			/ std::chrono::duration<float, std::milli>(msToSkip);
+		                / std::chrono::duration<float, std::milli>(msToSkip);
 		Display_(interpolation);
 	}
 }

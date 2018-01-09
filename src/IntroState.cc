@@ -1,6 +1,4 @@
 #include "IntroState.h"
-#include "PlayState.h"
-#include "GameEngine.h"
 
 bool IntroState::Init(GameEngine & engine) {
 	engine.Rm().LoadFont("arial", "resources/arial.ttf");
@@ -30,14 +28,14 @@ void IntroState::HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent c
 			t.setPosition(position.x, position.y);
 			if (t.getGlobalBounds().contains(event.x, event.y)) {
 				switch (input.id) {
-				case START:
-					engine.PushState("Play");
-					break;
-				case QUIT:
-					engine.Window().close();
-					break;
-				default:
-					break;
+					case START:
+						engine.PushState("Play");
+						break;
+					case QUIT:
+						engine.Window().close();
+						break;
+					default:
+						break;
 				}
 			}
 		}

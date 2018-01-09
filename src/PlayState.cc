@@ -1,10 +1,6 @@
 #include "PlayState.h"
 #include "GameEngine.h"
 
-PlayState::PlayState()
-	: AGameState() {
-}
-
 bool PlayState::Init(GameEngine & engine) {
 	world_.CreatePlayer({ 300, 300 }, { 0, 0 });
 	return true;
@@ -26,20 +22,20 @@ void PlayState::HandlePlayerMovement_(sf::Event::KeyEvent const & event) {
 		Velocity & velocity = world_.Velocities(id);
 		if ((entity & component::player) == component::player) {
 			switch (event.code) {
-			case sf::Keyboard::Key::Left:
-				velocity.x -= 10;
-				break;
-			case sf::Keyboard::Key::Right:
-				velocity.x += 10;
-				break;
-			case sf::Keyboard::Key::Up:
-				velocity.y -= 10;
-				break;
-			case sf::Keyboard::Key::Down:
-				velocity.y += 10;
-				break;
-			default:
-				break;
+				case sf::Keyboard::Key::Left:
+					velocity.x -= 10;
+					break;
+				case sf::Keyboard::Key::Right:
+					velocity.x += 10;
+					break;
+				case sf::Keyboard::Key::Up:
+					velocity.y -= 10;
+					break;
+				case sf::Keyboard::Key::Down:
+					velocity.y += 10;
+					break;
+				default:
+					break;
 			}
 		}
 	}
@@ -79,7 +75,7 @@ void PlayState::Update(GameEngine const & game) {
 	}
 }
 
-void PlayState::Display(GameEngine & engine, const float interpolation) {
+void PlayState::Display(GameEngine & engine, const float) {
 	for (uint32_t id = 0; id < settings::ENTITY_COUNT; ++id) {
 		Entity & entity = world_.Entities(id);
 		Velocity & velocity = world_.Velocities(id);

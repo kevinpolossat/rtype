@@ -5,6 +5,8 @@
 
 #include "AGameState.h"
 #include "IntroWorld.h"
+#include "GameEngine.h"
+
 
 class IntroState : public AGameState {
 	enum ButtonId {
@@ -33,7 +35,7 @@ public:
 
 private:
 	void HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent const & event);
-	
+
 	IntroWorld world_;
 };
 
