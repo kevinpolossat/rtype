@@ -260,4 +260,14 @@ paket-files/
 __pycache__/
 *.pyc
 
-*.vcxproj
+# Executables
+*.exe
+*.out
+*.app
+
+# CLion
+.idea
+cmake-build-debug
+
+#cmake
+build
