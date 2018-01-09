@@ -1,6 +1,4 @@
 # rtype
 
 ## build
-### linux
-mkdir build && cd build && cmake .. && make
-### windows
+mkdir build && cd build && cmake .. -DSFML_ROOT=path/SFML-VERSION && make
