@@ -1,7 +1,15 @@
-//
-// Created by Kévin POLOSSAT on 07/01/2018.
-//
+#include <iostream>
+#include <SFML/Graphics.hpp>
+using namespace std;
 
-int main(int ac, char *av[]) {
-    return 0;
+int main(int argc, char* argv[]) {
+    sf::Window App(sf::VideoMode(800, 600), "myproject");
+    while (App.isOpen()) {
+        sf::Event Event;
+        while (App.pollEvent(Event)) {
+            if (Event.type == sf::Event::Closed)
+                App.close();
+        }
+        App.display();
+    }
 }
