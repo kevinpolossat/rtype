@@ -3,6 +3,7 @@ project(rtype CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(SFML_STATIC_LIBRARIES TRUE)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2 REQUIRED audio graphics window system)
@@ -20,10 +21,8 @@ set(SOURCES
         #[[add source files here]])
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
-execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" .
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
-execute_process(COMMAND "${CMAKE_COMMAND}" --build .
-        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
+execute_process(COMMAND "${CMAKE_COMMAND}" --build . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
 
 # Prevent GoogleTest from overriding compiler/linker options
 # when building with Visual Studio
@@ -32,13 +31,15 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # Add googletest directly to build. This adds
 # the following targets: gtest, gtest_main, gmock
 # and gmock_main
-add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src"
-        "${CMAKE_BINARY_DIR}/googletest-build")
+add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
 add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
+
 target_sources(rtype PRIVATE ${SOURCES})
-target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(rtype ${SFML_LIBRARIES})
+target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src ${SFML_INCLUDE_DIR})
+target_link_libraries(rtype PRIVATE ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+
+
 # IN CASE IF WE NEED TO CHANGE BINARY NAME
 #set_target_properties(rtype PROPERTIES OUTPUT_NAME "binary_name")
 
