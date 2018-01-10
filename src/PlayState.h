@@ -3,10 +3,11 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "GameEngine.h"
 #include "AGameState.h"
 #include "PlayWorld.h"
 
-class PlayState : public AGameState {
+class PlayState : public ge::AGameState {
 public:
 	PlayState() = default;
 	PlayState(PlayState const & other) = delete;
@@ -16,19 +17,19 @@ public:
 	PlayState & operator=(PlayState const & other) = delete;
 	PlayState & operator=(PlayState && other) = delete;
 
-	bool Init(GameEngine & engine) override;
+	bool Init(ge::GameEngine & engine) override;
 	void Clear() override;
 
 	void Pause() override;
 	void Resume() override;
 
-	void HandleEvent(GameEngine & engine, sf::Event const & event) override;
-	void Update(GameEngine const & engine) override;
-	void Display(GameEngine & engine, float interpolation) override;
+	void HandleEvent(ge::GameEngine & engine, sf::Event const & event) override;
+	void Update(ge::GameEngine const & engine) override;
+	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
 	void HandlePlayerMovement_(sf::Event::KeyEvent const & event);
-	void HandleQuit_(GameEngine & engine, sf::Event::KeyEvent const & event);
+	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 
 	PlayWorld world_;
 };

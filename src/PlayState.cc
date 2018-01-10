@@ -1,7 +1,7 @@
 #include "PlayState.h"
 #include "GameEngine.h"
 
-bool PlayState::Init(GameEngine & engine) {
+bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Rm().LoadTexture("nyancat", "resources/nyancat.png");
 	engine.Rm().LoadTexture("red_cross", "resources/red_cross.png");
 	world_.CreatePlayer({ 300, 300 }, { 0, 0 }, { "nyancat", 1 });
@@ -44,13 +44,13 @@ void PlayState::HandlePlayerMovement_(sf::Event::KeyEvent const & event) {
 	}
 }
 
-void PlayState::HandleQuit_(GameEngine & engine, sf::Event::KeyEvent const & event) {
+void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
 	if (event.code == sf::Keyboard::Key::Escape) {
 		engine.PopState();
 	}
 }
 
-void PlayState::HandleEvent(GameEngine & engine, sf::Event const & event) {
+void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	switch (event.type) {
 		case sf::Event::KeyPressed:
 			HandlePlayerMovement_(event.key);
@@ -61,7 +61,7 @@ void PlayState::HandleEvent(GameEngine & engine, sf::Event const & event) {
 	}
 }
 
-void PlayState::Update(GameEngine const & game) {
+void PlayState::Update(ge::GameEngine const & game) {
 	for (uint32_t id = 0; id < settings::ENTITY_COUNT; ++id) {
 		Entity & entity = world_.Entities(id);
 		Velocity & velocity = world_.Velocities(id);
@@ -75,7 +75,7 @@ void PlayState::Update(GameEngine const & game) {
 	}
 }
 
-void PlayState::Display(GameEngine & engine, const float) {
+void PlayState::Display(ge::GameEngine & engine, const float) {
 	for (uint32_t id = 0; id < settings::ENTITY_COUNT; ++id) {
 		Entity & entity = world_.Entities(id);
 		Sprite & sprite = world_.Sprites(id);

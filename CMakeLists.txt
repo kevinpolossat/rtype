@@ -8,12 +8,17 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED audio graphics window system)
 
 set(SOURCES
-		${CMAKE_SOURCE_DIR}/src/AGameState.h
+		# GAME ENGINE
+		${CMAKE_SOURCE_DIR}/src/GameEngine/AGameState.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.h
+
+		# GAME
 		${CMAKE_SOURCE_DIR}/src/Components.h
-		${CMAKE_SOURCE_DIR}/src/AWorld.cc
-		${CMAKE_SOURCE_DIR}/src/AWorld.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine.h
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
 		${CMAKE_SOURCE_DIR}/src/IntroState.h
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
@@ -22,9 +27,7 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/PlayState.h
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
-		${CMAKE_SOURCE_DIR}/src/ResourcesManager.cc
-		${CMAKE_SOURCE_DIR}/src/ResourcesManager.h
-        #[[add source files here]])
+		#[[add source files here]])
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -44,6 +47,7 @@ add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
 target_sources(rtype PRIVATE ${SOURCES})
 target_include_directories(rtype
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype
 		PRIVATE ${SFML_LIBRARIES}
@@ -56,13 +60,14 @@ target_link_libraries(rtype
 enable_testing()
 #test executable
 add_executable(rtype_test
-        ${PROJECT_SOURCE_DIR}/test/test.cc
-        #[[add test source files here]])
+		${PROJECT_SOURCE_DIR}/test/test.cc
+		#[[add test source files here]])
 
 target_include_directories(rtype_test
-        PRIVATE "${gtest_SOURCE_DIR}/include"
-        PRIVATE "${gmock_SOURCE_DIR}/include"
-        PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE "${gtest_SOURCE_DIR}/include"
+		PRIVATE "${gmock_SOURCE_DIR}/include"
+		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_test
 		PRIVATE gmock_main
