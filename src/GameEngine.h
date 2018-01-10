@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <chrono>
+#include <functional>
 #include <queue>
 
 #include "ResourcesManager.h"
