@@ -3,7 +3,7 @@
 
 #include "AWorld.h"
 
-class PlayWorld : public AWorld {
+class PlayWorld : public ge::AWorld {
 public:
 	PlayWorld() = default;
 	PlayWorld(PlayWorld const & other) = delete;

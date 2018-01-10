@@ -3,7 +3,7 @@
 #include "PlayState.h"
 
 int main() {
-	GameEngine gameEngine;
+	ge::GameEngine gameEngine;
 	if (gameEngine.Init("R-Type", 800, 600)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
 		gameEngine.AddState("Play", std::make_shared<PlayState>());

@@ -1,27 +1,27 @@
 #include "GameEngine.h"
 
-GameEngine::GameEngine()
+ge::GameEngine::GameEngine()
 		: toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
 
-GameEngine::~GameEngine() {
+ge::GameEngine::~GameEngine() {
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
 	}
 }
 
-bool GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height) {
+bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height) {
 	window_.create(sf::VideoMode(width, height), title);
 	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
 	return true;
 }
 
-void GameEngine::AddState(std::string const & name, std::shared_ptr<AGameState> const & state) {
+void ge::GameEngine::AddState(std::string const & name, std::shared_ptr<AGameState> const & state) {
 	states_.insert(std::make_pair(name, state));
 }
 
-void GameEngine::ChangeState(std::string const & stateName) {
+void ge::GameEngine::ChangeState(std::string const & stateName) {
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
@@ -37,7 +37,7 @@ void GameEngine::ChangeState(std::string const & stateName) {
 	}
 }
 
-void GameEngine::PushState(std::string const & stateName) {
+void ge::GameEngine::PushState(std::string const & stateName) {
 	if (!stack_.empty()) {
 		stack_.top()->Pause();
 	}
@@ -52,7 +52,7 @@ void GameEngine::PushState(std::string const & stateName) {
 	}
 }
 
-void GameEngine::PopState() {
+void ge::GameEngine::PopState() {
 	if (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
@@ -62,7 +62,7 @@ void GameEngine::PopState() {
 	}
 }
 
-void GameEngine::Run(std::string const & initState) {
+void ge::GameEngine::Run(std::string const & initState) {
 	PushState(initState);
 	const int updatePerSecond = 25;
 	const int msToSkip = 1000 / updatePerSecond;
@@ -87,7 +87,7 @@ void GameEngine::Run(std::string const & initState) {
 	}
 }
 
-void GameEngine::HandleEvents_() {
+void ge::GameEngine::HandleEvents_() {
 	sf::Event event;
 	while (window_.pollEvent(event)) {
 		switch (event.type) {
@@ -101,11 +101,11 @@ void GameEngine::HandleEvents_() {
 	}
 }
 
-void GameEngine::Update_() {
+void ge::GameEngine::Update_() {
 	stack_.top()->Update(*this);
 }
 
-void GameEngine::Display_(const float interpolation) {
+void ge::GameEngine::Display_(const float interpolation) {
 	window_.clear();
 	stack_.top()->Display(*this, interpolation);
 	while (!toDraw_.empty()) {
@@ -115,18 +115,14 @@ void GameEngine::Display_(const float interpolation) {
 	window_.display();
 }
 
-sf::RenderWindow & GameEngine::Window() {
-	return window_;
-}
-
-ResourcesManager & GameEngine::Rm() {
+ge::ResourcesManager & ge::GameEngine::Rm() {
 	return rm_;
 }
 
-void GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {
+void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {
 	toDraw_.push(PrioritizedDrawable(display_level, drawable));
 }
 
-void GameEngine::Quit() {
+void ge::GameEngine::Quit() {
 	window_.close();
 }
