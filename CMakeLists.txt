@@ -3,7 +3,6 @@ project(rtype CXX)
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(SFML_STATIC_LIBRARIES TRUE)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2 REQUIRED audio graphics window system)
@@ -36,8 +35,12 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googl
 add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
 
 target_sources(rtype PRIVATE ${SOURCES})
-target_include_directories(rtype PRIVATE ${PROJECT_SOURCE_DIR}/src ${SFML_INCLUDE_DIR})
-target_link_libraries(rtype PRIVATE ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
+target_include_directories(rtype
+		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${SFML_INCLUDE_DIR})
+target_link_libraries(rtype
+		PRIVATE ${SFML_LIBRARIES}
+		PRIVATE ${SFML_DEPENDENCIES})
 
 
 # IN CASE IF WE NEED TO CHANGE BINARY NAME
@@ -52,8 +55,12 @@ add_executable(rtype_test
 target_include_directories(rtype_test
         PRIVATE "${gtest_SOURCE_DIR}/include"
         PRIVATE "${gmock_SOURCE_DIR}/include"
-        PRIVATE ${PROJECT_SOURCE_DIR}/src)
-target_link_libraries(rtype_test PRIVATE gmock_main ${SFML_LIBRARIES})
+        PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${SFML_INCLUDE_DIR})
+target_link_libraries(rtype_test
+		PRIVATE gmock_main
+		PRIVATE ${SFML_LIBRARIES}
+		PRIVATE ${SFML_DEPENDENCIES})
 target_sources(rtype_test PRIVATE ${SOURCES})
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)
