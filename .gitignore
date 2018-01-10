@@ -35,5 +35,8 @@
 .idea
 cmake-build-debug
 
-#cmake
+# CMake
 build
+
+# VisualStudio
+.vs
