@@ -11,12 +11,19 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/AGameState.h
 		${CMAKE_SOURCE_DIR}/src/Components.h
 		${CMAKE_SOURCE_DIR}/src/AWorld.cc
+		${CMAKE_SOURCE_DIR}/src/AWorld.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine.h
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
+		${CMAKE_SOURCE_DIR}/src/IntroState.h
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
+		${CMAKE_SOURCE_DIR}/src/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/PlayState.cc
+		${CMAKE_SOURCE_DIR}/src/PlayState.h
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
+		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
 		${CMAKE_SOURCE_DIR}/src/ResourcesManager.cc
+		${CMAKE_SOURCE_DIR}/src/ResourcesManager.h
         #[[add source files here]])
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
