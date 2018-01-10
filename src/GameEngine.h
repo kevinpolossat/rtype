@@ -8,13 +8,19 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <chrono>
+#include <queue>
 
 #include "ResourcesManager.h"
 #include "AGameState.h"
 
+using PrioritizedDrawable = std::pair<int32_t , std::shared_ptr<sf::Drawable>>;
+
 class GameEngine {
 public:
-	GameEngine() = default;
+	static constexpr int32_t UI = 0;
+	static constexpr int32_t Background = -1;
+
+	GameEngine();
 	GameEngine(GameEngine const & other) = delete;
 	GameEngine(GameEngine const && other) = delete;
 	~GameEngine();
@@ -31,18 +37,28 @@ public:
 
 	void Run(std::string const & initState);
 
-	sf::RenderWindow & Window();
+	void Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t display_level);
+
+	void Quit();
+
 	ResourcesManager & Rm();
 
 private:
+	sf::RenderWindow & Window();
 	void HandleEvents_();
 	void Update_();
 	void Display_(float interpolation);
 
 	std::unordered_map<std::string, std::shared_ptr<AGameState>> states_;
 	std::stack<std::shared_ptr<AGameState>> stack_;
+
 	sf::RenderWindow window_;
+
 	ResourcesManager rm_;
+
+	std::priority_queue<PrioritizedDrawable,
+			std::vector<PrioritizedDrawable>,
+			std::function<bool(PrioritizedDrawable, PrioritizedDrawable)>> toDraw_;
 };
 
 #endif /*GAMEENGINE_H_*/

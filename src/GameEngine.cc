@@ -1,5 +1,9 @@
 #include "GameEngine.h"
 
+GameEngine::GameEngine()
+		: toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
+}
+
 GameEngine::~GameEngine() {
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
@@ -18,13 +22,10 @@ void GameEngine::AddState(std::string const & name, std::shared_ptr<AGameState> 
 }
 
 void GameEngine::ChangeState(std::string const & stateName) {
-	// clear current state
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
 	}
-
-	// store and init the new state
 	if (!states_.count(stateName)) {
 		std::cerr << "Can't find " << stateName << " state" << std::endl;
 		std::exit(EXIT_SUCCESS);
@@ -37,12 +38,9 @@ void GameEngine::ChangeState(std::string const & stateName) {
 }
 
 void GameEngine::PushState(std::string const & stateName) {
-	// pause current state
 	if (!stack_.empty()) {
 		stack_.top()->Pause();
 	}
-
-	// store and init the new state
 	if (!states_.count(stateName)) {
 		std::cerr << "Can't find " << stateName << " state" << std::endl;
 		std::exit(EXIT_SUCCESS);
@@ -55,13 +53,10 @@ void GameEngine::PushState(std::string const & stateName) {
 }
 
 void GameEngine::PopState() {
-	// cleanup the current state
 	if (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
 	}
-
-	// resume previous state
 	if (!stack_.empty()) {
 		stack_.top()->Resume();
 	}
@@ -97,7 +92,7 @@ void GameEngine::HandleEvents_() {
 	while (window_.pollEvent(event)) {
 		switch (event.type) {
 			case sf::Event::Closed:
-				window_.close();
+				Quit();
 				break;
 			default:
 				stack_.top()->HandleEvent(*this, event);
@@ -107,14 +102,16 @@ void GameEngine::HandleEvents_() {
 }
 
 void GameEngine::Update_() {
-	// let the state update the game
 	stack_.top()->Update(*this);
 }
 
 void GameEngine::Display_(const float interpolation) {
-	// let the state draw the screen
 	window_.clear();
 	stack_.top()->Display(*this, interpolation);
+	while (!toDraw_.empty()) {
+		window_.draw(*toDraw_.top().second);
+		toDraw_.pop();
+	}
 	window_.display();
 }
 
@@ -124,4 +121,12 @@ sf::RenderWindow & GameEngine::Window() {
 
 ResourcesManager & GameEngine::Rm() {
 	return rm_;
+}
+
+void GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {
+	toDraw_.push(PrioritizedDrawable(display_level, drawable));
+}
+
+void GameEngine::Quit() {
+	window_.close();
 }

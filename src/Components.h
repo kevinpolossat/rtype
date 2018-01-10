@@ -19,7 +19,8 @@ namespace component {
 
 	// COMPOSITION
 	Bitset const button = position | text | input;
-	Bitset const player = position | velocity | playerTag;
+	Bitset const drawable = position | sprite ;
+	Bitset const player = position | velocity | sprite | playerTag;
 };
 
 namespace settings {
@@ -38,6 +39,7 @@ struct Velocity {
 
 struct Sprite {
 	std::string textureName;
+	int32_t priority;
 };
 
 struct Text {

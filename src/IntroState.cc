@@ -32,7 +32,7 @@ void IntroState::HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent c
 						engine.PushState("Play");
 						break;
 					case QUIT:
-						engine.Window().close();
+						engine.Quit();
 						break;
 					default:
 						break;
@@ -62,7 +62,7 @@ void IntroState::Display(GameEngine & engine, const float) {
 		if ((entity & component::button) == component::button) {
 			sf::Text t(text.text, engine.Rm().Font(text.fontName));
 			t.setPosition(position.x, position.y);
-			engine.Window().draw(t);
+			engine.Draw(std::make_shared<sf::Text>(t), GameEngine::UI);
 		}
 	}
 }

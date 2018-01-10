@@ -13,12 +13,15 @@ public:
 	PlayWorld & operator=(PlayWorld const & other) = delete;
 	PlayWorld & operator=(PlayWorld const && other) = delete;
 
-	uint32_t CreatePlayer(Position const & position, Velocity const & velocities);
+	uint32_t CreatePlayer(Position const & position, Velocity const & velocities, Sprite const & sprite);
+	uint32_t CreateCross(Position const & position, Sprite const & sprite);
 
+	Sprite & Sprites(uint32_t id);
 	Position & Positions(uint32_t id);
 	Velocity & Velocities(uint32_t id);
 
 private:
+	std::array<Sprite, settings::ENTITY_COUNT> sprites_{};
 	std::array<Position, settings::ENTITY_COUNT> positions_{};
 	std::array<Velocity, settings::ENTITY_COUNT> velocities_{};
 };
