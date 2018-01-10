@@ -9,10 +9,10 @@ class AGameState {
 public:
 	AGameState() = default;
 	AGameState(AGameState const & other) = delete;
-	AGameState(AGameState const && other) = delete;
+	AGameState(AGameState && other) = delete;
 	virtual ~AGameState() = default;
 
-	AGameState & operator=(AGameState & other) = delete;
+	AGameState & operator=(AGameState const & other) = delete;
 	AGameState & operator=(AGameState && other) = delete;
 
 	virtual bool Init(GameEngine & engine) = 0;

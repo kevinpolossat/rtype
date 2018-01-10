@@ -17,11 +17,11 @@ class IntroState : public AGameState {
 public:
 	IntroState() = default;
 	IntroState(IntroState const & other) = delete;
-	IntroState(IntroState const && other) = delete;
+	IntroState(IntroState && other) = delete;
 	~IntroState() override = default;
 
 	IntroState & operator=(IntroState const & other) = delete;
-	IntroState & operator=(IntroState const && other) = delete;
+	IntroState & operator=(IntroState && other) = delete;
 
 	bool Init(GameEngine & engine) override;
 	void Clear() override;

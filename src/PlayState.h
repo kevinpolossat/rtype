@@ -10,11 +10,11 @@ class PlayState : public AGameState {
 public:
 	PlayState() = default;
 	PlayState(PlayState const & other) = delete;
-	PlayState(PlayState const && other) = delete;
+	PlayState(PlayState && other) = delete;
 	~PlayState() override = default;
 
 	PlayState & operator=(PlayState const & other) = delete;
-	PlayState & operator=(PlayState const && other) = delete;
+	PlayState & operator=(PlayState && other) = delete;
 
 	bool Init(GameEngine & engine) override;
 	void Clear() override;

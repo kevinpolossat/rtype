@@ -10,11 +10,11 @@ class AWorld {
 public:
 	AWorld() = default;
 	AWorld(AWorld const & other) = delete;
-	AWorld(AWorld const && other) = delete;
+	AWorld(AWorld && other) = delete;
 	virtual ~AWorld() = default;
 
 	AWorld & operator=(AWorld const & other) = delete;
-	AWorld & operator=(AWorld const && other) = delete;
+	AWorld & operator=(AWorld && other) = delete;
 
 	void Reset();
 	void RemoveEntity(uint32_t id);

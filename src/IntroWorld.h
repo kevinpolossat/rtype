@@ -7,11 +7,11 @@ class IntroWorld : public AWorld {
 public:
 	IntroWorld() = default;
 	IntroWorld(IntroWorld const & other) = delete;
-	IntroWorld(IntroWorld const && other) = delete;
+	IntroWorld(IntroWorld && other) = delete;
 	~IntroWorld() override = default;
 
 	IntroWorld & operator=(IntroWorld const & other) = delete;
-	IntroWorld & operator=(IntroWorld const && other) = delete;
+	IntroWorld & operator=(IntroWorld && other) = delete;
 
 	uint32_t CreateButton(Position const & position, Text const & text, Input const & input);
 

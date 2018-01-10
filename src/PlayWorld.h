@@ -7,11 +7,11 @@ class PlayWorld : public AWorld {
 public:
 	PlayWorld() = default;
 	PlayWorld(PlayWorld const & other) = delete;
-	PlayWorld(PlayWorld const && other) = delete;
+	PlayWorld(PlayWorld && other) = delete;
 	~PlayWorld() override = default;
 
 	PlayWorld & operator=(PlayWorld const & other) = delete;
-	PlayWorld & operator=(PlayWorld const && other) = delete;
+	PlayWorld & operator=(PlayWorld && other) = delete;
 
 	uint32_t CreatePlayer(Position const & position, Velocity const & velocities, Sprite const & sprite);
 	uint32_t CreateCross(Position const & position, Sprite const & sprite);

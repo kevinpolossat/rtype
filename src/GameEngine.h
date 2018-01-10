@@ -22,11 +22,11 @@ public:
 
 	GameEngine();
 	GameEngine(GameEngine const & other) = delete;
-	GameEngine(GameEngine const && other) = delete;
+	GameEngine(GameEngine && other) = delete;
 	~GameEngine();
 
 	GameEngine & operator=(GameEngine const & other) = delete;
-	GameEngine & operator=(GameEngine const && other) = delete;
+	GameEngine & operator=(GameEngine && other) = delete;
 
 	bool Init(std::string const & title, uint32_t width, uint32_t height);
 

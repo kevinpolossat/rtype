@@ -8,11 +8,11 @@ class ResourcesManager {
 public:
 	ResourcesManager() = default;
 	ResourcesManager(ResourcesManager const & other) = delete;
-	ResourcesManager(ResourcesManager const && other) = delete;
+	ResourcesManager(ResourcesManager && other) = delete;
 	~ResourcesManager() = default;
 
 	ResourcesManager & operator=(ResourcesManager const & other) = delete;
-	ResourcesManager & operator=(ResourcesManager const && other) = delete;
+	ResourcesManager & operator=(ResourcesManager && other) = delete;
 
 	sf::Texture & Texture(std::string const & name);
 	void LoadTextures(std::unordered_map<std::string, std::string> const & files);
