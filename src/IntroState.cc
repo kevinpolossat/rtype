@@ -26,7 +26,7 @@ void IntroState::HandleClick_(GameEngine & engine, sf::Event::MouseButtonEvent c
 		if (event.button == sf::Mouse::Button::Left && (entity & component::button) == component::button) {
 			sf::Text t(text.text, engine.Rm().Font(text.fontName));
 			t.setPosition(position.x, position.y);
-			if (t.getGlobalBounds().contains(event.x, event.y)) {
+			if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
 				switch (input.id) {
 					case START:
 						engine.PushState("Play");

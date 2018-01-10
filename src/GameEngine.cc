@@ -11,9 +11,9 @@ GameEngine::~GameEngine() {
 	}
 }
 
-bool GameEngine::Init(std::string const & title, uint32_t width, uint32_t height) {
+bool GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height) {
 	window_.create(sf::VideoMode(width, height), title);
-	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, width, height)));
+	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
 	return true;
 }
 
