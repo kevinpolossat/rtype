@@ -1,0 +1,20 @@
+language: cpp
+
+addons:
+  apt:
+    sources:
+      - ubuntu-toolchain-r-test
+    packages:
+      - gcc-7
+      - g++-7
+
+before_install:
+  - export CC=/usr/bin/gcc-7
+  - export CXX=/usr/bin/g++-7
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - ./rtype_test
