@@ -271,6 +271,7 @@ cmake-build-debug
 
 # CMake
 build
+bin
 
 # VisualStudio
 .vs

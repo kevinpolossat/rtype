@@ -53,9 +53,13 @@ target_link_libraries(rtype
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 
+set_target_properties(rtype
+		PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
-# IN CASE IF WE NEED TO CHANGE BINARY NAME
-#set_target_properties(rtype PROPERTIES OUTPUT_NAME "binary_name")
+add_custom_command(TARGET rtype POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype>/resources)
 
 enable_testing()
 #test executable
