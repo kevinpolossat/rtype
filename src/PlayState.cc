@@ -2,10 +2,10 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.Rm().LoadTexture("nyancat", "resources/nyancat.png");
-	engine.Rm().LoadTexture("red_cross", "resources/red_cross.png");
-	world_.CreatePlayer(engine.Cm()["Player"], { 300, 300 }, { 0, 0 }, { "nyancat", 1 });
-	world_.CreateCross(engine.Cm()["Drawable"], { 30, 30 }, { "red_cross", 2 });
+	engine.LoadTexture("nyancat", "resources/nyancat.png");
+	engine.LoadTexture("red_cross", "resources/red_cross.png");
+	world_.CreatePlayer(engine["Player"], { 300, 300 }, { 0, 0 }, { "nyancat", 1 });
+	world_.CreateCross(engine["Drawable"], { 30, 30 }, { "red_cross", 2 });
 	return true;
 }
 
@@ -23,7 +23,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
 		ge::Entity & entity = world_.Entities(id);
 		Velocity & velocity = world_.Velocities(id);
-		if ((entity & engine.Cm()["Player"]) == engine.Cm()["Player"]) {
+		if ((entity & engine["Player"]) == engine["Player"]) {
 			switch (event.code) {
 				case sf::Keyboard::Key::Left:
 					velocity.x -= 10;
@@ -80,8 +80,8 @@ void PlayState::Display(ge::GameEngine & engine, const float) {
 		ge::Entity & entity = world_.Entities(id);
 		Sprite & sprite = world_.Sprites(id);
 		Position & position = world_.Positions(id);
-		if ((entity & engine.Cm()["Drawable"]) == engine.Cm()["Drawable"]) {
-			sf::Sprite s(engine.Rm().Texture(sprite.textureName));
+		if ((entity & engine["Drawable"]) == engine["Drawable"]) {
+			sf::Sprite s(engine.Texture(sprite.textureName));
 			s.setPosition(position.x, position.y);
 			engine.Draw(std::make_shared<sf::Sprite>(s), sprite.priority);
 		}

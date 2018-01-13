@@ -21,7 +21,7 @@ namespace ge {
 		virtual void Resume() = 0;
 
 		virtual void HandleEvent(GameEngine &engine, sf::Event const &event) = 0;
-		virtual void Update(GameEngine const &engine) = 0;
+		virtual void Update(GameEngine const & engine) = 0;
 		virtual void Display(GameEngine &engine, float interpolation) = 0;
 	};
 }

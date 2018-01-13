@@ -19,6 +19,8 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Settings.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.h
 
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/Components.h
