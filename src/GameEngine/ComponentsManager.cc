@@ -2,7 +2,15 @@
 
 uint32_t ge::ComponentsManager::count_ = 0;
 
-bool ge::ComponentsManager::AddComponents(std::string const & name) {
+bool ge::ComponentsManager::AddComponents(std::vector<std::string> const & names) {
+	bool ret = true;
+	for (auto & name : names) {
+		ret = ret && AddComponent(name);
+	}
+	return ret;
+}
+
+bool ge::ComponentsManager::AddComponent(std::string const & name) {
 	if (count_ < ge::Settings::ComponentsCount) {
 		if (!components_.count(name)) {
 			components_.insert(std::pair<std::string, Component>(name, Component(static_cast<unsigned long long int>(1 << count_))));

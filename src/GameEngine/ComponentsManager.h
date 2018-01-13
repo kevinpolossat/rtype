@@ -18,7 +18,8 @@ namespace ge {
 		ComponentsManager & operator=(ComponentsManager const & other) = delete;
 		ComponentsManager & operator=(ComponentsManager && other) = delete;
 
-		bool AddComponents(std::string const & name);
+		bool AddComponent(std::string const & name);
+		bool AddComponents(std::vector<std::string> const & names);
 		bool AddComposedComponents(std::string const & name, std::vector<std::string> const & composition);
 
 		Component const & operator[](std::string const & name) const;
