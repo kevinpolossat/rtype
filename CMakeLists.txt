@@ -12,10 +12,13 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AGameState.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/ComponentsManager.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/ComponentsManager.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Settings.h
 
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/Components.h
