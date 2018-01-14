@@ -11,15 +11,15 @@
 #include "GameEngine.h"
 
 namespace ge {
-	class StateManager {
+	class StatesManager {
 	public:
-		StateManager() = default;
-		StateManager(StateManager const & other) = delete;
-		StateManager(StateManager && other) = delete;
-		~StateManager();
+		StatesManager() = default;
+		StatesManager(StatesManager const & other) = delete;
+		StatesManager(StatesManager && other) = delete;
+		~StatesManager();
 
-		StateManager & operator=(StateManager const & other) = delete;
-		StateManager & operator=(StateManager && other) = delete;
+		StatesManager & operator=(StatesManager const & other) = delete;
+		StatesManager & operator=(StatesManager && other) = delete;
 
 		void AddState(std::string const & name, std::shared_ptr<AGameState> const & state);
 		void ChangeState(ge::GameEngine & engine, std::string const & stateName);

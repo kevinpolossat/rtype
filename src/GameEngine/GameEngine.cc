@@ -3,7 +3,7 @@
 ge::GameEngine::GameEngine()
 		: cm_(std::make_unique<ge::ComponentsManager>()),
 		  rm_(std::make_unique<ge::ResourcesManager>()),
-		  st_(std::make_unique<ge::StateManager>()),
+		  st_(std::make_unique<ge::StatesManager>()),
 		  toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
 

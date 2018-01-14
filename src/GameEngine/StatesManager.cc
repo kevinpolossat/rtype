@@ -1,17 +1,17 @@
 #include "StatesManager.h"
 
-ge::StateManager::~StateManager() {
+ge::StatesManager::~StatesManager() {
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
 	}
 }
 
-void ge::StateManager::AddState(std::string const & name, const std::shared_ptr<ge::AGameState> & state) {
+void ge::StatesManager::AddState(std::string const & name, const std::shared_ptr<ge::AGameState> & state) {
 	states_.insert(std::make_pair(name, state));
 }
 
-void ge::StateManager::ChangeState(ge::GameEngine & engine, std::string const & stateName) {
+void ge::StatesManager::ChangeState(ge::GameEngine & engine, std::string const & stateName) {
 	while (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
@@ -27,7 +27,7 @@ void ge::StateManager::ChangeState(ge::GameEngine & engine, std::string const & 
 	}
 }
 
-void ge::StateManager::PushState(ge::GameEngine & engine, std::string const & stateName) {
+void ge::StatesManager::PushState(ge::GameEngine & engine, std::string const & stateName) {
 	if (!stack_.empty()) {
 		stack_.top()->Pause();
 	}
@@ -42,7 +42,7 @@ void ge::StateManager::PushState(ge::GameEngine & engine, std::string const & st
 	}
 }
 
-void ge::StateManager::PopState() {
+void ge::StatesManager::PopState() {
 	if (!stack_.empty()) {
 		stack_.top()->Clear();
 		stack_.pop();
@@ -52,6 +52,6 @@ void ge::StateManager::PopState() {
 	}
 }
 
-std::shared_ptr<ge::AGameState> & ge::StateManager::GetCurrentState() {
+std::shared_ptr<ge::AGameState> & ge::StatesManager::GetCurrentState() {
 	return stack_.top();
 }

@@ -20,7 +20,7 @@
 
 namespace ge {
 	// Forward declaration of StatesManager
-	class StateManager;
+	class StatesManager;
 
 	class GameEngine {
 	public:
@@ -72,7 +72,7 @@ namespace ge {
 		// Using ptr here to avoid circular dependency
 		std::unique_ptr<ComponentsManager> cm_;
 		std::unique_ptr<ResourcesManager> rm_;
-		std::unique_ptr<StateManager> st_;
+		std::unique_ptr<StatesManager> st_;
 
 		std::priority_queue<PrioritizedDrawable,
 				std::vector<PrioritizedDrawable>,
