@@ -23,7 +23,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
 		ge::Entity & entity = world_.Entities(id);
 		Velocity & velocity = world_.Velocities(id);
-		if ((entity & engine["Player"]) == engine["Player"]) {
+		if (engine.Match(entity, "Player")) {
 			switch (event.code) {
 				case sf::Keyboard::Key::Left:
 					velocity.x -= 10;
@@ -66,7 +66,7 @@ void PlayState::Update(ge::GameEngine const & engine) {
 		ge::Entity & entity = world_.Entities(id);
 		Velocity & velocity = world_.Velocities(id);
 		Position & position = world_.Positions(id);
-		if ((entity & engine.Cm()["Player"]) == engine.Cm()["Player"]) {
+		if (engine.Match(entity, "Player")) {
 			position.x += velocity.x;
 			position.y += velocity.y;
 			velocity.x /= 1.1f;
@@ -80,7 +80,7 @@ void PlayState::Display(ge::GameEngine & engine, const float) {
 		ge::Entity & entity = world_.Entities(id);
 		Sprite & sprite = world_.Sprites(id);
 		Position & position = world_.Positions(id);
-		if ((entity & engine["Drawable"]) == engine["Drawable"]) {
+		if (engine.Match(entity, "Drawable")) {
 			sf::Sprite s(engine.Texture(sprite.textureName));
 			s.setPosition(position.x, position.y);
 			engine.Draw(std::make_shared<sf::Sprite>(s), sprite.priority);

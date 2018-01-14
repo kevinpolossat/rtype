@@ -11,10 +11,6 @@
 #include <functional>
 #include <queue>
 
-namespace ge {
-	class StateManager;
-}
-
 #include "Settings.h"
 #include "ResourcesManager.h"
 #include "ComponentsManager.h"
@@ -23,6 +19,9 @@ namespace ge {
 #include "StatesManager.h"
 
 namespace ge {
+	// Forward declaration of StatesManager
+	class StateManager;
+
 	class GameEngine {
 	public:
 		GameEngine();
@@ -38,6 +37,16 @@ namespace ge {
 		void Run(std::string const & initState);
 		void Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t display_level);
 		void Quit();
+
+		// COMPONENTS
+		bool AddComponent(std::string const & name);
+		bool AddComponents(std::vector<std::string> const & names);
+		bool AddComposedComponents(std::string const & name, std::vector<std::string> const & composition);
+		bool Match(Entity const & entity, Component const & component) const;
+		bool Match(Entity const & entity, std::string const & name) const;
+		bool Match(std::string const & name1, std::string const & name2) const;
+		Component const & operator[](std::string const & name) const;
+
 
 		// STATES
 		void AddState(std::string const & name, std::shared_ptr<AGameState> const & state);
@@ -61,6 +70,7 @@ namespace ge {
 		sf::RenderWindow window_;
 
 		// Using ptr here to avoid circular dependency
+		std::unique_ptr<ComponentsManager> cm_;
 		std::unique_ptr<ResourcesManager> rm_;
 		std::unique_ptr<StateManager> st_;
 

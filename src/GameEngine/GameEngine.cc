@@ -1,7 +1,8 @@
 #include "GameEngine.h"
 
 ge::GameEngine::GameEngine()
-		: rm_(std::make_unique<ge::ResourcesManager>()),
+		: cm_(std::make_unique<ge::ComponentsManager>()),
+		  rm_(std::make_unique<ge::ResourcesManager>()),
 		  st_(std::make_unique<ge::StateManager>()),
 		  toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
@@ -70,6 +71,37 @@ void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_
 
 void ge::GameEngine::Quit() {
 	window_.close();
+}
+
+/*
+**** COMPONENTS
+*/
+bool ge::GameEngine::AddComponent(std::string const & name) {
+	return cm_->AddComponent(name);
+}
+
+bool ge::GameEngine::AddComponents(std::vector<std::string> const & names) {
+	return cm_->AddComponents(names);
+}
+
+bool ge::GameEngine::AddComposedComponents(std::string const & name, std::vector<std::string> const & composition) {
+	return cm_->AddComposedComponents(name, composition);
+}
+
+bool ge::GameEngine::Match(const ge::Entity & entity, const ge::Component & component) const {
+	return cm_->Match(entity, component);
+}
+
+bool ge::GameEngine::Match(const ge::Entity & entity, std::string const & name) const {
+	return cm_->Match(entity, name);
+}
+
+bool ge::GameEngine::Match(std::string const & name1, std::string const & name2) const {
+	return cm_->Match(name1, name2);
+}
+
+const ge::Component &ge::GameEngine::operator[](std::string const & name) const {
+	return (*cm_)[name];
 }
 
 /*

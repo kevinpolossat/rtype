@@ -23,7 +23,7 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 		Text & text = world_.Texts(id);
 		Input & input = world_.Inputs(id);
 		Position & position = world_.Positions(id);
-		if (event.button == sf::Mouse::Button::Left && (entity & engine["Button"]) == engine["Button"]) {
+		if (event.button == sf::Mouse::Button::Left && engine.Match(entity, "Button")) {
 			sf::Text t(text.text, engine.Font(text.fontName));
 			t.setPosition(position.x, position.y);
 			if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
@@ -59,7 +59,7 @@ void IntroState::Display(ge::GameEngine & engine, const float) {
 		ge::Entity & entity = world_.Entities(id);
 		Text & text = world_.Texts(id);
 		Position & position = world_.Positions(id);
-		if ((entity & engine.Cm()["Button"]) == engine.Cm()["Button"]) {
+		if (engine.Match(entity, "Button")) {
 			sf::Text t(text.text, engine.Font(text.fontName));
 			t.setPosition(position.x, position.y);
 			engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
