@@ -1,8 +1,6 @@
 #ifndef AGAMESTATE_H_
 #define AGAMESTATE_H_
 
-#include "AWorld.h"
-
 namespace ge {
 	class GameEngine;
 

@@ -28,7 +28,7 @@ public:
 	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
-	void HandlePlayerMovement_(sf::Event::KeyEvent const & event);
+	void HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 
 	PlayWorld world_;

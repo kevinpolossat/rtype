@@ -11,17 +11,12 @@
 #include <functional>
 #include <queue>
 
+#include "Settings.h"
 #include "ResourcesManager.h"
+#include "ComponentsManager.h"
 #include "AGameState.h"
 
-using PrioritizedDrawable = std::pair<int32_t , std::shared_ptr<sf::Drawable>>;
-
 namespace ge {
-	namespace Layer {
-		static constexpr int32_t UI = 0;
-		static constexpr int32_t Background = -1;
-	}
-
 	class GameEngine {
 	public:
 		GameEngine();
@@ -46,6 +41,8 @@ namespace ge {
 		void Quit();
 
 		ResourcesManager & Rm();
+		ComponentsManager & Cm();
+		ComponentsManager const & Cm() const;
 
 	private:
 		void HandleEvents_();
@@ -58,6 +55,7 @@ namespace ge {
 		sf::RenderWindow window_;
 
 		ResourcesManager rm_;
+		ComponentsManager cm_;
 
 		std::priority_queue<PrioritizedDrawable,
 			std::vector<PrioritizedDrawable>,

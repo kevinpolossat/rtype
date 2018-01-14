@@ -119,6 +119,14 @@ ge::ResourcesManager & ge::GameEngine::Rm() {
 	return rm_;
 }
 
+ge::ComponentsManager &ge::GameEngine::Cm() {
+	return cm_;
+}
+
+ge::ComponentsManager const & ge::GameEngine::Cm() const {
+	return cm_;
+}
+
 void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {
 	toDraw_.push(PrioritizedDrawable(display_level, drawable));
 }

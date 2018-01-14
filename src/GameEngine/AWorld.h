@@ -4,7 +4,8 @@
 #include <bitset>
 #include <array>
 #include <SFML/Graphics.hpp>
-#include "Components.h"
+
+#include "Settings.h"
 
 namespace ge {
 	class AWorld {
@@ -23,7 +24,7 @@ namespace ge {
 
 	protected:
 		virtual uint32_t GetEmptyIndex_() const;
-		std::array<Entity, settings::ENTITY_COUNT> entities_;
+		std::array<Entity, Settings::EntitiesCount> entities_;
 	};
 }
 

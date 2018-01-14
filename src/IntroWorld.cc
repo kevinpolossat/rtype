@@ -1,8 +1,8 @@
 #include "IntroWorld.h"
 
-uint32_t IntroWorld::CreateButton(Position const & position, Text const & text, Input const & input) {
+uint32_t IntroWorld::CreateButton(ge::Component const & component, Position const & position, Text const & text, Input const & input) {
 	uint32_t id = GetEmptyIndex_();
-	entities_[id] = component::button;
+	entities_[id] = component;
 	positions_[id] = position;
 	texts_[id] = text;
 	inputs_[id] = input;
