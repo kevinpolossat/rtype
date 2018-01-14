@@ -22,9 +22,9 @@ public:
 	Velocity & Velocities(uint32_t id);
 
 private:
-	std::array<Sprite, ge::Settings::EntitiesCount> sprites_{};
-	std::array<Position, ge::Settings::EntitiesCount> positions_{};
-	std::array<Velocity, ge::Settings::EntitiesCount> velocities_{};
+	std::array<Sprite, ge::Settings::EntitiesCount> sprites_;
+	std::array<Position, ge::Settings::EntitiesCount> positions_;
+	std::array<Velocity, ge::Settings::EntitiesCount> velocities_;
 };
 
 #endif /* PLAYWORLD_H_ */
