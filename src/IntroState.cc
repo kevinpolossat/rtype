@@ -1,9 +1,9 @@
 #include "IntroState.h"
 
 bool IntroState::Init(ge::GameEngine & engine) {
-	engine.Rm().LoadFont("arial", "resources/arial.ttf");
-	world_.CreateButton(engine.Cm()["Button"], { 300, 0 }, { "Start", "arial" }, { START });
-	world_.CreateButton(engine.Cm()["Button"], { 300, 100 }, { "Quit", "arial" }, { QUIT });
+	engine.LoadFont("arial", "resources/arial.ttf");
+	world_.CreateButton(engine["Button"], { 300, 0 }, { "Start", "arial" }, { START });
+	world_.CreateButton(engine["Button"], { 300, 100 }, { "Quit", "arial" }, { QUIT });
 	return true;
 }
 
@@ -23,8 +23,8 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 		Text & text = world_.Texts(id);
 		Input & input = world_.Inputs(id);
 		Position & position = world_.Positions(id);
-		if (event.button == sf::Mouse::Button::Left && (entity & engine.Cm()["Button"]) == engine.Cm()["Button"]) {
-			sf::Text t(text.text, engine.Rm().Font(text.fontName));
+		if (event.button == sf::Mouse::Button::Left && engine.Match(entity, "Button")) {
+			sf::Text t(text.text, engine.Font(text.fontName));
 			t.setPosition(position.x, position.y);
 			if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
 				switch (input.id) {
@@ -59,8 +59,8 @@ void IntroState::Display(ge::GameEngine & engine, const float) {
 		ge::Entity & entity = world_.Entities(id);
 		Text & text = world_.Texts(id);
 		Position & position = world_.Positions(id);
-		if ((entity & engine.Cm()["Button"]) == engine.Cm()["Button"]) {
-			sf::Text t(text.text, engine.Rm().Font(text.fontName));
+		if (engine.Match(entity, "Button")) {
+			sf::Text t(text.text, engine.Font(text.fontName));
 			t.setPosition(position.x, position.y);
 			engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
 		}

@@ -42,6 +42,18 @@ bool ge::ComponentsManager::AddComposedComponents(std::string const & name, std:
 	return false;
 }
 
+bool ge::ComponentsManager::Match(const ge::Entity & entity, const ge::Component & component) const {
+	return (entity & component) == component;
+}
+
+bool ge::ComponentsManager::Match(const ge::Entity & entity, std::string const & name) const {
+	return Match(entity, (*this)[name]);
+}
+
+bool ge::ComponentsManager::Match(std::string const & name1, std::string const & name2) const {
+	return Match((*this)[name1], (*this)[name2]);
+}
+
 ge::Component const & ge::ComponentsManager::operator[](std::string const & name) const {
 	if (components_.count(name)) {
 		return components_.at(name);
