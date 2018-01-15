@@ -29,7 +29,6 @@ namespace ge {
 		std::shared_ptr<ge::AGameState> & GetCurrentState();
 
 	private:
-
 		std::unordered_map<std::string, std::shared_ptr<AGameState>> states_;
 		std::stack<std::shared_ptr<AGameState>> stack_;
 	};

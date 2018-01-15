@@ -29,9 +29,11 @@ public:
 
 private:
 	void HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
+	void HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 
 	PlayWorld world_;
+
 };
 
 #endif /*PLAYSTATE_H_*/

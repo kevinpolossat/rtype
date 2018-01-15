@@ -1,11 +1,23 @@
 #include "PlayWorld.h"
 
-uint32_t PlayWorld::CreatePlayer(ge::Component const & component, Position const & position, Velocity const & velocities, Sprite const & sprite) {
+uint32_t PlayWorld::CreatePlayer(ge::Component const & component, Position const & position, Velocity const & velocities) {
 	uint32_t id = GetEmptyIndex_();
 	entities_[id] = component;
 	positions_[id] = position;
 	velocities_[id] = velocities;
-	sprites_[id] = sprite;
+	ge::Animation walk;
+	walk.priority = 1;
+	for (uint32_t i = 1; i <= 10; ++i) {
+		walk.sprites.push_back("resources/knight/Walk (" + std::to_string(i) + ").png");
+	}
+	ge::Animation attack;
+	attack.priority = 1;
+	for (uint32_t i = 1; i <= 10; ++i) {
+		attack.sprites.push_back("resources/knight/Attack (" + std::to_string(i) + ").png");
+	}
+	animators_[id].AddAnimation("Walk", walk);
+	animators_[id].AddAnimation("Attack", attack);
+	animators_[id].SetCurrentAnimation("Walk");
 	return id;
 }
 
@@ -27,4 +39,8 @@ Position & PlayWorld::Positions(uint32_t id) {
 
 Velocity & PlayWorld::Velocities(uint32_t id) {
 	return velocities_[id];
+}
+
+ge::Animator & PlayWorld::Animators(uint32_t id) {
+	return animators_[id];
 }

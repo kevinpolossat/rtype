@@ -10,6 +10,8 @@ find_package(SFML 2 REQUIRED audio graphics window system)
 set(SOURCES
 		# GAME ENGINE
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AGameState.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Animator.cc
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Animator.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ComponentsManager.cc
@@ -21,7 +23,7 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Settings.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.h
-
+		
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/Components.h
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
