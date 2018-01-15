@@ -15,6 +15,7 @@ void ge::ResourcesManager::LoadTexture(std::string const & name, std::string con
 	if (textures_.find(name) == textures_.end() && texture.loadFromFile(file)) {
 		textures_.insert(std::pair<std::string, sf::Texture>(name, texture));
 	}
+
 }
 
 sf::Font & ge::ResourcesManager::Font(std::string const & name) {

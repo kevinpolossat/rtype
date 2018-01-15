@@ -10,7 +10,7 @@
 namespace ge {
 	class ComponentsManager {
 	public:
-		ComponentsManager() = default;
+		ComponentsManager();
 		ComponentsManager(ComponentsManager const & other) = delete;
 		ComponentsManager(ComponentsManager && other) = delete;
 		~ComponentsManager() = default;

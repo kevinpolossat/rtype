@@ -2,6 +2,10 @@
 
 uint32_t ge::ComponentsManager::count_ = 0;
 
+ge::ComponentsManager::ComponentsManager() {
+	AddComponent("ge::Animator");
+}
+
 bool ge::ComponentsManager::AddComponents(std::vector<std::string> const & names) {
 	bool ret = true;
 	for (auto & name : names) {
@@ -63,13 +67,13 @@ ge::Component const & ge::ComponentsManager::operator[](std::string const & name
 }
 
 void ge::ComponentsManager::ErrorAddExistingComponent_(std::string const &name) const {
-	std::cerr << "ComponentManager : Component " << name << " already exist" <<std::endl;
+	std::cerr << "ComponentManager : Component " << name << " already exist" << std::endl;
 }
 
 void ge::ComponentsManager::ErrorUnknownComponent_(std::string const &name) const {
-	std::cerr << "ComponentManager : Component " << name << " doesn't exist" <<std::endl;
+	std::cerr << "ComponentManager : Component " << name << " doesn't exist" << std::endl;
 }
 
 void ge::ComponentsManager::ErrorToManyComponents_() const {
-	std::cerr << "ComponentManager : To many basic components" <<std::endl;
+	std::cerr << "ComponentManager : To many basic components" << std::endl;
 }

@@ -17,6 +17,7 @@
 #include "AGameState.h"
 #include "ResourcesManager.h"
 #include "StatesManager.h"
+#include "Animator.h"
 
 namespace ge {
 	// Forward declaration of StatesManager
@@ -57,6 +58,7 @@ namespace ge {
 		// RESOURCES
 		sf::Texture &Texture(std::string const &name);
 		void LoadTextures(std::unordered_map<std::string, std::string> const &files);
+		void LoadTextures(Animator const & animator);
 		void LoadTexture(std::string const &name, std::string const &file);
 		sf::Font &Font(std::string const &name);
 		void LoadFonts(std::unordered_map<std::string, std::string> const &files);

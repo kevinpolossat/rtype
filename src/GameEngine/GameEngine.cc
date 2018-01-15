@@ -126,6 +126,14 @@ void ge::GameEngine::PopState() {
 /*
 **** RESOURCES
 */
+void ge::GameEngine::LoadTextures(ge::Animator const & animator) {
+	for (auto & animation : animator.GetAnimationsList()) {
+		for (auto & sprite : animation.second.sprites) {
+			rm_->LoadTexture(sprite, sprite);
+		}
+	}
+}
+
 sf::Texture & ge::GameEngine::Texture(std::string const & name) {
 	return rm_->Texture(name);
 }
