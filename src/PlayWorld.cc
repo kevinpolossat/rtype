@@ -7,17 +7,19 @@ uint32_t PlayWorld::CreatePlayer(ge::Component const & component, Position const
 	velocities_[id] = velocities;
 	ge::Animation walk;
 	walk.priority = 1;
+	walk.speed = 50;
 	for (uint32_t i = 1; i <= 10; ++i) {
 		walk.sprites.push_back("resources/knight/Walk (" + std::to_string(i) + ").png");
 	}
 	ge::Animation attack;
 	attack.priority = 1;
+	attack.speed = 75;
 	for (uint32_t i = 1; i <= 10; ++i) {
 		attack.sprites.push_back("resources/knight/Attack (" + std::to_string(i) + ").png");
 	}
 	animators_[id].AddAnimation("Walk", walk);
 	animators_[id].AddAnimation("Attack", attack);
-	animators_[id].SetCurrentAnimation("Walk");
+	animators_[id].SetAnimation("Walk");
 	return id;
 }
 

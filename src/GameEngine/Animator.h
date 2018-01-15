@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <chrono>
+#include <stack>
 
 namespace ge {
 	struct Animation {
@@ -28,7 +29,8 @@ namespace ge {
 		Animator & operator=(Animator && other) = delete;
 
 		void AddAnimation(std::string const & name, Animation const & animation);
-		void SetCurrentAnimation(std::string const & name);
+		void SetAnimation(std::string const & name);
+		void DoOnce(std::string const & name);
 
 		std::string GetSprite();
 		int32_t GetPriority() const;
@@ -37,9 +39,10 @@ namespace ge {
 
 	private:
 		void ErrorUnknownAnimation_(std::string const & name) const;
+		void ErrorNoAnimation_() const;
 
 		std::chrono::time_point<std::chrono::high_resolution_clock> time_;
-		std::string current_;
+		std::stack<std::string> currents_;
 		AnimationsList animations_;
 	};
 }

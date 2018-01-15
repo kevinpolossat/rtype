@@ -50,7 +50,7 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 		ge::Entity & entity = world_.Entities(id);
 		ge::Animator & animator = world_.Animators(id);
 		if (engine.Match(entity, "Player") && event.code == sf::Keyboard::Key::Space) {
-			animator.SetCurrentAnimation("Attack");
+			animator.DoOnce("Attack");
 		}
 	}
 }
