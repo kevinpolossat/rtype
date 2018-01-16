@@ -95,7 +95,6 @@ struct GameInfo {
     int gameId;
     int nbPlayerMax;
     std::vector<std::string> playersNames;
-
 };
 
 struct QueryListAnswer {
