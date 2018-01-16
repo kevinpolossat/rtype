@@ -7,7 +7,7 @@ CLASS_DEFINITION(Component, Position)
 CLASS_DEFINITION(Component, Velocity)
 CLASS_DEFINITION(Component, Sprite)
 CLASS_DEFINITION(Component, Text)
-
+CLASS_DEFINITION(Component, Input)
 
 /* 
 	Position Member functions
@@ -86,6 +86,21 @@ Text::~Text()
 {
 
 }
+
+/*
+	Input Member Functions
+*/
+
+Input::Input(int t_inputId) : Component(std::move("Input"))
+{
+	this->id = t_inputId;
+}
+
+Input::~Input()
+{
+
+}
+
 /* 
 	GameObject non-templeted member functions
 */

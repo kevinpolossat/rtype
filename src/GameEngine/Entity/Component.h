@@ -84,6 +84,17 @@ public:
 	std::string fontName;
 };
 
+class Input : public Component
+{
+	CLASS_DECLARATION(Input)
+
+public:
+	Input(int t_inputId);
+	~Input();
+	int		id;
+};
+
+
 class GameObject 
 {
 public:

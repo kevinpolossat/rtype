@@ -15,6 +15,8 @@ public:
 
 //	uint32_t CreateButton(ge::Component const & component, Position const & position, Text const & text, Input const & input);
 
+	void CreateButton(Vector2D const & pos, std::string text, std::string font, int input);
+
 	/*Position & Positions(uint32_t id);
 	Text & Texts(uint32_t id);
 	Input & Inputs(uint32_t id);

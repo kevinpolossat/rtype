@@ -4,6 +4,8 @@ bool IntroState::Init(ge::GameEngine & engine) {
 	engine.LoadFont("arial", "resources/arial.ttf");
 	//world_.CreateButton(engine["Button"], { 300, 0 }, { "Start", "arial" }, { START });
 	//world_.CreateButton(engine["Button"], { 300, 100 }, { "Quit", "arial" }, { QUIT });
+	world_.CreateButton(Vector2D(300, 0), "Start", "arial", START);
+	world_.CreateButton(Vector2D(300, 100), "Quit", "arial", QUIT);
 	return true;
 }
 
@@ -20,9 +22,14 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 {
 		if (event.button == sf::Mouse::Button::Left) 
 		{
-			if (true)//t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) 
+			for (auto it : this->world_.buttons)
 			{
-				switch (0) {
+				sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
+				t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y)))
+				{
+					switch (it->GetComponent<Input>().id)
+					{
 					case START:
 						engine.PushState("Play");
 						break;
@@ -31,6 +38,7 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 						break;
 					default:
 						break;
+					}
 				}
 			}
 		}
@@ -45,14 +53,16 @@ void IntroState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
-void IntroState::Update(ge::GameEngine const & game) {
+void IntroState::Update(ge::GameEngine const & game) 
+{
 }
 
-void IntroState::Display(ge::GameEngine & engine, const float) {
-		/*if (engine.Match(entity, "Button")) {
-			sf::Text t(text.text, engine.Font(text.fontName));
-			t.setPosition(position.x, position.y);
-			engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
-		}
-		*/
+void IntroState::Display(ge::GameEngine & engine, const float) 
+{
+	for (auto it : this->world_.buttons)
+	{
+		sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
+		t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+		engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+	}
 }
