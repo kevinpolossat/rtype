@@ -5,7 +5,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 
-#include "Settings.h"
+#include "Entity\Component.h"
 
 namespace ge {
 	class AWorld {
@@ -18,12 +18,10 @@ namespace ge {
 		AWorld &operator=(AWorld const &other) = delete;
 		AWorld &operator=(AWorld &&other) = delete;
 
-		void Reset();
-		void RemoveEntity(uint32_t id);
-		Entity &Entities(uint32_t id);
+		GameObject &Entities(uint32_t id);
 
 	protected:
-		std::array<Entity, Settings::EntitiesCount> entities_;
+		std::vector<GameObject> entities_;
 	};
 }
 

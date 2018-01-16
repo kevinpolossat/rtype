@@ -11,7 +11,6 @@ bool PlayState::Init(ge::GameEngine & engine) {
 }
 
 void PlayState::Clear() {
-	world_.Reset();
 }
 
 void PlayState::Pause() {
@@ -21,8 +20,6 @@ void PlayState::Resume() {
 }
 
 void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
 		/*if (engine.Match(entity, "Player")) {
 			switch (event.code) {
 				case sf::Keyboard::Key::Left:
@@ -42,17 +39,13 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			}
 		}
 		*/
-	}
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
 		/*if (engine.Match(entity, "Player") && event.code == sf::Keyboard::Key::Space) {
 			animator.DoOnce("Attack");
 		}
 		*/
-	}
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
@@ -74,8 +67,6 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 }
 
 void PlayState::Update(ge::GameEngine const & engine) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
 		/*if (engine.Match(entity, "Player")) {
 			position.x += velocity.x;
 			position.y += velocity.y;
@@ -83,12 +74,9 @@ void PlayState::Update(ge::GameEngine const & engine) {
 			velocity.y /= 1.1f;
 		}
 		*/
-	}
 }
 
 void PlayState::Display(ge::GameEngine & engine, const float) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
 		/*if (engine.Match(entity, "Drawable")) {
 			sf::Sprite s(engine.Texture(sprite.textureName));
 			s.setPosition(position.x, position.y);
@@ -100,5 +88,4 @@ void PlayState::Display(ge::GameEngine & engine, const float) {
 			engine.Draw(std::make_shared<sf::Sprite>(s), animator.GetPriority());
 		}
 		*/
-	}
 }

@@ -19,12 +19,8 @@ public:
 	Text & Texts(uint32_t id);
 	Input & Inputs(uint32_t id);
 	*/
-
-private:
-	/*std::array<Position, ge::Settings::EntitiesCount> positions_;
-	std::array<Text, ge::Settings::EntitiesCount> texts_;
-	std::array<Input, ge::Settings::EntitiesCount> inputs_;
-	*/
+	std::vector<GameObject*> buttons;
+	
 };
 
 #endif /* WORLD_H_ */

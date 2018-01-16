@@ -8,7 +8,6 @@ bool IntroState::Init(ge::GameEngine & engine) {
 }
 
 void IntroState::Clear() {
-	world_.Reset();
 }
 
 void IntroState::Pause() {
@@ -17,14 +16,13 @@ void IntroState::Pause() {
 void IntroState::Resume() {
 }
 
-void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
-		/*if (event.button == sf::Mouse::Button::Left && engine.Match(entity, "Button")) {
-			sf::Text t(text.text, engine.Font(text.fontName));
-			t.setPosition(position.x, position.y);
-			if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
-				switch (input.id) {
+void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event)
+{
+		if (event.button == sf::Mouse::Button::Left) 
+		{
+			if (true)//t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) 
+			{
+				switch (0) {
 					case START:
 						engine.PushState("Play");
 						break;
@@ -36,8 +34,6 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 				}
 			}
 		}
-		*/
-	}
 }
 
 void IntroState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
@@ -53,13 +49,10 @@ void IntroState::Update(ge::GameEngine const & game) {
 }
 
 void IntroState::Display(ge::GameEngine & engine, const float) {
-	for (uint32_t id = 0; id < ge::Settings::EntitiesCount; ++id) {
-		ge::Entity & entity = world_.Entities(id);
 		/*if (engine.Match(entity, "Button")) {
 			sf::Text t(text.text, engine.Font(text.fontName));
 			t.setPosition(position.x, position.y);
 			engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
 		}
 		*/
-	}
 }
