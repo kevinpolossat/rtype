@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Drawable.hpp>
 #include <unordered_map>
 
+#include "Vector2D.h"
+
 namespace ge {
 	namespace Settings {
 		static constexpr uint32_t EntitiesCount = 100;
@@ -25,13 +27,10 @@ namespace ge {
 		};
 	}
 
-	using Component = std::bitset<Settings::ComponentsCount>;
-	using Entity = Component;
 	using PrioritizedDrawable = std::pair<int32_t , std::shared_ptr<sf::Drawable>>;
 
-	namespace Components {
-		static constexpr Component None = 0;
-	}
+	using Vector2f = Vector2D<float>;
+	using Vector2u = Vector2D<uint32_t>;
 }
 
 #endif /*SETTINGS_H*/

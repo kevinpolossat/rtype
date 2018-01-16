@@ -12,11 +12,11 @@
 #include <queue>
 
 #include "Settings.h"
-#include "ResourcesManager.h"
 #include "AGameState.h"
 #include "ResourcesManager.h"
 #include "StatesManager.h"
 #include "Entity/Component.h"
+#include "Vector2D.h"
 
 namespace ge {
 	// Forward declaration of StatesManager
@@ -33,9 +33,15 @@ namespace ge {
 		GameEngine & operator=(GameEngine && other) = delete;
 
 		// CORE
-		bool Init(std::string const & title, uint32_t width, uint32_t height);
+		bool Init(std::string const & title, uint32_t width, uint32_t height, bool fullscreen);
+		bool Init(std::string const & title, Vector2u const & size, bool fullscreen);
 		void Run(std::string const & initState);
 		void Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t display_level);
+		Vector2u GetSize() const;
+		void SetSize(uint32_t width, uint32_t height);
+		void SetSize(Vector2u const & size);
+		void SetFullscreen(bool fullscreen);
+		std::vector<Vector2u> GetResolutionsModes() const;
 		void Quit();
 
 		// COMPONENTS
@@ -48,7 +54,6 @@ namespace ge {
 		bool Match(std::string const & name1, std::string const & name2) const;
 		Component const & operator[](std::string const & name) const;
 		*/
-
 
 		// STATES
 		void AddState(std::string const & name, std::shared_ptr<AGameState> const & state);
@@ -80,6 +85,7 @@ namespace ge {
 		void Display_(float interpolation);
 
 		sf::RenderWindow window_;
+		std::string windowTitle_;
 
 		// Using ptr here to avoid circular dependency
 		std::unique_ptr<ResourcesManager> rm_;
