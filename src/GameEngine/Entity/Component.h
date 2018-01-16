@@ -25,7 +25,8 @@ bool childclass::IsClassType( const std::size_t classType ) const {             
 }      
 
 
-class Component {
+class Component 
+{
 public:
 	static const std::size_t Type;
 	virtual bool IsClassType(const std::size_t classType) const { return classType == Type; }
@@ -35,8 +36,8 @@ public:
 };
 
 
-class Position : public Component {
-
+class Position : public Component 
+{
 	CLASS_DECLARATION(Position)
 
 	public:
@@ -48,7 +49,43 @@ class Position : public Component {
 		Vector2D	m_pos;
 };
 
-class GameObject {
+class Velocity : public Component
+{
+	CLASS_DECLARATION(Velocity)
+
+public:
+	Velocity();
+	Velocity(const Vector2D& rhs);
+	~Velocity();
+	Vector2D getVel() const;
+private:
+	Vector2D	m_pos;
+};
+
+class Sprite : public Component
+{
+	CLASS_DECLARATION(Sprite)
+
+public:
+	Sprite(std::string t_textureName, uint32_t t_priority);
+	~Sprite();
+	std::string textureName;
+	uint32_t	priority;
+};
+
+class Text : public Component
+{
+	CLASS_DECLARATION(Text)
+
+public:
+	Text(std::string t_text, std::string t_fontName);
+	~Text();
+	std::string text;
+	std::string fontName;
+};
+
+class GameObject 
+{
 public:
 	template<class ComponentType, typename... Args>
 	void	AddComponent(Args&&... params);
@@ -58,8 +95,13 @@ public:
 
 	template<class ComponentType>
 	bool	RemoveComponent();
+
+	void setTag(std::string const & t_tag);
+	std::string getTag() const;
+
 private:
 	std::vector<std::unique_ptr<Component>> components;
+	std::string	m_tag;
 
 };
 

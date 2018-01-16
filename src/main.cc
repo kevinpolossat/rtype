@@ -1,14 +1,12 @@
 #include <vector>
 #include <iostream> 
-/*
 #include "GameEngine.h"
 #include "IntroState.h"
 #include "PlayState.h"
-*/
-#include "Entity/Entity.h"
+#include "Entity/Component.h"
 
 int main() {
-	//ge::GameEngine gameEngine;
+	ge::GameEngine gameEngine;
 
 	GameObject test;
 
@@ -17,16 +15,10 @@ int main() {
 	std::cout << pos.getPos().x << std::endl;
 	std::cin.get();
 	
-	/*if (gameEngine.Init("R-Type", 800, 600)) {
-		gameEngine.AddComponents( {"Position", "Velocity", "Sprite", "Text", "Input", "PlayerTag"} );
-		gameEngine.AddComposedComponents("Button", {"Position", "Text", "Input"} );
-		gameEngine.AddComposedComponents("Drawable", {"Position", "Sprite"} );
-		gameEngine.AddComposedComponents("AnimatedDrawable", {"Position", "ge::Animator"} );
-		gameEngine.AddComposedComponents("Player", {"Position", "Velocity", "ge::Animator", "PlayerTag"} );
+	if (gameEngine.Init("R-Type", 800, 600)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
 		gameEngine.AddState("Play", std::make_shared<PlayState>());
 		gameEngine.Run("Intro");
 	}
-	*/
 	return 0;
 }

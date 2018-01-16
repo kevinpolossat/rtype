@@ -1,8 +1,7 @@
 #include "GameEngine.h"
 
 ge::GameEngine::GameEngine()
-		: cm_(std::make_unique<ge::ComponentsManager>()),
-		  rm_(std::make_unique<ge::ResourcesManager>()),
+		: rm_(std::make_unique<ge::ResourcesManager>()),
 		  st_(std::make_unique<ge::StatesManager>()),
 		  toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
@@ -76,6 +75,7 @@ void ge::GameEngine::Quit() {
 /*
 **** COMPONENTS
 */
+/*
 bool ge::GameEngine::AddComponent(std::string const & name) {
 	return cm_->AddComponent(name);
 }
@@ -103,7 +103,7 @@ bool ge::GameEngine::Match(std::string const & name1, std::string const & name2)
 const ge::Component &ge::GameEngine::operator[](std::string const & name) const {
 	return (*cm_)[name];
 }
-
+*/
 /*
 **** STATES
 */

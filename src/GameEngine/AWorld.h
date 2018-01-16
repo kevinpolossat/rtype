@@ -23,7 +23,6 @@ namespace ge {
 		Entity &Entities(uint32_t id);
 
 	protected:
-		virtual uint32_t GetEmptyIndex_() const;
 		std::array<Entity, Settings::EntitiesCount> entities_;
 	};
 }
