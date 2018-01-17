@@ -37,7 +37,7 @@ set(SOURCES
 		#[[add source files here]])
 
 set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
-set(RAPIDJSON_HEADER ${PROJECT_SOURCE_DIR}/src/serialization/)
+set(RAPIDJSON_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -75,7 +75,6 @@ enable_testing()
 #test executable
 add_executable(rtype_test
 		${PROJECT_SOURCE_DIR}/test/test.cc
-		${PROJECT_SOURCE_DIR}/test/protocol_test.cc
 		#[[add test source files here]])
 
 target_include_directories(rtype_test
@@ -90,6 +89,8 @@ target_link_libraries(rtype_test
 		PRIVATE gmock_main
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
-target_sources(rtype_test PRIVATE ${SOURCES} ${TCP_PROTOCOL_HEADER})
+target_sources(rtype_test
+		PRIVATE ${SOURCES} ${TCP_PROTOCOL_HEADER}
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)
