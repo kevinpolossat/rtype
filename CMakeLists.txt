@@ -37,7 +37,7 @@ set(SOURCES
 		#[[add source files here]])
 
 set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
-set(RAPIDJSON_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
+set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -84,7 +84,7 @@ target_include_directories(rtype_test
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR}
-		PRIVATE ${RAPIDJSON_HEADER})
+		PRIVATE ${CEREAL_HEADER})
 target_link_libraries(rtype_test
 		PRIVATE gmock_main
 		PRIVATE ${SFML_LIBRARIES}

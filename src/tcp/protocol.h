@@ -5,8 +5,6 @@
 #ifndef RTYPE_PROTOCOL_H
 #define RTYPE_PROTOCOL_H
 
-#include "rapidjson/document.h"
-
 /**
  * LIST
  * {
@@ -87,19 +85,26 @@ enum ProtocolId {
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
 
-using namespace rapidjson;
+struct TCPHeader {
+    ProtocolId pId;
+
+    template <class Archive>
+    void load(Archive & ar) {
+        ar(pId);
+    }
+};
+
 struct QueryList {
-    ProtocolId protocolId = LIST_GAME;
     int value; // EMPTY
-    template<class Writer> void serialize(Writer & writer) {
-        writer.String("protocolId");
-        writer.Int(protocolId);
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(LIST_GAME);
+        ar(value);
     }
-    void deserialize(std::string const & from) {
-        Document document;
-        document.Parse(from.data());
-        protocolId = static_cast<ProtocolId>(document["protocolId"].GetInt());
-    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+    bool operator==(QueryList const & rhs) const { return this->value == rhs.value; }
 };
 
 struct GameInfo {
@@ -107,79 +112,223 @@ struct GameInfo {
     int gameId;
     int nbPlayerMax;
     std::vector<std::string> playersNames;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+    GameInfo() = default;
+    GameInfo(std::string fileName_, int gameId_, int nbPlayerMax_, std::vector<std::string> playersNames_):
+            filename(std::move(fileName_)),
+            gameId(gameId_),
+            nbPlayerMax(nbPlayerMax_),
+            playersNames(std::move(playersNames_)) {}
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(filename);
+        ar(gameId);
+        ar(nbPlayerMax);
+        ar(playersNames);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) {
+        ar(filename);
+        ar(gameId);
+        ar(nbPlayerMax);
+        ar(playersNames);
+    }
+    bool operator==(GameInfo const & rhs) const {
+        return
+                this->filename == rhs.filename
+                && this->gameId == rhs.gameId
+                && this->nbPlayerMax == rhs.nbPlayerMax
+                && this->playersNames == rhs.playersNames;
+    }
+
 };
 
 struct QueryListAnswer {
-    ProtocolId protocolId = LIST_ANSWER;
     std::vector<GameInfo> value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+    QueryListAnswer(std::vector<GameInfo> gi = std::vector<GameInfo>()): value(std::move(gi)) {}
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(LIST_ANSWER);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(QueryListAnswer const & rhs) const { return this->value == rhs.value; }
 };
 
 struct CreateGame {
     std::string fileName;
     std::string playerName;
     int nbPlayerMax;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(fileName);
+        ar(playerName);
+        ar(nbPlayerMax);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) {
+        ar(fileName);
+        ar(playerName);
+        ar(nbPlayerMax);
+    }
+
+    bool operator==(CreateGame const & rhs) const {
+        return
+                this->fileName == rhs.fileName
+                && this->playerName == rhs.playerName
+                && this->nbPlayerMax == rhs.nbPlayerMax;
+    }
 };
 
 struct QueryCreateGame {
-    ProtocolId protocolId = CREATE_GAME;
     CreateGame value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(CREATE_GAME);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(QueryCreateGame const & rhs) const {
+        return this->value == rhs.value;
+    }
 };
 
 struct AnswerCreateGame {
-    ProtocolId protocolId = CREATE_GAME_ANSWER;
     int statusOrId;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(CREATE_GAME_ANSWER);
+        ar(statusOrId);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(statusOrId); }
+
+    bool operator==(AnswerCreateGame const & rhs) const {
+        return this->statusOrId == rhs.statusOrId;
+    }
 };
 
 struct JoinGameInfo {
     int gameId;
     std::string playerName;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(gameId);
+        ar(playerName);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) {
+        ar(gameId);
+        ar(playerName);
+    }
+
+    bool operator==(JoinGameInfo const & rhs) const {
+        return this->gameId == rhs.gameId && this->playerName == rhs.playerName;
+    }
 };
 
 struct QueryJoinGame {
-    ProtocolId protocolId = JOIN_GAME;
     JoinGameInfo value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(JOIN_GAME);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(QueryJoinGame const & rhs) const {
+        return this->value == rhs.value;
+    }
 };
 
 struct AnswerJoinGame {
-    ProtocolId protocolId = JOIN_GAME_ANSWER;
     int value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(JOIN_GAME_ANSWER);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(AnswerJoinGame const & rhs) const {
+        return this->value == rhs.value;
+    }
 };
 
 struct GameState {
-    ProtocolId protocolId = GAME_STATE;
     std::vector<std::string> value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(GAME_STATE);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(GameState const & rhs) const {
+        return this->value == rhs.value;
+    }
 };
 
 struct NetInfo {
     std::string ip;
     std::string port;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(ip);
+        ar(port);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) {
+        ar(ip);
+        ar(port);
+    }
+
+    bool operator==(NetInfo const & rhs) const {
+        return this->ip == rhs.ip && this->port == rhs.port;
+    }
 };
 
 struct GameStart {
-    ProtocolId protocolId = GAME_START;
     NetInfo value;
-    template<class Writer> void serialize(Writer & writer);
-    template<class Reader> void deserialize(Reader & reader);
+
+    template <class Archive>
+    void save(Archive & ar) const {
+        ar(GAME_START);
+        ar(value);
+    }
+
+    template <class Archive>
+    void load(Archive & ar) { ar(value); }
+
+    bool operator==(GameStart const & rhs) const {
+        return this->value == rhs.value;
+    }
 };
 
 }
