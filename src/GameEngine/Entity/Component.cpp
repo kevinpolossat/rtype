@@ -28,6 +28,12 @@ Position::~Position()
 
 }
 
+void Position::UpdatePos(Vector2D const & v)
+{
+	this->m_pos.x += v.x;
+	this->m_pos.y += v.y;
+}
+
 Vector2D Position::getPos() const
 {
 	return (this->m_pos);
@@ -50,6 +56,12 @@ Velocity::Velocity(const Vector2D& rhs) : Component(std::move("Velocity"))
 Velocity::~Velocity()
 {
 
+}
+
+void Velocity::UpdateVel(double const & v)
+{
+	this->m_pos.x /= v;
+	this->m_pos.y /= v;
 }
 
 Vector2D Velocity::getVel() const

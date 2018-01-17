@@ -2,8 +2,6 @@
 
 bool IntroState::Init(ge::GameEngine & engine) {
 	engine.LoadFont("arial", "resources/arial.ttf");
-	//world_.CreateButton(engine["Button"], { 300, 0 }, { "Start", "arial" }, { START });
-	//world_.CreateButton(engine["Button"], { 300, 100 }, { "Quit", "arial" }, { QUIT });
 	world_.CreateButton(Vector2D(300, 0), "Start", "arial", START);
 	world_.CreateButton(Vector2D(300, 100), "Quit", "arial", QUIT);
 	return true;

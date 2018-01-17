@@ -44,8 +44,8 @@ class Position : public Component
 		Position();
 		Position(const Vector2D& rhs);
 		~Position();
+		void UpdatePos(Vector2D const & v);
 		Vector2D getPos() const;
-	private:
 		Vector2D	m_pos;
 };
 
@@ -57,8 +57,8 @@ public:
 	Velocity();
 	Velocity(const Vector2D& rhs);
 	~Velocity();
+	void UpdateVel(double const & v);
 	Vector2D getVel() const;
-private:
 	Vector2D	m_pos;
 };
 
