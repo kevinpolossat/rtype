@@ -2,8 +2,8 @@
 
 bool IntroState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Font>("arial", "resources/arial.ttf");
-	world_.CreateButton(Vector2D(300, 0), "Start", "arial", START);
-	world_.CreateButton(Vector2D(300, 100), "Quit", "arial", QUIT);
+	world_.CreateButton(ge::Vector2f(300, 0), "Start", "arial", START);
+	world_.CreateButton(ge::Vector2f(300, 100), "Quit", "arial", QUIT);
 	return true;
 }
 
@@ -22,11 +22,11 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 		{
 			for (auto const & it : world_.buttons)
 			{
-				sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
-				t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+				sf::Text t(it->GetComponent<ge::Text>().text, engine.Font(it->GetComponent<ge::Text>().fontName));
+				t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
 				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y)))
 				{
-					switch (it->GetComponent<Input>().id)
+					switch (it->GetComponent<ge::Input>().id)
 					{
 					case START:
 						engine.PushState("Play");
@@ -59,8 +59,8 @@ void IntroState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto const & it : world_.buttons)
 	{
-		sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
-		t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+		sf::Text t(it->GetComponent<ge::Text>().text, engine.Font(it->GetComponent<ge::Text>().fontName));
+		t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
 		engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
 	}
 }

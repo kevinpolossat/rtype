@@ -19,10 +19,9 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Vector2D.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Vector2D.cpp
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.h
-		
+
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
 		${CMAKE_SOURCE_DIR}/src/IntroState.h
