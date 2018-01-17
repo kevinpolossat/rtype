@@ -13,11 +13,10 @@
 
 #include "Settings.h"
 #include "ResourcesManager.h"
-#include "ComponentsManager.h"
 #include "AGameState.h"
 #include "ResourcesManager.h"
 #include "StatesManager.h"
-#include "Animator.h"
+#include "Entity/Component.h"
 
 namespace ge {
 	// Forward declaration of StatesManager
@@ -40,6 +39,7 @@ namespace ge {
 		void Quit();
 
 		// COMPONENTS
+		/*
 		bool AddComponent(std::string const & name);
 		bool AddComponents(std::vector<std::string> const & names);
 		bool AddComposedComponents(std::string const & name, std::vector<std::string> const & composition);
@@ -47,6 +47,7 @@ namespace ge {
 		bool Match(Entity const & entity, std::string const & name) const;
 		bool Match(std::string const & name1, std::string const & name2) const;
 		Component const & operator[](std::string const & name) const;
+		*/
 
 
 		// STATES
@@ -72,7 +73,6 @@ namespace ge {
 		sf::RenderWindow window_;
 
 		// Using ptr here to avoid circular dependency
-		std::unique_ptr<ComponentsManager> cm_;
 		std::unique_ptr<ResourcesManager> rm_;
 		std::unique_ptr<StatesManager> st_;
 
