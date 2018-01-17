@@ -17,6 +17,8 @@ public:
 	//uint32_t CreateCross(ge::Component const & component, Position const & position, Sprite const & sprite);
 
 	void CreatePlayer(Vector2D const & t_position, Vector2D const & t_velocity = Vector2D(0,0));
+	void CreatePlayer(Vector2D const & t_position, std::string const & t_textureName, Vector2D const & t_velocity = Vector2D(0, 0));
+
 
 	/*Sprite & Sprites(uint32_t id);
 	Position & Positions(uint32_t id);

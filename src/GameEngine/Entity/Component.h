@@ -49,7 +49,7 @@ class Position : public Component
 		Position();
 		Position(const Vector2D& rhs);
 		~Position();
-		void UpdatePos(Vector2D const & v);
+		void UpdatePos(Vector2D const & v, uint32_t widht, uint32_t height, uint32_t offset);
 		Vector2D getPos() const;
 		Vector2D	m_pos;
 };

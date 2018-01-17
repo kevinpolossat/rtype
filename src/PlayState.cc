@@ -2,9 +2,10 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.LoadTexture("nyancat", "resources/nyancat.png");
-	world_.CreatePlayer(Vector2D(300, 300));
-	engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
+	engine.LoadTexture("Player1", "resources/SpaceShip.png");
+	engine.LoadTexture("Shoot", "resources/Shoot.png");
+	world_.CreatePlayer(Vector2D(300, 300), "Player1");
+	//engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
 
 	return true;
 }
@@ -68,7 +69,7 @@ void PlayState::Update(ge::GameEngine const & engine)
 {
 	for (auto const & it : world_.players)
 	{
-		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel());
+		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 800, 600, 60);
 		it->GetComponent<Velocity>().UpdateVel(1.1f);
 	}
 }
@@ -77,8 +78,12 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto const & it : world_.players)
 	{
-		sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
+		/*	sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
+			s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
+		*/
+		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
 		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
 	}
 }
