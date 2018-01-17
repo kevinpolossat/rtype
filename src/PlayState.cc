@@ -2,10 +2,10 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.LoadTexture("nyancat", "resources/nyancat.png");
+	engine.Load<ge::Resources::Texture>("nyancat", "resources/nyancat.png");
+	engine.Load<ge::Resources::Texture>("red_cross", "resources/red_cross.png");
 	world_.CreatePlayer(Vector2D(300, 300));
-	engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
-
+	engine.Load(world_.players[0]->GetComponent<Animator>());
 	return true;
 }
 

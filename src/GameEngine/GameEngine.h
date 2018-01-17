@@ -57,13 +57,22 @@ namespace ge {
 		void PopState();
 
 		// RESOURCES
-		sf::Texture &Texture(std::string const &name);
-		void LoadTextures(std::unordered_map<std::string, std::string> const &files);
-		void LoadTextures(Animator const & animator);
-		void LoadTexture(std::string const &name, std::string const &file);
-		sf::Font &Font(std::string const &name);
-		void LoadFonts(std::unordered_map<std::string, std::string> const &files);
-		void LoadFont(std::string const &name, std::string const &file);
+		template<Resources::Type T>
+		void Load(std::unordered_map<std::string, std::string> const & files) {
+			for (auto & file : files) {
+				Load<T>(file.first, file.second);
+			}
+		}
+
+		template<Resources::Type T>
+		void Load(std::string const & name, std::string const & file) {
+			rm_->Load<T>(name, file);
+		}
+
+		void Load(Animator const & animator);
+
+		sf::Texture & Texture(std::string const & name);
+		sf::Font & Font(std::string const & name);
 
 	private:
 		// CORE

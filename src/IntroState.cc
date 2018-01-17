@@ -1,7 +1,7 @@
 #include "IntroState.h"
 
 bool IntroState::Init(ge::GameEngine & engine) {
-	engine.LoadFont("arial", "resources/arial.ttf");
+	engine.Load<ge::Resources::Font>("arial", "resources/arial.ttf");
 	world_.CreateButton(Vector2D(300, 0), "Start", "arial", START);
 	world_.CreateButton(Vector2D(300, 100), "Quit", "arial", QUIT);
 	return true;
