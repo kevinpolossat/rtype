@@ -5,7 +5,7 @@
 #include <array>
 #include <SFML/Graphics.hpp>
 
-#include "Entity\Component.h"
+#include "Entity/Component.h"
 
 namespace ge {
 	class AWorld {
