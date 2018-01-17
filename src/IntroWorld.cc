@@ -1,22 +1,12 @@
 #include "IntroWorld.h"
 
-uint32_t IntroWorld::CreateButton(ge::Component const & component, Position const & position, Text const & text, Input const & input) {
-	uint32_t id = GetEmptyIndex_();
-	entities_[id] = component;
-	positions_[id] = position;
-	texts_[id] = text;
-	inputs_[id] = input;
-	return id;
-}
+void IntroWorld::CreateButton(ge::Vector2f const & pos, std::string const & text, std::string const & font, int input)
+{
+	std::unique_ptr<ge::GameObject> g = std::make_unique<ge::GameObject>();
 
-Position & IntroWorld:: Positions(uint32_t id) {
-	return positions_[id];
-}
+	g->AddComponent<ge::Position>(pos);
+	g->AddComponent<ge::Text>(text, font);
+	g->AddComponent<ge::Input>(input);
 
-Text & IntroWorld::Texts(uint32_t id) {
-	return texts_[id];
-}
-
-Input & IntroWorld::Inputs(uint32_t id) {
-	return inputs_[id];
+	this->buttons.push_back(std::move(g));
 }

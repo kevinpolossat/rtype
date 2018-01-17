@@ -10,7 +10,7 @@
 
 class IntroState : public ge::AGameState {
 	enum ButtonId {
-		START,
+		START = 0,
 		QUIT
 	};
 

@@ -10,22 +10,19 @@ find_package(SFML 2 REQUIRED audio graphics window system)
 set(SOURCES
 		# GAME ENGINE
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AGameState.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Animator.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Animator.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/ComponentsManager.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/ComponentsManager.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Settings.h
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.cc
 		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.h
-		
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Vector2D.h
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.cpp
+		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.h
+
 		# GAME
-		${CMAKE_SOURCE_DIR}/src/Components.h
 		${CMAKE_SOURCE_DIR}/src/IntroState.cc
 		${CMAKE_SOURCE_DIR}/src/IntroState.h
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc

@@ -1,8 +1,8 @@
 #include "GameEngine.h"
+#include "Vector2D.h"
 
 ge::GameEngine::GameEngine()
-		: cm_(std::make_unique<ge::ComponentsManager>()),
-		  rm_(std::make_unique<ge::ResourcesManager>()),
+		: rm_(std::make_unique<ge::ResourcesManager>()),
 		  st_(std::make_unique<ge::StatesManager>()),
 		  toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
@@ -34,10 +34,15 @@ void ge::GameEngine::Display_(const float interpolation) {
 	window_.display();
 }
 
-bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height) {
-	window_.create(sf::VideoMode(width, height), title);
+bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height, bool const fullscreen) {
+	windowTitle_ = title;
+	window_.create(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
 	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
 	return true;
+}
+
+bool ge::GameEngine::Init(std::string const & title, ge::Vector2u const & size, bool const fullscreen) {
+	return Init(title, size.x, size.y, fullscreen);
 }
 
 void ge::GameEngine::Run(std::string const & initState) {
@@ -69,6 +74,35 @@ void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_
 	toDraw_.push(PrioritizedDrawable(display_level, drawable));
 }
 
+ge::Vector2u ge::GameEngine::GetSize() const {
+	return Vector2u(window_.getSize().x, window_.getSize().y);
+}
+
+void ge::GameEngine::SetSize(uint32_t width, uint32_t height) {
+	window_.setSize({ width, height });
+	window_.clear();
+	window_.display();
+	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
+	window_.setPosition({ 0, 0 });
+}
+
+void ge::GameEngine::SetSize(ge::Vector2u const & size) {
+	SetSize(size.x, size.y);
+}
+
+void ge::GameEngine::SetFullscreen(bool fullscreen) {
+	window_.create(sf::VideoMode(window_.getSize().x, window_.getSize().y), windowTitle_, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
+}
+
+std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
+	std::vector<sf::VideoMode> modes = sf::VideoMode::getFullscreenModes();
+	std::vector<ge::Vector2u> resolutions;
+	for (auto & mode : modes) {
+		resolutions.emplace_back(mode.width, mode.height);
+	}
+	return resolutions;
+}
+
 void ge::GameEngine::Quit() {
 	window_.close();
 }
@@ -76,6 +110,7 @@ void ge::GameEngine::Quit() {
 /*
 **** COMPONENTS
 */
+/*
 bool ge::GameEngine::AddComponent(std::string const & name) {
 	return cm_->AddComponent(name);
 }
@@ -103,7 +138,7 @@ bool ge::GameEngine::Match(std::string const & name1, std::string const & name2)
 const ge::Component &ge::GameEngine::operator[](std::string const & name) const {
 	return (*cm_)[name];
 }
-
+*/
 /*
 **** STATES
 */
@@ -126,10 +161,10 @@ void ge::GameEngine::PopState() {
 /*
 **** RESOURCES
 */
-void ge::GameEngine::LoadTextures(ge::Animator const & animator) {
+void ge::GameEngine::Load(Animator const & animator) {
 	for (auto & animation : animator.GetAnimationsList()) {
 		for (auto & sprite : animation.second.sprites) {
-			rm_->LoadTexture(sprite, sprite);
+			rm_->Load<ge::Resources::Texture>(sprite, sprite);
 		}
 	}
 }
@@ -138,23 +173,6 @@ sf::Texture & ge::GameEngine::Texture(std::string const & name) {
 	return rm_->Texture(name);
 }
 
-void ge::GameEngine::LoadTextures(std::unordered_map<std::string, std::string> const & files) {
-	return rm_->LoadTextures(files);
-}
-
-
-void ge::GameEngine::LoadTexture(std::string const & name, std::string const & file) {
-	return rm_->LoadTexture(name, file);
-}
-
 sf::Font & ge::GameEngine::Font(std::string const & name) {
 	return rm_->Font(name);
-}
-
-void ge::GameEngine::LoadFonts(std::unordered_map<std::string, std::string> const & files) {
-	return rm_->LoadFonts(files);
-}
-
-void ge::GameEngine::LoadFont(std::string const & name, std::string const & file) {
-	return rm_->LoadFont(name, file);
 }

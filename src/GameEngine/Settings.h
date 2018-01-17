@@ -4,6 +4,9 @@
 #include <bitset>
 #include <memory>
 #include <SFML/Graphics/Drawable.hpp>
+#include <unordered_map>
+
+#include "Vector2D.h"
 
 namespace ge {
 	namespace Settings {
@@ -16,13 +19,18 @@ namespace ge {
 		static constexpr int32_t Background = -1;
 	}
 
-	using Component = std::bitset<Settings::ComponentsCount>;
-	using Entity = Component;
+	namespace Resources {
+		enum Type {
+			Texture,
+			Font,
+			Sound
+		};
+	}
+
 	using PrioritizedDrawable = std::pair<int32_t , std::shared_ptr<sf::Drawable>>;
 
-	namespace Components {
-		static constexpr Component None = 0;
-	}
+	using Vector2f = Vector2D<float>;
+	using Vector2u = Vector2D<uint32_t>;
 }
 
 #endif /*SETTINGS_H*/
