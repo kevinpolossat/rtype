@@ -3,8 +3,6 @@
 
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.LoadTexture("nyancat", "resources/nyancat.png");
-	//uint32_t id = world_.CreatePlayer(engine["Player"], { 300, 300 }, { 0, 0 });
-	//world_.CreateCross(engine["Drawable"], { 30, 30 }, { "red_cross", 2 });
 	world_.CreatePlayer(Vector2D(300, 300));
 	engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
 

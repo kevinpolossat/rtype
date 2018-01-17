@@ -1,7 +1,6 @@
 #ifndef PLAYWORLD_H_
 #define PLAYWORLD_H_
 
-#include "Animator.h"
 #include "AWorld.h"
 
 class PlayWorld : public ge::AWorld {
