@@ -126,10 +126,10 @@ void ge::GameEngine::PopState() {
 /*
 **** RESOURCES
 */
-void ge::GameEngine::LoadTextures(Animator const & animator) {
+void ge::GameEngine::Load(Animator const & animator) {
 	for (auto & animation : animator.GetAnimationsList()) {
 		for (auto & sprite : animation.second.sprites) {
-			rm_->LoadTexture(sprite, sprite);
+			rm_->Load<ge::Resources::Texture>(sprite, sprite);
 		}
 	}
 }
@@ -138,23 +138,6 @@ sf::Texture & ge::GameEngine::Texture(std::string const & name) {
 	return rm_->Texture(name);
 }
 
-void ge::GameEngine::LoadTextures(std::unordered_map<std::string, std::string> const & files) {
-	return rm_->LoadTextures(files);
-}
-
-
-void ge::GameEngine::LoadTexture(std::string const & name, std::string const & file) {
-	return rm_->LoadTexture(name, file);
-}
-
 sf::Font & ge::GameEngine::Font(std::string const & name) {
 	return rm_->Font(name);
-}
-
-void ge::GameEngine::LoadFonts(std::unordered_map<std::string, std::string> const & files) {
-	return rm_->LoadFonts(files);
-}
-
-void ge::GameEngine::LoadFont(std::string const & name, std::string const & file) {
-	return rm_->LoadFont(name, file);
 }
