@@ -8,5 +8,5 @@ void IntroWorld::CreateButton(Vector2D const & pos, std::string const & text, st
 	g->AddComponent<Text>(text, font);
 	g->AddComponent<Input>(input);
 
-	this->buttons.push_back(g);
+	this->buttons.push_back(std::move(g));
 }

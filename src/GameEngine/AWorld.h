@@ -4,6 +4,7 @@
 #include <bitset>
 #include <array>
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 #include "Entity/Component.h"
 
