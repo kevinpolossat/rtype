@@ -66,7 +66,7 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 
 void PlayState::Update(ge::GameEngine const & engine) 
 {
-	for (auto it : world_.players)
+	for (auto const & it : world_.players)
 	{
 		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel());
 		it->GetComponent<Velocity>().UpdateVel(1.1f);
@@ -75,7 +75,7 @@ void PlayState::Update(ge::GameEngine const & engine)
 
 void PlayState::Display(ge::GameEngine & engine, const float) 
 {
-	for (auto it : world_.players)
+	for (auto const & it : world_.players)
 	{
 		sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
 		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);

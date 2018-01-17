@@ -23,7 +23,7 @@ public:
 	Velocity & Velocities(uint32_t id);
 	ge::Animator & Animators(uint32_t id);
 	*/
-	std::vector<GameObject*> players;
+	std::vector<std::unique_ptr<GameObject>> players;
 
 private:
 	/*std::array<Sprite, ge::Settings::EntitiesCount> sprites_;

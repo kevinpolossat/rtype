@@ -2,7 +2,7 @@
 
 void PlayWorld::CreatePlayer(Vector2D const & t_position, Vector2D const & t_velocity)
 {
-	GameObject * g = new GameObject();
+	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
 	g->AddComponent<Position>(t_position);
 	g->AddComponent<Velocity>(t_velocity);
@@ -22,5 +22,5 @@ void PlayWorld::CreatePlayer(Vector2D const & t_position, Vector2D const & t_vel
 	g->GetComponent<Animator>().AddAnimation("Walk", walk);
 	g->GetComponent<Animator>().AddAnimation("Attack", attack);
 	g->GetComponent<Animator>().SetAnimation("Walk");
-	this->players.push_back(g);
+	this->players.push_back(std::move(g));
 }
