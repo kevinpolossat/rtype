@@ -13,9 +13,9 @@ public:
 	IntroWorld & operator=(IntroWorld const & other) = delete;
 	IntroWorld & operator=(IntroWorld && other) = delete;
 
-	void CreateButton(Vector2D const & pos, std::string text, std::string font, int input);
+	void CreateButton(Vector2D const & pos, std::string const & text, std::string const & font, int input);
 
-	std::vector<GameObject*> buttons;
+	std::vector<std::unique_ptr<GameObject>> buttons;
 	
 };
 

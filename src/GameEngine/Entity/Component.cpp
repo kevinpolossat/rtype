@@ -15,12 +15,12 @@ CLASS_DEFINITION(Component, Animator)
 	Position Member functions
 */
 
-Position::Position() : Component(std::move("Position"))
+Position::Position() : Component("Position")
 {
 	this->m_pos = Vector2D(0, 0);
 }
 
-Position::Position(const Vector2D& rhs) : Component(std::move("Position"))
+Position::Position(const Vector2D& rhs) : Component("Position")
 {
 	this->m_pos = rhs;
 }
@@ -45,12 +45,12 @@ Vector2D Position::getPos() const
 	Velocity Member functions
 */
 
-Velocity::Velocity() : Component(std::move("Velocity"))
+Velocity::Velocity() : Component("Velocity")
 {
 	this->m_pos = Vector2D(0, 0);
 }
 
-Velocity::Velocity(const Vector2D& rhs) : Component(std::move("Velocity"))
+Velocity::Velocity(const Vector2D& rhs) : Component("Velocity")
 {
 	this->m_pos = rhs;
 }
@@ -60,7 +60,7 @@ Velocity::~Velocity()
 
 }
 
-void Velocity::UpdateVel(double const & v)
+void Velocity::UpdateVel(double const v)
 {
 	this->m_pos.x /= v;
 	this->m_pos.y /= v;
@@ -75,10 +75,8 @@ Vector2D Velocity::getVel() const
 	Sprite Member Functions
 */
 
-Sprite::Sprite(std::string t_textureName, uint32_t t_priority) : Component(std::move("Sprite"))
+Sprite::Sprite(std::string const & t_textureName, uint32_t const t_priority) : Component("Sprite"), textureName(t_textureName), priority(t_priority)
 {
-	this->textureName = t_textureName;
-	this->priority = t_priority;
 }
 
 Sprite::~Sprite()
@@ -90,10 +88,8 @@ Sprite::~Sprite()
 	Text Member Functions
 */
 
-Text::Text(std::string t_text, std::string t_fontName) : Component(std::move("Text"))
+Text::Text(std::string const & t_text, std::string const & t_fontName) : Component("Text"), text(t_text), fontName(t_fontName)
 {
-	this->text = t_text;
-	this->fontName = t_fontName;
 }
 
 Text::~Text()
@@ -105,9 +101,8 @@ Text::~Text()
 	Input Member Functions
 */
 
-Input::Input(int t_inputId) : Component(std::move("Input"))
+Input::Input(int t_inputId) : Component("Input"), id(t_inputId)
 {
-	this->id = t_inputId;
 }
 
 Input::~Input()
@@ -120,7 +115,7 @@ Input::~Input()
 	Animator memver functions
 */
 
-Animator::Animator() : Component(std::move("Animator"))
+Animator::Animator() : Component("Animator")
 {
 
 }
@@ -214,10 +209,10 @@ Animator::AnimationsList const & Animator::GetAnimationsList() const {
 
 void GameObject::setTag(std::string const & t_tag)
 {
-	this->m_tag = t_tag;
+	this->m_tag_ = t_tag;
 }
 
 std::string GameObject::getTag() const
 {
-	return (this->m_tag);
+	return (this->m_tag_);
 }

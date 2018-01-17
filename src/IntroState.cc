@@ -20,7 +20,7 @@ void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 {
 		if (event.button == sf::Mouse::Button::Left) 
 		{
-			for (auto it : this->world_.buttons)
+			for (auto const & it : world_.buttons)
 			{
 				sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
 				t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
@@ -57,7 +57,7 @@ void IntroState::Update(ge::GameEngine const & game)
 
 void IntroState::Display(ge::GameEngine & engine, const float) 
 {
-	for (auto it : this->world_.buttons)
+	for (auto const & it : world_.buttons)
 	{
 		sf::Text t(it->GetComponent<Text>().text, engine.Font(it->GetComponent<Text>().fontName));
 		t.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);

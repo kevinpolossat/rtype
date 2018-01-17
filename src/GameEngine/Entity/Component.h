@@ -62,7 +62,7 @@ public:
 	Velocity();
 	Velocity(const Vector2D& rhs);
 	~Velocity();
-	void UpdateVel(double const & v);
+	void UpdateVel(double const v);
 	Vector2D getVel() const;
 	Vector2D	m_pos;
 };
@@ -72,7 +72,7 @@ class Sprite : public Component
 	CLASS_DECLARATION(Sprite)
 
 public:
-	Sprite(std::string t_textureName, uint32_t t_priority);
+	Sprite(std::string const & t_textureName, uint32_t const t_priority);
 	~Sprite();
 	std::string textureName;
 	uint32_t	priority;
@@ -83,7 +83,7 @@ class Text : public Component
 	CLASS_DECLARATION(Text)
 
 public:
-	Text(std::string t_text, std::string t_fontName);
+	Text(std::string const & t_text, std::string const & t_fontName);
 	~Text();
 	std::string text;
 	std::string fontName;
@@ -136,6 +136,8 @@ private:
 class GameObject 
 {
 public:
+	GameObject() {}
+	~GameObject() {}
 	template<class ComponentType, typename... Args>
 	void	AddComponent(Args&&... params);
 
@@ -149,8 +151,8 @@ public:
 	std::string getTag() const;
 
 private:
-	std::vector<std::unique_ptr<Component>> components;
-	std::string	m_tag;
+	std::vector<std::unique_ptr<Component>> components_;
+	std::string	m_tag_;
 
 };
 
@@ -161,13 +163,13 @@ private:
 template<class ComponentType, typename... Args>
 void GameObject::AddComponent(Args&&... params)
 {
-	components.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
+	components_.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
 }
 
 template<class ComponentType>
 ComponentType & GameObject::GetComponent()
 {
-	for (auto && component : components)
+	for (auto & component : components_)
 	{
 		if (component->IsClassType(ComponentType::Type))
 			return *static_cast<ComponentType *>(component.get());
@@ -178,19 +180,19 @@ ComponentType & GameObject::GetComponent()
 template<class ComponentType>
 bool GameObject::RemoveComponent()
 {
-	if (components.empty())
+	if (components_.empty())
 		return false;
 
-	auto & index = std::find_if(components.begin(),
-		components.end(),
+	auto & index = std::find_if(components_.begin(),
+		components_.end(),
 		[classType = ComponentType::Type](auto & component) {
 		return component->IsClassType(classType);
 	});
 
-	bool success = index != components.end();
+	bool success = index != components_.end();
 
 	if (success)
-		components.erase(index);
+		components_.erase(index);
 
 	return success;
 }
