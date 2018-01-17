@@ -8,6 +8,8 @@ CLASS_DEFINITION(Component, Velocity)
 CLASS_DEFINITION(Component, Sprite)
 CLASS_DEFINITION(Component, Text)
 CLASS_DEFINITION(Component, Input)
+CLASS_DEFINITION(Component, Animator)
+
 
 /* 
 	Position Member functions
@@ -111,6 +113,99 @@ Input::Input(int t_inputId) : Component(std::move("Input"))
 Input::~Input()
 {
 
+}
+
+
+/*
+	Animator memver functions
+*/
+
+Animator::Animator() : Component(std::move("Animator"))
+{
+
+}
+
+Animator::~Animator()
+{
+
+}
+
+void Animator::AddAnimation(std::string const & name, Animation const & animation) {
+	animations_.insert(std::pair<std::string, Animation>(name, animation));
+}
+
+void Animator::SetAnimation(std::string const & name) {
+	if (currents_.empty() || name != currents_.top()) {
+		if (!animations_.count(name)) {
+			ErrorUnknownAnimation_(name);
+		}
+		currents_ = std::stack<std::string>();
+		currents_.push(name);
+		time_ = std::chrono::high_resolution_clock::now();
+	}
+}
+
+void Animator::DoOnce(std::string const & name) {
+	if (currents_.empty() || name != currents_.top()) {
+		if (!animations_.count(name)) {
+			ErrorUnknownAnimation_(name);
+		}
+		currents_.push(name);
+		time_ = std::chrono::high_resolution_clock::now();
+	}
+}
+
+std::string Animator::GetSprite() {
+	if (currents_.empty()) {
+		ErrorNoAnimation_();
+		return "";
+	}
+	if (animations_.count(currents_.top())) {
+		Animation & animation = animations_[currents_.top()];
+		while (std::chrono::high_resolution_clock::now() > time_) {
+			time_ += std::chrono::milliseconds(animation.speed);
+			if (animation.current + 1 >= animation.sprites.size()) {
+				animation.current = 0;
+				if (currents_.size() > 1) {
+					currents_.pop();
+				}
+			}
+			else {
+				++animation.current;
+			}
+		}
+		return animation.sprites[animation.current];
+	}
+	else {
+		ErrorUnknownAnimation_("currents_");
+		return "";
+	}
+}
+
+int32_t Animator::GetPriority() const {
+	if (currents_.empty()) {
+		ErrorNoAnimation_();
+		return 0;
+	}
+	if (animations_.count(currents_.top())) {
+		return animations_.at(currents_.top()).priority;
+	}
+	else {
+		ErrorUnknownAnimation_(currents_.top());
+		return 0;
+	}
+}
+
+void Animator::ErrorUnknownAnimation_(std::string const & name) const {
+	std::cerr << "Animator : Animation " << name << " doesn't exist" << std::endl;
+}
+
+void Animator::ErrorNoAnimation_() const {
+	std::cerr << "Animator : No animation set" << std::endl;
+}
+
+Animator::AnimationsList const & Animator::GetAnimationsList() const {
+	return animations_;
 }
 
 /* 

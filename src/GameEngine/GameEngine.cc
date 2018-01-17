@@ -126,7 +126,7 @@ void ge::GameEngine::PopState() {
 /*
 **** RESOURCES
 */
-void ge::GameEngine::LoadTextures(ge::Animator const & animator) {
+void ge::GameEngine::LoadTextures(Animator const & animator) {
 	for (auto & animation : animator.GetAnimationsList()) {
 		for (auto & sprite : animation.second.sprites) {
 			rm_->LoadTexture(sprite, sprite);

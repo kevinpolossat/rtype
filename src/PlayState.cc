@@ -4,9 +4,10 @@
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.LoadTexture("nyancat", "resources/nyancat.png");
 	//uint32_t id = world_.CreatePlayer(engine["Player"], { 300, 300 }, { 0, 0 });
-	//engine.LoadTextures(world_.Animators(id));
 	//world_.CreateCross(engine["Drawable"], { 30, 30 }, { "red_cross", 2 });
-	world_.CreatePlayer(Vector2D(300, 300), "nyancat");
+	world_.CreatePlayer(Vector2D(300, 300));
+	engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
+
 	return true;
 }
 
@@ -41,10 +42,10 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-		/*if (engine.Match(entity, "Player") && event.code == sf::Keyboard::Key::Space) {
-			animator.DoOnce("Attack");
-		}
-		*/
+	if (event.code == sf::Keyboard::Key::Space) 
+	{
+		world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
+	}
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
@@ -78,14 +79,8 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto it : world_.players)
 	{
-		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
+		sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
 		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
 	}
-		/*if (engine.Match(entity, "AnimatedDrawable")) {
-			sf::Sprite s(engine.Texture(animator.GetSprite()));
-			s.setPosition(position.x, position.y);
-			engine.Draw(std::make_shared<sf::Sprite>(s), animator.GetPriority());
-		}
-		*/
 }

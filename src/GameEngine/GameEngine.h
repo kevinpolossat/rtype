@@ -16,7 +16,7 @@
 #include "AGameState.h"
 #include "ResourcesManager.h"
 #include "StatesManager.h"
-#include "Animator.h"
+#include "Entity/Component.h"
 
 namespace ge {
 	// Forward declaration of StatesManager

@@ -7,6 +7,11 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <chrono>
+#include <stack>
 #include "Vector2D.h"
 
 #define TO_STRING( x ) #x
@@ -94,6 +99,39 @@ public:
 	int		id;
 };
 
+struct Animation {
+	std::vector<std::string> sprites;
+	uint32_t current = 0;
+	uint32_t speed = 50;
+	int32_t priority;
+};
+
+class Animator  : public Component
+{
+	CLASS_DECLARATION(Animator)
+	using AnimationsList = std::unordered_map<std::string, Animation>;
+
+public:
+	Animator();
+	~Animator();
+
+	void AddAnimation(std::string const & name, Animation const & animation);
+	void SetAnimation(std::string const & name);
+	void DoOnce(std::string const & name);
+
+	std::string GetSprite();
+	int32_t GetPriority() const;
+
+	AnimationsList const & GetAnimationsList() const;
+
+private:
+	void ErrorUnknownAnimation_(std::string const & name) const;
+	void ErrorNoAnimation_() const;
+
+	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
+	std::stack<std::string> currents_;
+	AnimationsList animations_;
+};
 
 class GameObject 
 {
