@@ -49,13 +49,9 @@ namespace ge {
 
 	public:
 		Position();
-
 		Position(const Vector2f &rhs);
-
 		~Position();
-
-		void UpdatePos(Vector2f const &v);
-
+		void UpdatePos(Vector2f const &v, uint32_t widht, uint32_t height, uint32_t offset);
 		Vector2f getPos() const;
 
 		Vector2f m_pos;

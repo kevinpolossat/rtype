@@ -1,4 +1,7 @@
 #include "PlayWorld.h"
+using ge::Velocity;
+using ge::Position;
+using ge::Sprite;
 
 void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const & t_velocity)
 {
@@ -24,3 +27,24 @@ void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const
 	g->GetComponent<ge::Animator>().SetAnimation("Walk");
 	this->players.push_back(std::move(g));
 }
+
+void PlayWorld::CreatePlayer(Vector2f const & t_position, std::string const & t_textureName, Vector2f const & t_velocity)
+{
+	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
+
+	g->AddComponent<Position>(t_position);
+	g->AddComponent<Velocity>(t_velocity);
+	g->AddComponent<Sprite>(t_textureName, 2);
+	this->players.push_back(std::move(g));
+}
+
+void PlayWorld::CreateShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName)
+{
+	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
+
+	g->AddComponent<Position>(t_position);
+	g->AddComponent<Velocity>(t_velocity);
+	g->AddComponent<Sprite>(t_textureName, 2);
+	this->projectiles.push_back(std::move(g));
+}
+
