@@ -13,26 +13,14 @@ public:
 	PlayWorld & operator=(PlayWorld const & other) = delete;
 	PlayWorld & operator=(PlayWorld && other) = delete;
 	
-	//uint32_t CreatePlayer(ge::Component const & component, Position const & position, Velocity const & velocities);
-	//uint32_t CreateCross(ge::Component const & component, Position const & position, Sprite const & sprite);
 
 	void CreatePlayer(Vector2D const & t_position, Vector2D const & t_velocity = Vector2D(0,0));
 	void CreatePlayer(Vector2D const & t_position, std::string const & t_textureName, Vector2D const & t_velocity = Vector2D(0, 0));
+	void CreateShoot(Vector2D const & t_position, Vector2D const & t_velocity, std::string const & t_textureName);
 
 
-	/*Sprite & Sprites(uint32_t id);
-	Position & Positions(uint32_t id);
-	Velocity & Velocities(uint32_t id);
-	ge::Animator & Animators(uint32_t id);
-	*/
 	std::vector<std::unique_ptr<GameObject>> players;
-
-private:
-	/*std::array<Sprite, ge::Settings::EntitiesCount> sprites_;
-	std::array<Position, ge::Settings::EntitiesCount> positions_;
-	std::array<Velocity, ge::Settings::EntitiesCount> velocities_;
-	std::array<ge::Animator, ge::Settings::EntitiesCount> animators_;
-	*/
+	std::vector<std::unique_ptr<GameObject>> projectiles;
 };
 
 #endif /* PLAYWORLD_H_ */

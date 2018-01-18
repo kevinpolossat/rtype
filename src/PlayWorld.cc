@@ -35,3 +35,13 @@ void PlayWorld::CreatePlayer(Vector2D const & t_position, std::string const & t_
 	this->players.push_back(std::move(g));
 }
 
+void PlayWorld::CreateShoot(Vector2D const & t_position, Vector2D const & t_velocity, std::string const & t_textureName)
+{
+	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
+
+	g->AddComponent<Position>(t_position);
+	g->AddComponent<Velocity>(t_velocity);
+	g->AddComponent<Sprite>(t_textureName, 2);
+	this->projectiles.push_back(std::move(g));
+}
+

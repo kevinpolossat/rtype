@@ -33,6 +33,7 @@ private:
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 
 	PlayWorld world_;
+	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 
 };
 

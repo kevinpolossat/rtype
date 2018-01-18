@@ -6,7 +6,7 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.LoadTexture("Shoot", "resources/Shoot.png");
 	world_.CreatePlayer(Vector2D(300, 300), "Player1");
 	//engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
-
+	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
 
@@ -43,7 +43,17 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
 	if (event.code == sf::Keyboard::Key::Space) 
 	{
-		world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
+		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
+		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+		std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_);
+		if ((double)ms.count() / 1000 > 0.5f) // Fire Rate 1 Shot every 0.5 sec
+		{
+			this->time_ = std::chrono::high_resolution_clock::now();
+			Vector2D newPos = world_.players[0]->GetComponent<Position>().getPos();
+			newPos.y += 25;
+			newPos.x += 70;
+			world_.CreateShoot(newPos, Vector2D(10,0), "Shoot");
+		}
 	}
 }
 
@@ -72,6 +82,11 @@ void PlayState::Update(ge::GameEngine const & engine)
 		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 800, 600, 60);
 		it->GetComponent<Velocity>().UpdateVel(1.1f);
 	}
+
+	for (auto const & it : world_.projectiles)
+	{
+		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 1000, 800, 30);
+	}
 }
 
 void PlayState::Display(ge::GameEngine & engine, const float) 
@@ -82,6 +97,12 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 			s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
 			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
 		*/
+		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
+		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
+	}
+	for (auto const & it : world_.projectiles)
+	{
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
 		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
 		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
