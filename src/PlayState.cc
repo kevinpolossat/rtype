@@ -45,7 +45,7 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
 		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
 		std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_);
-		if ((double)ms.count() / 1000 > 0.5f) // Fire Rate 1 Shot every 0.5 sec
+		if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
 		{
 			this->time_ = std::chrono::high_resolution_clock::now();
 			Vector2f newPos = world_.players[0]->GetComponent<Position>().getPos();
