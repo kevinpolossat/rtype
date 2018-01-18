@@ -7,6 +7,10 @@
 #include "AGameState.h"
 #include "PlayWorld.h"
 
+using ge::Velocity;
+using ge::Position;
+using ge::Sprite;
+
 class PlayState : public ge::AGameState {
 public:
 	PlayState() = default;

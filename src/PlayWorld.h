@@ -2,6 +2,8 @@
 #define PLAYWORLD_H_
 
 #include "AWorld.h"
+using ge::Vector2f;
+using ge::GameObject;
 
 class PlayWorld : public ge::AWorld {
 public:
@@ -14,9 +16,9 @@ public:
 	PlayWorld & operator=(PlayWorld && other) = delete;
 	
 
-	void CreatePlayer(Vector2D const & t_position, Vector2D const & t_velocity = Vector2D(0,0));
-	void CreatePlayer(Vector2D const & t_position, std::string const & t_textureName, Vector2D const & t_velocity = Vector2D(0, 0));
-	void CreateShoot(Vector2D const & t_position, Vector2D const & t_velocity, std::string const & t_textureName);
+	void CreatePlayer(Vector2f const & t_position, Vector2f const & t_velocity = Vector2f(0,0));
+	void CreatePlayer(Vector2f const & t_position, std::string const & t_textureName, Vector2f const & t_velocity = Vector2f(0, 0));
+	void CreateShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName);
 
 
 	std::vector<std::unique_ptr<GameObject>> players;

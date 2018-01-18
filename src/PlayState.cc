@@ -2,9 +2,9 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.LoadTexture("Player1", "resources/SpaceShip.png");
-	engine.LoadTexture("Shoot", "resources/Shoot.png");
-	world_.CreatePlayer(Vector2D(300, 300), "Player1");
+	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
+	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
+	world_.CreatePlayer(Vector2f(300, 300), "Player1");
 	//engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
@@ -24,16 +24,16 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			switch (event.code) 
 			{
 				case sf::Keyboard::Key::Left:
-					world_.players[0]->GetComponent<Velocity>().m_pos.x -= 10;
+					world_.players[0]->GetComponent<ge::Velocity>().m_pos.x -= 10;
 					break;
 				case sf::Keyboard::Key::Right:
-					world_.players[0]->GetComponent<Velocity>().m_pos.x += 10;
+					world_.players[0]->GetComponent<ge::Velocity>().m_pos.x += 10;
 					break;
 				case sf::Keyboard::Key::Up:
-					world_.players[0]->GetComponent<Velocity>().m_pos.y -= 10;
+					world_.players[0]->GetComponent<ge::Velocity>().m_pos.y -= 10;
 					break;
 				case sf::Keyboard::Key::Down:
-					world_.players[0]->GetComponent<Velocity>().m_pos.y += 10;
+					world_.players[0]->GetComponent<ge::Velocity>().m_pos.y += 10;
 					break;
 				default:
 					break;
@@ -49,10 +49,10 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 		if ((double)ms.count() / 1000 > 0.5f) // Fire Rate 1 Shot every 0.5 sec
 		{
 			this->time_ = std::chrono::high_resolution_clock::now();
-			Vector2D newPos = world_.players[0]->GetComponent<Position>().getPos();
+			Vector2f newPos = world_.players[0]->GetComponent<Position>().getPos();
 			newPos.y += 25;
 			newPos.x += 70;
-			world_.CreateShoot(newPos, Vector2D(10,0), "Shoot");
+			world_.CreateShoot(newPos, Vector2f(10,0), "Shoot");
 		}
 	}
 }

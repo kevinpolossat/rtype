@@ -1,37 +1,67 @@
-/*
-** IObject.hpp for 2D_Game_Engine in /home/isidor_m/tek2/tmp/2D_Game_Engine/includes
-**
-** Made by isidor_m
-** Login   <isidor_m@epitech.net>
-**
-** Started on  Wed May 10 11:29:50 2017 isidor_m
-** Last update Tue May 30 18:18:31 2017 Enzo WALTER
-*/
-
 #ifndef VEC2D_HPP
 #define VEC2D_HPP
 
-#include <iostream>
-#include <ostream>
-#include <math.h>
+#include <cmath>
 
-class Vector2D
-{
-  public:
-    explicit Vector2D(double x = 0, double y = 0);
-    ~Vector2D();
-    Vector2D operator+(const Vector2D& rhs) const;
-    Vector2D operator=(const Vector2D&);
-    Vector2D operator-(const Vector2D&) const;
-    Vector2D operator*(const Vector2D&) const;
-    Vector2D operator*(const float&) const;
-    Vector2D operator/(const Vector2D&) const;
-    Vector2D normalize();
-	double lenght() const;
-	double dotProduct(const Vector2D&) const;
-    double x;
-    double y;
-};
-bool operator==(const Vector2D&, const Vector2D&);
+namespace ge {
+	template <class T>
+	class Vector2D {
+	public:
+		explicit Vector2D(T x = 0, T y = 0) : x(x), y(y) {}
+		~Vector2D() = default;
+
+		Vector2D<T> operator+(Vector2D<T> const & other) const {
+			return Vector2D<T>(x + other.x, y + other.y);
+		}
+
+		Vector2D<T> operator-(Vector2D<T> const & other) const {
+			return Vector2D<T>(x - other.x, y - other.y);
+		}
+
+		Vector2D<T> operator*(Vector2D<T> const & other) const {
+			return Vector2D<T>(x * other.x, y * other.y);
+		}
+
+		Vector2D<T> operator*(T const other) const {
+			return Vector2D<T>(x * other, y * other);
+		}
+
+		Vector2D<T> operator/(Vector2D<T> const & other) const {
+			return Vector2D<T>(x / other.x, y / other.y);
+		}
+
+		Vector2D<T> operator/(T const other) const {
+			return Vector2D<T>(x / other, y / other);
+		}
+
+		Vector2D<T> & operator=(Vector2D<T> const & other) {
+			x = other.x;
+			y = other.y;
+			return (*this);
+		}
+
+		T length() const {
+			return (std::sqrt((x * x) + (y * y)));
+		}
+
+		T dotProduct(Vector2D const & other) const {
+			return ((x * other.x) + (this->y * other.y));
+		}
+
+		Vector2D<T> normalize() {
+			x /= this->length();
+			y /= this->length();
+			return (*this);
+		}
+
+		T x;
+		T y;
+	};
+
+	template<class T>
+	bool operator==(Vector2D<T> const & lhs, Vector2D<T> const & rhs) {
+		return lhs.x == rhs.x && lhs.y == rhs.y;
+	}
+}
 
 #endif

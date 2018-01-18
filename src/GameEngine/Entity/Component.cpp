@@ -1,36 +1,36 @@
 #include "Component.h"
 
 
-const std::size_t Component::Type = std::hash<std::string>()(TO_STRING(Component));
+const std::size_t ge::Component::Type = std::hash<std::string>()(TO_STRING(Component));
 
-CLASS_DEFINITION(Component, Position)
-CLASS_DEFINITION(Component, Velocity)
-CLASS_DEFINITION(Component, Sprite)
-CLASS_DEFINITION(Component, Text)
-CLASS_DEFINITION(Component, Input)
-CLASS_DEFINITION(Component, Animator)
+CLASS_DEFINITION(ge::Component, ge::Position)
+CLASS_DEFINITION(ge::Component, ge::Velocity)
+CLASS_DEFINITION(ge::Component, ge::Sprite)
+CLASS_DEFINITION(ge::Component, ge::Text)
+CLASS_DEFINITION(ge::Component, ge::Input)
+CLASS_DEFINITION(ge::Component, ge::Animator)
 
 
 /* 
 	Position Member functions
 */
 
-Position::Position() : Component("Position")
+ge::Position::Position() : Component("Position")
 {
-	this->m_pos = Vector2D(0, 0);
+	this->m_pos = Vector2f(0, 0);
 }
 
-Position::Position(const Vector2D& rhs) : Component("Position")
+ge::Position::Position(const Vector2f& rhs) : Component("Position")
 {
 	this->m_pos = rhs;
 }
 
-Position::~Position()
+ge::Position::~Position()
 {
 
 }
 
-void Position::UpdatePos(Vector2D const & v, uint32_t widht, uint32_t height, uint32_t offset)
+void ge::Position::UpdatePos(ge::Vector2f const & v, uint32_t widht, uint32_t height, uint32_t offset)
 {
 	this->m_pos.x += v.x;
 	this->m_pos.y += v.y;
@@ -44,7 +44,7 @@ void Position::UpdatePos(Vector2D const & v, uint32_t widht, uint32_t height, ui
 		m_pos.y = height - offset;
 }
 
-Vector2D Position::getPos() const
+ge::Vector2f ge::Position::getPos() const
 {
 	return (this->m_pos);
 }
@@ -53,28 +53,28 @@ Vector2D Position::getPos() const
 	Velocity Member functions
 */
 
-Velocity::Velocity() : Component("Velocity")
+ge::Velocity::Velocity() : ge::Component("Velocity")
 {
-	this->m_pos = Vector2D(0, 0);
+	this->m_pos = ge::Vector2f(0, 0);
 }
 
-Velocity::Velocity(const Vector2D& rhs) : Component("Velocity")
+ge::Velocity::Velocity(const ge::Vector2f& rhs) : ge::Component("Velocity")
 {
 	this->m_pos = rhs;
 }
 
-Velocity::~Velocity()
+ge::Velocity::~Velocity()
 {
 
 }
 
-void Velocity::UpdateVel(double const v)
+void ge::Velocity::UpdateVel(float const v)
 {
 	this->m_pos.x /= v;
 	this->m_pos.y /= v;
 }
 
-Vector2D Velocity::getVel() const
+ge::Vector2f ge::Velocity::getVel() const
 {
 	return (this->m_pos);
 }
@@ -83,11 +83,11 @@ Vector2D Velocity::getVel() const
 	Sprite Member Functions
 */
 
-Sprite::Sprite(std::string const & t_textureName, uint32_t const t_priority) : Component("Sprite"), textureName(t_textureName), priority(t_priority)
+ge::Sprite::Sprite(std::string const & t_textureName, uint32_t const t_priority) : ge::Component("Sprite"), textureName(t_textureName), priority(t_priority)
 {
 }
 
-Sprite::~Sprite()
+ge::Sprite::~Sprite()
 {
 
 }
@@ -96,11 +96,11 @@ Sprite::~Sprite()
 	Text Member Functions
 */
 
-Text::Text(std::string const & t_text, std::string const & t_fontName) : Component("Text"), text(t_text), fontName(t_fontName)
+ge::Text::Text(std::string const & t_text, std::string const & t_fontName) : ge::Component("Text"), text(t_text), fontName(t_fontName)
 {
 }
 
-Text::~Text()
+ge::Text::~Text()
 {
 
 }
@@ -109,11 +109,11 @@ Text::~Text()
 	Input Member Functions
 */
 
-Input::Input(int t_inputId) : Component("Input"), id(t_inputId)
+ge::Input::Input(int t_inputId) : ge::Component("Input"), id(t_inputId)
 {
 }
 
-Input::~Input()
+ge::Input::~Input()
 {
 
 }
@@ -123,21 +123,21 @@ Input::~Input()
 	Animator memver functions
 */
 
-Animator::Animator() : Component("Animator")
+ge::Animator::Animator() : ge::Component("Animator")
 {
 
 }
 
-Animator::~Animator()
+ge::Animator::~Animator()
 {
 
 }
 
-void Animator::AddAnimation(std::string const & name, Animation const & animation) {
-	animations_.insert(std::pair<std::string, Animation>(name, animation));
+void ge::Animator::AddAnimation(std::string const & name, Animation const & animation) {
+	animations_.insert(std::pair<std::string, ge::Animation>(name, animation));
 }
 
-void Animator::SetAnimation(std::string const & name) {
+void ge::Animator::SetAnimation(std::string const & name) {
 	if (currents_.empty() || name != currents_.top()) {
 		if (!animations_.count(name)) {
 			ErrorUnknownAnimation_(name);
@@ -148,7 +148,7 @@ void Animator::SetAnimation(std::string const & name) {
 	}
 }
 
-void Animator::DoOnce(std::string const & name) {
+void ge::Animator::DoOnce(std::string const & name) {
 	if (currents_.empty() || name != currents_.top()) {
 		if (!animations_.count(name)) {
 			ErrorUnknownAnimation_(name);
@@ -158,13 +158,13 @@ void Animator::DoOnce(std::string const & name) {
 	}
 }
 
-std::string Animator::GetSprite() {
+std::string ge::Animator::GetSprite() {
 	if (currents_.empty()) {
 		ErrorNoAnimation_();
 		return "";
 	}
 	if (animations_.count(currents_.top())) {
-		Animation & animation = animations_[currents_.top()];
+		ge::Animation & animation = animations_[currents_.top()];
 		while (std::chrono::high_resolution_clock::now() > time_) {
 			time_ += std::chrono::milliseconds(animation.speed);
 			if (animation.current + 1 >= animation.sprites.size()) {
@@ -185,7 +185,7 @@ std::string Animator::GetSprite() {
 	}
 }
 
-int32_t Animator::GetPriority() const {
+int32_t ge::Animator::GetPriority() const {
 	if (currents_.empty()) {
 		ErrorNoAnimation_();
 		return 0;
@@ -199,15 +199,15 @@ int32_t Animator::GetPriority() const {
 	}
 }
 
-void Animator::ErrorUnknownAnimation_(std::string const & name) const {
+void ge::Animator::ErrorUnknownAnimation_(std::string const & name) const {
 	std::cerr << "Animator : Animation " << name << " doesn't exist" << std::endl;
 }
 
-void Animator::ErrorNoAnimation_() const {
+void ge::Animator::ErrorNoAnimation_() const {
 	std::cerr << "Animator : No animation set" << std::endl;
 }
 
-Animator::AnimationsList const & Animator::GetAnimationsList() const {
+ge::Animator::AnimationsList const & ge::Animator::GetAnimationsList() const {
 	return animations_;
 }
 
@@ -215,12 +215,12 @@ Animator::AnimationsList const & Animator::GetAnimationsList() const {
 	GameObject non-templeted member functions
 */
 
-void GameObject::setTag(std::string const & t_tag)
+void ge::GameObject::setTag(std::string const & t_tag)
 {
 	this->m_tag_ = t_tag;
 }
 
-std::string GameObject::getTag() const
+std::string ge::GameObject::getTag() const
 {
 	return (this->m_tag_);
 }
