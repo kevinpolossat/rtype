@@ -67,11 +67,13 @@
 
 #include <vector>
 #include <string>
+#include <serialization/cereal/archives/portable_binary.hpp>
 
 namespace rtype {
 namespace protocol_tcp {
 
 enum ProtocolId {
+    UNKNOWN,
     LIST_GAME,
     LIST_ANSWER,
     CREATE_GAME,
@@ -85,20 +87,10 @@ enum ProtocolId {
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
 
-struct TCPHeader {
-    ProtocolId pId;
-
-    template <class Archive>
-    void load(Archive & ar) {
-        ar(pId);
-    }
-};
-
 struct QueryList {
     int value; // EMPTY
     template <class Archive>
     void save(Archive & ar) const {
-        ar(LIST_GAME);
         ar(value);
     }
 
@@ -150,7 +142,6 @@ struct QueryListAnswer {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(LIST_ANSWER);
         ar(value);
     }
 
@@ -192,7 +183,6 @@ struct QueryCreateGame {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(CREATE_GAME);
         ar(value);
     }
 
@@ -209,7 +199,6 @@ struct AnswerCreateGame {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(CREATE_GAME_ANSWER);
         ar(statusOrId);
     }
 
@@ -247,7 +236,6 @@ struct QueryJoinGame {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(JOIN_GAME);
         ar(value);
     }
 
@@ -264,7 +252,6 @@ struct AnswerJoinGame {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(JOIN_GAME_ANSWER);
         ar(value);
     }
 
@@ -281,7 +268,6 @@ struct GameState {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(GAME_STATE);
         ar(value);
     }
 
@@ -319,7 +305,6 @@ struct GameStart {
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(GAME_START);
         ar(value);
     }
 
@@ -330,7 +315,6 @@ struct GameStart {
         return this->value == rhs.value;
     }
 };
-
 }
 }
 

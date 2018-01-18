@@ -19,10 +19,7 @@ TEST(Serialization, ProtocolQueryList) {
     oa(ql);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::QueryList ql2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(ql2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::LIST_GAME);
     ASSERT_EQ(ql, ql2);
 }
 
@@ -36,10 +33,7 @@ TEST(Serialization, ProtocolQueryListAnswer) {
     oa(qla);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::QueryListAnswer qla2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(qla2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::LIST_ANSWER);
     ASSERT_EQ(qla, qla2);
 }
 
@@ -53,10 +47,7 @@ TEST(Serialization, ProtocolCreateGame) {
     oa(qcg);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::QueryCreateGame qcg2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(qcg2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::CREATE_GAME);
     ASSERT_EQ(qcg, qcg2);
 }
 
@@ -70,10 +61,7 @@ TEST(Serialization, ProtocolAnswerCreateGame) {
     oa(acg);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::AnswerCreateGame acg2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(acg2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::CREATE_GAME_ANSWER);
     ASSERT_EQ(acg, acg2);
 }
 
@@ -87,10 +75,7 @@ TEST(Serialization, ProtocolQueryJoinGame) {
     oa(qjg);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::QueryJoinGame qjg2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(qjg2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::JOIN_GAME);
     ASSERT_EQ(qjg, qjg2);
 }
 
@@ -104,10 +89,7 @@ TEST(Serialization, ProtocolAnswerJoinGame) {
     oa(ajg);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::AnswerJoinGame ajg2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(ajg2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::JOIN_GAME_ANSWER);
     ASSERT_EQ(ajg, ajg2);
 }
 
@@ -121,10 +103,7 @@ TEST(Serialization, ProtocolGameState) {
     oa(gs);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::GameState gs2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(gs2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::GAME_STATE);
     ASSERT_EQ(gs, gs2);
 }
 
@@ -138,9 +117,6 @@ TEST(Serialization, ProtocolGameStart) {
     oa(gs);
     cereal::PortableBinaryInputArchive ia(ss);
     rtype::protocol_tcp::GameStart gs2;
-    rtype::protocol_tcp::TCPHeader header;
-    ia(header);
     ia(gs2);
-    ASSERT_EQ(header.pId, rtype::protocol_tcp::GAME_START);
     ASSERT_EQ(gs, gs2);
 }
