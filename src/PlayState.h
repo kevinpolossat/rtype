@@ -7,6 +7,10 @@
 #include "AGameState.h"
 #include "PlayWorld.h"
 
+using ge::Velocity;
+using ge::Position;
+using ge::Sprite;
+
 class PlayState : public ge::AGameState {
 public:
 	PlayState() = default;
@@ -33,6 +37,7 @@ private:
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 
 	PlayWorld world_;
+	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 
 };
 

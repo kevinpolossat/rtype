@@ -30,10 +30,18 @@ ge::Position::~Position()
 
 }
 
-void ge::Position::UpdatePos(ge::Vector2f const & v)
+void ge::Position::UpdatePos(ge::Vector2f const & v, uint32_t widht, uint32_t height, uint32_t offset)
 {
 	this->m_pos.x += v.x;
 	this->m_pos.y += v.y;
+	if (this->m_pos.x < 0)
+		m_pos.x = 0;
+	if (this->m_pos.y < 0)
+		m_pos.y = 0;
+	if (this->m_pos.x > widht - offset)
+		m_pos.x = widht - offset;
+	if (this->m_pos.y > height - offset)
+		m_pos.y = height - offset;
 }
 
 ge::Vector2f ge::Position::getPos() const
