@@ -5,7 +5,6 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
-	//engine.LoadTextures(world_.players[0]->GetComponent<Animator>());
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
