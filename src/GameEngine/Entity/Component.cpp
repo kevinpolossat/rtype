@@ -9,9 +9,11 @@ CLASS_DEFINITION(ge::Component, ge::Sprite)
 CLASS_DEFINITION(ge::Component, ge::Text)
 CLASS_DEFINITION(ge::Component, ge::Input)
 CLASS_DEFINITION(ge::Component, ge::Animator)
+CLASS_DEFINITION(ge::Component, ge::Collider)
 
 
-/* 
+
+/*
 	Position Member functions
 */
 
@@ -211,7 +213,50 @@ ge::Animator::AnimationsList const & ge::Animator::GetAnimationsList() const {
 	return animations_;
 }
 
-/* 
+
+/*
+	Collider Member Functions
+*/
+ge::Collider::Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRight, std::string const & t_tag) : ge::Component("Collider"), position_(t_topLeft), size_(t_bottomRight), tag_(t_tag)
+{
+}
+
+ge::Collider::~Collider()
+{
+
+}
+ge::Vector2f & ge::Collider::CollisionPrediction(Vector2f const & t_currentPos, Vector2f const & t_velocity, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
+{
+	for (auto const & it : t_gameObjects)
+	{
+		if (&it->GetComponent<Collider>() != nullptr)
+		{
+			if (it->GetComponent<Collider>().tag_ == t_tagToCheck)
+			{
+				if (AABBCircleIntersecQuick(it->GetComponent<Position>().getPos(), it->GetComponent<Collider>().size_, t_currentPos, t_velocity.length()))
+					std::cout << "Found Matching Tag" << std::endl;
+			}
+		}
+	}
+	return (*std::unique_ptr<ge::Vector2f>(nullptr));
+}
+
+bool ge::Collider::AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius)
+{
+	Vector2f AABBCenter = Vector2f(topLeftAABB.x + AABBSize.x, topLeftAABB.y + AABBSize.y);
+	AABBCenter.x = AABBCenter.x - (AABBSize.x / 2);
+	AABBCenter.y = AABBCenter.y - (AABBSize.y / 2);
+	double AABBRadius = Vector2f(topLeftAABB.x - AABBCenter.x, topLeftAABB.y - AABBCenter.y).length();
+	double dx = circleCenter.x - AABBCenter.x;
+	double dy = circleCenter.y - AABBCenter.y;
+	double dist = sqrtf(dx * dx + dy * dy);
+	if (dist < AABBRadius + radius)
+		return (true);
+	return (false);
+}
+
+
+/*
 	GameObject non-templeted member functions
 */
 

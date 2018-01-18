@@ -2,6 +2,7 @@
 using ge::Velocity;
 using ge::Position;
 using ge::Sprite;
+using ge::Collider;
 
 void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const & t_velocity)
 {
@@ -35,6 +36,7 @@ void PlayWorld::CreatePlayer(Vector2f const & t_position, std::string const & t_
 	g->AddComponent<Position>(t_position);
 	g->AddComponent<Velocity>(t_velocity);
 	g->AddComponent<Sprite>(t_textureName, 2);
+	g->AddComponent<Collider>(t_position,Vector2f(60,60),"Player");
 	this->players.push_back(std::move(g));
 }
 
@@ -45,6 +47,7 @@ void PlayWorld::CreateShoot(Vector2f const & t_position, Vector2f const & t_velo
 	g->AddComponent<Position>(t_position);
 	g->AddComponent<Velocity>(t_velocity);
 	g->AddComponent<Sprite>(t_textureName, 2);
+	g->AddComponent<Collider>(t_position, Vector2f(30, 15), "Player Shoot");
 	this->projectiles.push_back(std::move(g));
 }
 

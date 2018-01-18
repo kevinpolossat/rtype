@@ -5,6 +5,7 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
+
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -84,6 +85,7 @@ void PlayState::Update(ge::GameEngine const & engine)
 
 	for (auto const & it : world_.projectiles)
 	{
+		it->GetComponent<Collider>().CollisionPrediction(it->GetComponent<Position>().getPos(), it->GetComponent<Velocity>().getVel(), "Player", world_.players);
 		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 1000, 800, 30);
 	}
 }
