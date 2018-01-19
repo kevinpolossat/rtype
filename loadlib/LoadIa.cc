@@ -92,7 +92,7 @@ loadIa::loadIa(std::string pathdir, int width, int height)
       std::cout << "it = " << it << std::endl;
       std::string pathfile = pathdir + "/" + it;
       const char * path = pathfile.c_str();
-      _ias.push_back(dlib(dload(path), width, height, x, y));
+      _ias.push_back(std::make_shared<IArtificialIntelligence>(*dlib(dload(path), width, height, x, y)));
     }
   }
 }
@@ -102,7 +102,7 @@ int loadIa::getNbIa()
   return(_ias.size());
 }
 
-IArtificialIntelligence *loadIa::getIa(int idx)
+std::shared_ptr<IArtificialIntelligence> loadIa::getIa(int idx)
 {
   if(idx < _ias.size() && idx > -1)
     return _ias[idx];
@@ -116,6 +116,7 @@ loadIa::~loadIa()
 }
 
 /*
+
 int main(int ac, char ** av)
 {
   #if defined (__linux__) || defined (__APPLE__)
@@ -130,6 +131,7 @@ int main(int ac, char ** av)
   loadIa *ia = new loadIa("./Dll", width, height);
   for (int i = 0; i < ia->getNbIa(); i++)
       std::cout << ia->getIa(i)->getName() << std::endl;
+  while (std::cin.get() != '\n');
   return (0);
-  */
-}
+} */
+

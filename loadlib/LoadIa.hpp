@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <memory>
 #include <string>
 #include "IArtificialIntelligence.hpp"
 #include <sys/types.h>
@@ -19,12 +20,12 @@ public:
   loadIa(std::string pathdir, int width, int height);
   ~loadIa();
   int  getNbIa();
-  IArtificialIntelligence  *getIa(int idx);
+  std::shared_ptr<IArtificialIntelligence> getIa(int idx);
 
 private:
     int width;
     int height;
     int x;
     int y;
-    std::vector<IArtificialIntelligence*> _ias;
+    std::vector<std::shared_ptr<IArtificialIntelligence>> _ias;
 };
