@@ -178,9 +178,10 @@ namespace ge {
 	public:
 		Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRight, std::string const & t_tag);
 		~Collider();
-		Vector2f & CollisionPrediction(Vector2f const & t_currentPos, Vector2f const & t_velocity, std::string const & t_tagToCheck, std::vector<std::unique_ptr<GameObject>> const & t_gameObjects);
+		Vector2f & CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<GameObject>> const & t_gameObjects);
 	private:
 		bool AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius);
+		Vector2f VectorIntersec(Vector2f const & uStart, Vector2f const & uEnd, Vector2f const & vStart, Vector2f const & vEnd);
 		Vector2f position_;
 		Vector2f size_;
 		std::string tag_;
