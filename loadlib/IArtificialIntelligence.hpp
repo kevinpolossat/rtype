@@ -2,7 +2,7 @@
 #define __IARTIFICIAL_INTELLIGENCE_HPP__
 #include <iostream>
 #include <string>
-#include <math.h>
+#include <cmath>
 
 struct AIPosition
 {
@@ -41,29 +41,29 @@ public:
 	}
 
 	// SETTER | GETTER
-	virtual const AIPosition getPosition() { return _pos; }
+	virtual const AIPosition getPosition() const { return _pos; }
 	virtual void setPosition(const AIPosition p) { _pos = p; }
 
-	virtual const std::string &getName() { return _name; }
+	virtual const std::string &getName() const { return _name; }
 	virtual const void setName(const std::string &n) { _name = n; }
 
-	virtual const uint32_t getLife() { return _life; }
+	virtual const uint32_t getLife() const { return _life; }
 	virtual void setLife(const uint32_t l) { _life = l; }
 
-	virtual const uint32_t getWidth() { return _width; }
+	virtual const uint32_t getWidth() const { return _width; }
 	virtual void setWidth(const uint32_t l) { _width = l; }
 
-	virtual const uint32_t getHeight() { return _height; }
+	virtual const uint32_t getHeight() const { return _height; }
 	virtual void setHeight(const uint32_t l) { _height = l; }
 
-	virtual const bool getShoot() { return _shoot; }
+	virtual const bool getShoot() const { return _shoot; }
 	virtual void setShoot(const bool x) { _shoot = x; }
 
-	virtual const uint32_t getTurn() { return _turn; }
+	virtual const uint32_t getTurn() const { return _turn; }
 	virtual void setTurn(const uint32_t t) { _turn = t; }
 
 	virtual void setShootVector(const vec2D x) {_shootVector = x;}
-	virtual const vec2D getShootVector() {return _shootVector;}
+	virtual const vec2D getShootVector() const {return _shootVector;}
 
 
 private:

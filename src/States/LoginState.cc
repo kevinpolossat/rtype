@@ -31,7 +31,7 @@ void LoginState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 		{
 			for (auto const & it : world_.buttons)
 			{
-				if(&it->GetComponent<ge::Sprite>() != NULL)
+				if(&it->GetComponent<ge::Sprite>() != nullptr)
 				{
 					sf::Sprite t(engine.Texture(it->GetComponent<ge::Sprite>().textureName));
 					t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
@@ -81,7 +81,7 @@ void LoginState::Display(ge::GameEngine & engine, const float)
 		t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
 		engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
 
-		if(&it->GetComponent<ge::Sprite>() != NULL)
+		if(&it->GetComponent<ge::Sprite>() != nullptr)
 		{
 			sf::Sprite s(engine.Texture(it->GetComponent<ge::Sprite>().textureName));
 			s.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);

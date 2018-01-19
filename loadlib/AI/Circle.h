@@ -1,7 +1,7 @@
 #ifndef __CIRCLE_HPP__
 #define __CIRCLE_HPP__
 
-#include <math.h>
+#include <cmath>
 #include "IArtificialIntelligence.hpp"
 
 class Circle : public IArtificialIntelligence

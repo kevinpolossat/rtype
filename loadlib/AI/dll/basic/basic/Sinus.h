@@ -1,7 +1,7 @@
 #ifndef __SINUS_HPP__
 #define __SINUS_HPP__
 
-#include <math.h>
+#include <cmath>
 #include "IArtificialIntelligence.hpp"
 
 class Sinus : public IArtificialIntelligence

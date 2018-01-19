@@ -7,7 +7,7 @@ bool JoinState::Init(ge::GameEngine & engine) {
 
 	ge::Vector2u size = engine.GetSize();
   world_.CreateButton(ge::Vector2f(size.x / 5, size.y / 5), "GAMES : ", "arial", NONE);
-  for(auto it : _games)
+  for(auto const & it : _games)
   {
     world_.CreateButton(ge::Vector2f(size.x / 5, size.y / 5), it, "arial", NONE);
   }
@@ -33,7 +33,7 @@ void JoinState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 		{
 			for (auto const & it : world_.buttons)
 			{
-				if(&it->GetComponent<ge::Sprite>() != NULL)
+				if(&it->GetComponent<ge::Sprite>() != nullptr)
 				{
 					sf::Sprite t(engine.Texture(it->GetComponent<ge::Sprite>().textureName));
 					t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
