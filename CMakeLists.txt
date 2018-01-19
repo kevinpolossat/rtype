@@ -22,16 +22,27 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.h
 
+		#Sates
+		${CMAKE_SOURCE_DIR}/src/States/IntroState.cc
+		${CMAKE_SOURCE_DIR}/src/States/IntroState.h
+		${CMAKE_SOURCE_DIR}/src/States/PlayState.cc
+		${CMAKE_SOURCE_DIR}/src/States/PlayState.h
+		${CMAKE_SOURCE_DIR}/src/States/LoginState.cc
+		${CMAKE_SOURCE_DIR}/src/States/LoginState.h
+		${CMAKE_SOURCE_DIR}/src/States/CreateState.cc
+		${CMAKE_SOURCE_DIR}/src/States/CreateState.h
+		${CMAKE_SOURCE_DIR}/src/States/JoinState.cc
+		${CMAKE_SOURCE_DIR}/src/States/JoinState.h
+
 		# GAME
-		${CMAKE_SOURCE_DIR}/src/IntroState.cc
-		${CMAKE_SOURCE_DIR}/src/IntroState.h
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.h
-		${CMAKE_SOURCE_DIR}/src/PlayState.cc
-		${CMAKE_SOURCE_DIR}/src/PlayState.h
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
 		#[[add source files here]])
+
+set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
+set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
 execute_process(COMMAND "${CMAKE_COMMAND}" -G "${CMAKE_GENERATOR}" . WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/googletest-download" )
@@ -75,12 +86,16 @@ target_include_directories(rtype_test
 		PRIVATE "${gtest_SOURCE_DIR}/include"
 		PRIVATE "${gmock_SOURCE_DIR}/include"
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
-		PRIVATE ${SFML_INCLUDE_DIR})
+		PRIVATE ${SFML_INCLUDE_DIR}
+		PRIVATE ${CEREAL_HEADER})
 target_link_libraries(rtype_test
 		PRIVATE gmock_main
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
-target_sources(rtype_test PRIVATE ${SOURCES})
+target_sources(rtype_test
+		PRIVATE ${SOURCES} ${TCP_PROTOCOL_HEADER}
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)

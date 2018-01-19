@@ -1,0 +1,6 @@
+﻿  Sinus.cpp
+c:\loadlib\ai\dll\basic\basic\sinus.cpp(30): warning C4244: 'initialisation' : conversion de 'double' en 'float', perte possible de données
+c:\loadlib\ai\dll\basic\basic\sinus.cpp(32): warning C4244: '=' : conversion de 'float' en 'int', perte possible de données
+c:\loadlib\ai\dll\basic\basic\sinus.cpp(57): warning C4244: '=' : conversion de 'int' en 'float', perte possible de données
+     Création de la bibliothèque C:\loadlib\AI\dll\basic\Debug\basic.lib et de l'objet C:\loadlib\AI\dll\basic\Debug\basic.exp
+  basic.vcxproj -> C:\loadlib\AI\dll\basic\Debug\basic.dll
