@@ -13,4 +13,5 @@ build:
 
 test_script:
   - ls -la
+  - ls -lRa Release
   - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\rtype_test.exe'
