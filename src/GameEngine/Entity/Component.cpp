@@ -39,9 +39,9 @@ void ge::Position::UpdatePos(ge::Vector2f const & v, uint32_t widht, uint32_t he
 	if (this->m_pos.y < 0)
 		m_pos.y = 0;
 	if (this->m_pos.x > widht - offset)
-		m_pos.x = widht - offset;
+		m_pos.x = static_cast<float>(widht - offset);
 	if (this->m_pos.y > height - offset)
-		m_pos.y = height - offset;
+		m_pos.y = static_cast<float>(height - offset);
 }
 
 ge::Vector2f ge::Position::getPos() const

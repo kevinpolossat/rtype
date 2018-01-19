@@ -33,6 +33,8 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/States/CreateState.h
 		${CMAKE_SOURCE_DIR}/src/States/JoinState.cc
 		${CMAKE_SOURCE_DIR}/src/States/JoinState.h
+		${CMAKE_SOURCE_DIR}/src/States/MenuState.cc
+		${CMAKE_SOURCE_DIR}/src/States/MenuState.h
 
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc

@@ -3,21 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "AGameState.h"
-#include "IntroWorld.h"
-#include "GameEngine.h"
+#include "MenuState.h"
 
-
-class CreateState : public ge::AGameState {
-	enum ButtonId
-  {
-		PLUS,
-    MOINS,
-    VALID,
-    NONE,
-    CANCEL
-	};
-
+class CreateState : public MenuState {
 public:
 	CreateState() = default;
 	CreateState(CreateState const & other) = delete;
@@ -28,19 +16,11 @@ public:
 	CreateState & operator=(CreateState && other) = delete;
 
 	bool Init(ge::GameEngine & engine) override;
-	void Clear() override;
-	void Pause() override;
-	void Resume() override;
-
-	void HandleEvent(ge::GameEngine & engine, sf::Event const & event) override;
-	void Update(ge::GameEngine const & engine) override;
-	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event);
+	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
 
-  int nbPlayers = 1;
-	IntroWorld world_;
+	int nbPlayers = 1;
 };
 
 #endif /*CreateState_H_*/
