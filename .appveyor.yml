@@ -12,6 +12,4 @@ build:
   project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
 
 test_script:
-  - ls -la
-  - ls -lRa Release
   - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\rtype_test.exe'
