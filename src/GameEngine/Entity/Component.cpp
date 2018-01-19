@@ -225,8 +225,9 @@ ge::Collider::~Collider()
 {
 
 }
-ge::Vector2f & ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
+ge::Collision & ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
 {
+	Collision col{Vector2f(-1,-1), 0};
 
 	for (auto const & it : t_gameObjects)
 	{
@@ -236,23 +237,21 @@ ge::Vector2f & ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> con
 			{
 				if (AABBCircleIntersecQuick(it->GetComponent<Position>().getPos(), it->GetComponent<Collider>().size_, t_current->GetComponent<Position>().getPos(), t_current->GetComponent<Velocity>().getVel().length()))
 				{
-					std::cout << "Found Matching Tag" << std::endl;
 					Vector2f CurrentPos = t_current->GetComponent<Position>().getPos();
 					Vector2f BotRight = t_current->GetComponent<Collider>().size_;
 					Vector2f CurrentVel = t_current->GetComponent<Velocity>().getVel();
-
-					VectorIntersec(CurrentPos, Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
-					VectorIntersec(Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y), Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
-
-					//Vector2f TopVector = (CurrentPos - Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y)) * CurrentVel;
-					//Vector2f BotVector = (Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y) - Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y)) * CurrentVel;
-					//Vector2f ItNormal = it->GetComponent<Position>().getPos() - Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y);
-
+					col.point = VectorIntersec(CurrentPos, Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+					if (col.point.x != -1)
+						return (col);
+					col.point = VectorIntersec(Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y), Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+					if (col.point.x != -1)
+						return (col);
 				}
 			}
 		}
+		col.index++;
 	}
-	return (*std::unique_ptr<ge::Vector2f>(nullptr));
+	return (col);
 }
 
 ge::Vector2f ge::Collider::VectorIntersec(Vector2f const & uStart, Vector2f const & uEnd, Vector2f const & vStart, Vector2f const & vEnd)
@@ -276,8 +275,9 @@ ge::Vector2f ge::Collider::VectorIntersec(Vector2f const & uStart, Vector2f cons
 	if (((snumer > DotProduct) == positive) || ((tnumer > DotProduct) == positive))
 		return (Vector2f(-1, -1));
 
-	std::cout << "Collision" << std::endl;
-	return (Vector2f(0, 0));
+	double t = tnumer / DotProduct;
+	Vector2f intersection = Vector2f(uStart.x + (t *u.x), uStart.y + (t *u.y));
+	return (intersection);
 }
 
 bool ge::Collider::AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius)
