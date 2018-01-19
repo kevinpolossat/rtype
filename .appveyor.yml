@@ -6,8 +6,6 @@ configuration:
 before_build:
     - curl http://mirror2.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip -o sfml.zip
     - 7z x sfml.zip
-    - ls -la
-    - pwd
     - cmake -G "Visual Studio 15 2017 Win64" -DSFML_ROOT=./SFML-2.4.2 .
 
 build:
@@ -15,4 +13,4 @@ build:
 
 test_script:
   - ls -la
-  - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\tests.exe'
+  - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\rtype_test.exe'
