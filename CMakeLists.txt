@@ -22,13 +22,21 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.h
 
+		#Sates
+		${CMAKE_SOURCE_DIR}/src/States/IntroState.cc
+		${CMAKE_SOURCE_DIR}/src/States/IntroState.h
+		${CMAKE_SOURCE_DIR}/src/States/PlayState.cc
+		${CMAKE_SOURCE_DIR}/src/States/PlayState.h
+		${CMAKE_SOURCE_DIR}/src/States/LoginState.cc
+		${CMAKE_SOURCE_DIR}/src/States/LoginState.h
+		${CMAKE_SOURCE_DIR}/src/States/CreateState.cc
+		${CMAKE_SOURCE_DIR}/src/States/CreateState.h
+		${CMAKE_SOURCE_DIR}/src/States/JoinState.cc
+		${CMAKE_SOURCE_DIR}/src/States/JoinState.h
+
 		# GAME
-		${CMAKE_SOURCE_DIR}/src/IntroState.cc
-		${CMAKE_SOURCE_DIR}/src/IntroState.h
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.h
-		${CMAKE_SOURCE_DIR}/src/PlayState.cc
-		${CMAKE_SOURCE_DIR}/src/PlayState.h
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
 		#[[add source files here]])
