@@ -1,0 +1,15 @@
+image: Visual Studio 2017
+
+configuration:
+- Release
+
+before_build:
+    - curl http://mirror2.sfml-dev.org/files/SFML-2.4.2-windows-vc14-64-bit.zip -o sfml.zip
+    - 7z x sfml.zip
+    - cmake -G "Visual Studio 15 2017 Win64" -DSFML_ROOT=./SFML-2.4.2 .
+
+build:
+  project: $(APPVEYOR_BUILD_FOLDER)\$(APPVEYOR_PROJECT_NAME).sln
+
+test_script:
+  - '%APPVEYOR_BUILD_FOLDER%\%CONFIGURATION%\rtype_test.exe'
