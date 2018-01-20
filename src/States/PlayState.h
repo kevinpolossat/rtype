@@ -10,6 +10,7 @@
 using ge::Velocity;
 using ge::Position;
 using ge::Sprite;
+using ge::Collider;
 
 class PlayState : public ge::AGameState {
 public:
