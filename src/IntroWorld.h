@@ -14,7 +14,7 @@ public:
 	IntroWorld & operator=(IntroWorld && other) = delete;
 
 	void CreateText(ge::Vector2f const & pos, std::string const & text, std::string const & font);
-	void CreateButton(ge::Vector2f const & pos, std::string const & font, int input, std::string imgName);
+	void CreateButton(ge::Vector2f const & pos, std::string const & font, int input, std::string const & imgName);
 
 	std::vector<std::unique_ptr<ge::GameObject>> buttons;
 	std::vector<std::unique_ptr<ge::GameObject>> texts;

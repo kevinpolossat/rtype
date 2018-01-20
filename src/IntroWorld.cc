@@ -10,7 +10,7 @@ void IntroWorld::CreateText(ge::Vector2f const & pos, std::string const & text, 
 	this->texts.push_back(std::move(g));
 }
 
-void IntroWorld::CreateButton(ge::Vector2f const & pos, std::string const & font, int input, std::string imgName)
+void IntroWorld::CreateButton(ge::Vector2f const & pos, std::string const & font, int input, std::string const & imgName)
 {
 	std::unique_ptr<ge::GameObject> g = std::make_unique<ge::GameObject>();
 
