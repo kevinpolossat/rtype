@@ -225,7 +225,7 @@ ge::Collider::~Collider()
 {
 
 }
-ge::Collision & ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
+ge::Collision ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
 {
 	Collision col{Vector2f(-1,-1), 0};
 
