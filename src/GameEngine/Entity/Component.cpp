@@ -9,9 +9,11 @@ CLASS_DEFINITION(ge::Component, ge::Sprite)
 CLASS_DEFINITION(ge::Component, ge::Text)
 CLASS_DEFINITION(ge::Component, ge::Input)
 CLASS_DEFINITION(ge::Component, ge::Animator)
+CLASS_DEFINITION(ge::Component, ge::Collider)
 
 
-/* 
+
+/*
 	Position Member functions
 */
 
@@ -211,7 +213,87 @@ ge::Animator::AnimationsList const & ge::Animator::GetAnimationsList() const {
 	return animations_;
 }
 
-/* 
+
+/*
+	Collider Member Functions
+*/
+ge::Collider::Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRight, std::string const & t_tag) : ge::Component("Collider"), position_(t_topLeft), size_(t_bottomRight), tag_(t_tag)
+{
+}
+
+ge::Collider::~Collider()
+{
+
+}
+ge::Collision & ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
+{
+	Collision col{Vector2f(-1,-1), 0};
+
+	for (auto const & it : t_gameObjects)
+	{
+		if (&it->GetComponent<Collider>() != nullptr)
+		{
+			if (it->GetComponent<Collider>().tag_ == t_tagToCheck)
+			{
+				if (AABBCircleIntersecQuick(it->GetComponent<Position>().getPos(), it->GetComponent<Collider>().size_, t_current->GetComponent<Position>().getPos(), t_current->GetComponent<Velocity>().getVel().length()))
+				{
+					Vector2f CurrentPos = t_current->GetComponent<Position>().getPos();
+					Vector2f BotRight = t_current->GetComponent<Collider>().size_;
+					Vector2f CurrentVel = t_current->GetComponent<Velocity>().getVel();
+					col.point = VectorIntersec(CurrentPos, Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+					if (col.point.x != -1)
+						return (col);
+					col.point = VectorIntersec(Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y), Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+					if (col.point.x != -1)
+						return (col);
+				}
+			}
+		}
+		col.index++;
+	}
+	return (col);
+}
+
+ge::Vector2f ge::Collider::VectorIntersec(Vector2f const & uStart, Vector2f const & uEnd, Vector2f const & vStart, Vector2f const & vEnd)
+{
+	Vector2f u = uEnd - uStart;
+	Vector2f v = vEnd - vStart;
+
+	double DotProduct = (u.x * v.y) - (v.x * u.y);
+	if (DotProduct == 0)
+		return (Vector2f(-1, -1));
+	bool positive = DotProduct > 0;
+
+	Vector2f s = uStart - vStart;
+	double snumer = (u.x * s.y) - (s.x * u.y);
+	if ((snumer < 0) == positive)
+		return (Vector2f(-1, -1));
+
+	double tnumer = (v.x * s.y) - (s.x * v.y);
+	if ((tnumer < 0) == positive)
+		return (Vector2f(-1, -1));
+	if (((snumer > DotProduct) == positive) || ((tnumer > DotProduct) == positive))
+		return (Vector2f(-1, -1));
+
+	double t = tnumer / DotProduct;
+	Vector2f intersection = Vector2f(uStart.x + (t *u.x), uStart.y + (t *u.y));
+	return (intersection);
+}
+
+bool ge::Collider::AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius)
+{
+	Vector2f AABBCenter = Vector2f(topLeftAABB.x + AABBSize.x, topLeftAABB.y + AABBSize.y);
+	AABBCenter.x = AABBCenter.x - (AABBSize.x / 2);
+	AABBCenter.y = AABBCenter.y - (AABBSize.y / 2);
+	double AABBRadius = Vector2f(topLeftAABB.x - AABBCenter.x, topLeftAABB.y - AABBCenter.y).length();
+	double dx = circleCenter.x - AABBCenter.x;
+	double dy = circleCenter.y - AABBCenter.y;
+	double dist = sqrtf(dx * dx + dy * dy);
+	return (dist < AABBRadius + radius);
+}
+
+
+/*
 	GameObject non-templeted member functions
 */
 
@@ -220,7 +302,7 @@ void ge::GameObject::setTag(std::string const & t_tag)
 	this->m_tag_ = t_tag;
 }
 
-std::string ge::GameObject::getTag() const
+std::string const & ge::GameObject::getTag() const
 {
 	return (this->m_tag_);
 }
