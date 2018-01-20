@@ -12,7 +12,7 @@
 #include <vector>
 #include <chrono>
 #include <stack>
-#include <GameEngine/Settings.h>
+#include <client/GameEngine/Settings.h>
 
 #include "Vector2D.h"
 #include "../../ia/IArtificialIntelligence.hpp"

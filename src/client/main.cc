@@ -1,12 +1,12 @@
 #include <vector>
 #include <iostream>
 #include "GameEngine.h"
-#include "States/IntroState.h"
-#include "States/PlayState.h"
+#include "client/States/IntroState.h"
+#include "client/States/PlayState.h"
 #include "Entity/Component.h"
-#include	"States/CreateState.h"
-#include	"States/LoginState.h"
-#include "States/JoinState.h"
+#include    "client/States/CreateState.h"
+#include    "client/States/LoginState.h"
+#include "client/States/JoinState.h"
 
 
 int main() {
