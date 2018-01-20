@@ -43,7 +43,7 @@ io_buffer lw_network::Buffer::toIoBuffer() const {
 #if defined (__linux__) || defined (__APPLE__)
 	return io_buffer{const_cast<void *>(this->Data()), this->Size()};
 #elif defined (_WIN32) || defined (_WIN64)
-	return io_buffer{ static_cast<int>(this->Size()), static_cast<char *>(const_cast<void *>(this->Data())) };
+	return io_buffer{ static_cast<unsigned int>(this->Size()), static_cast<char *>(const_cast<void *>(this->Data())) };
 #else
 #error "unknown platform"
 #endif
@@ -54,7 +54,7 @@ io_buffer lw_network::Buffer::toIoBuffer() {
 #if defined (__linux__) || defined (__APPLE__)
     return io_buffer{this->Data(), this->Size()};
 #elif defined (_WIN32) || defined (_WIN64)
-	return io_buffer{ static_cast<int>(this->Size()), static_cast<char *>(this->Data()) };
+	return io_buffer{ static_cast<unsigned int>(this->Size()), static_cast<char *>(this->Data()) };
 #else
 #error "unknown platform"
 #endif
