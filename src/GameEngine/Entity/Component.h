@@ -165,7 +165,7 @@ namespace ge {
 
 		void setTag(std::string const &t_tag);
 
-		std::string getTag() const;
+		std::string const & getTag() const;
 
 	private:
 		std::vector<std::unique_ptr<Component>> components_;

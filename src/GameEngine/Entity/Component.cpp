@@ -289,9 +289,7 @@ bool ge::Collider::AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f
 	double dx = circleCenter.x - AABBCenter.x;
 	double dy = circleCenter.y - AABBCenter.y;
 	double dist = sqrtf(dx * dx + dy * dy);
-	if (dist < AABBRadius + radius)
-		return (true);
-	return (false);
+	return (dist < AABBRadius + radius);
 }
 
 
@@ -304,7 +302,7 @@ void ge::GameObject::setTag(std::string const & t_tag)
 	this->m_tag_ = t_tag;
 }
 
-std::string ge::GameObject::getTag() const
+std::string const & ge::GameObject::getTag() const
 {
 	return (this->m_tag_);
 }
