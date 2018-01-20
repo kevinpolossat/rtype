@@ -71,7 +71,8 @@ target_include_directories(rtype
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype
 		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
+		PRIVATE ${SFML_DEPENDENCIES}
+		PRIVATE ${CMAKE_DL_LIBS})
 
 set_target_properties(rtype
 		PROPERTIES
