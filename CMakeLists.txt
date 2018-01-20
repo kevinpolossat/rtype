@@ -111,7 +111,7 @@ target_link_libraries(rtype_test
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 target_sources(rtype_test
-		PRIVATE ${SOURCES} ${TCP_PROTOCOL_HEADER}
+		PRIVATE ${TCP_PROTOCOL_HEADER}
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)
