@@ -5,7 +5,7 @@
 
 #include "GameEngine.h"
 #include "AGameState.h"
-#include "PlayWorld.h"
+#include "client/PlayWorld.h"
 
 using ge::Velocity;
 using ge::Position;

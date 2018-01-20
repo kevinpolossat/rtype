@@ -7,40 +7,44 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2 REQUIRED audio graphics window system)
 
-set(SOURCES
+set(CLIENT_SOURCES
 		# GAME ENGINE
-		${CMAKE_SOURCE_DIR}/src/GameEngine/AGameState.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/AWorld.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/GameEngine.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/ResourcesManager.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.cc
-		${CMAKE_SOURCE_DIR}/src/GameEngine/StatesManager.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Vector2D.h
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.cpp
-		${CMAKE_SOURCE_DIR}/src/GameEngine/Entity/Component.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/AGameState.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/AWorld.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/AWorld.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/GameEngine.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/GameEngine.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/ResourcesManager.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/ResourcesManager.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/StatesManager.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/StatesManager.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
 
 		#Sates
-		${CMAKE_SOURCE_DIR}/src/States/IntroState.cc
-		${CMAKE_SOURCE_DIR}/src/States/IntroState.h
-		${CMAKE_SOURCE_DIR}/src/States/PlayState.cc
-		${CMAKE_SOURCE_DIR}/src/States/PlayState.h
-		${CMAKE_SOURCE_DIR}/src/States/LoginState.cc
-		${CMAKE_SOURCE_DIR}/src/States/LoginState.h
-		${CMAKE_SOURCE_DIR}/src/States/CreateState.cc
-		${CMAKE_SOURCE_DIR}/src/States/CreateState.h
-		${CMAKE_SOURCE_DIR}/src/States/JoinState.cc
-		${CMAKE_SOURCE_DIR}/src/States/JoinState.h
-		${CMAKE_SOURCE_DIR}/src/States/MenuState.cc
-		${CMAKE_SOURCE_DIR}/src/States/MenuState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/IntroState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/IntroState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/PlayState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/PlayState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/LoginState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/LoginState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/CreateState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/CreateState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/JoinState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/JoinState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.h
 
 		# GAME
-		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
-		${CMAKE_SOURCE_DIR}/src/IntroWorld.h
-		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
-		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
+		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.cc
+		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
+		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
+		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+		#[[add source files here]])
+
+set(SERVER_SOURCES
+
 		#[[add source files here]])
 
 set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
@@ -59,24 +63,31 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # and gmock_main
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
-add_executable(rtype ${PROJECT_SOURCE_DIR}/src/main.cc)
-
-target_sources(rtype PRIVATE ${SOURCES})
-target_include_directories(rtype
+add_executable(rtype_client src/client/main.cc)
+target_sources(rtype_client PRIVATE ${CLIENT_SOURCES})
+target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
-		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR})
-target_link_libraries(rtype
+target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 
-set_target_properties(rtype
+set_target_properties(rtype_client
 		PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 
-add_custom_command(TARGET rtype POST_BUILD
+add_custom_command(TARGET rtype_client POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype>/resources)
+		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype_client>/resources)
+
+add_executable(rtype_server ${PROJECT_SOURCE_DIR}/src/server/main.cc)
+set_target_properties(rtype_server
+		PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
+target_sources(rtype_server
+		PRIVATE ${SERVER_SOURCES})
 
 enable_testing()
 #test executable
@@ -89,7 +100,7 @@ target_include_directories(rtype_test
 		PRIVATE "${gmock_SOURCE_DIR}/include"
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
-		PRIVATE ${PROJECT_SOURCE_DIR}/src/GameEngine
+		PRIVATE src/client/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR}
 		PRIVATE ${CEREAL_HEADER})
 target_link_libraries(rtype_test
