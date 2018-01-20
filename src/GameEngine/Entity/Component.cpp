@@ -229,21 +229,33 @@ ge::Collision ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> cons
 {
 	Collision col{Vector2f(-1,-1), 0};
 
-	for (auto const & it : t_gameObjects)
-	{
-		if (&it->GetComponent<Collider>() != nullptr)
-		{
-			if (it->GetComponent<Collider>().tag_ == t_tagToCheck)
-			{
-				if (AABBCircleIntersecQuick(it->GetComponent<Position>().getPos(), it->GetComponent<Collider>().size_, t_current->GetComponent<Position>().getPos(), t_current->GetComponent<Velocity>().getVel().length()))
-				{
-					Vector2f CurrentPos = t_current->GetComponent<Position>().getPos();
-					Vector2f BotRight = t_current->GetComponent<Collider>().size_;
-					Vector2f CurrentVel = t_current->GetComponent<Velocity>().getVel();
-					col.point = VectorIntersec(CurrentPos, Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+	for (auto const & it : t_gameObjects) {
+		if (it->GetComponent<Collider>()) {
+			if (it->GetComponent<Collider>()->tag_ == t_tagToCheck) {
+				if (AABBCircleIntersecQuick(
+                        it->GetComponent<Position>()->getPos(),
+                        it->GetComponent<Collider>()->size_,
+                        t_current->GetComponent<Position>()->getPos(),
+                        t_current->GetComponent<Velocity>()->getVel().length())) {
+					Vector2f CurrentPos = t_current->GetComponent<Position>()->getPos();
+					Vector2f BotRight = t_current->GetComponent<Collider>()->size_;
+					Vector2f CurrentVel = t_current->GetComponent<Velocity>()->getVel();
+					col.point = VectorIntersec(
+                            CurrentPos,
+                            Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y),
+                            it->GetComponent<Position>()->getPos(),
+                            Vector2f(
+                                    it->GetComponent<Position>()->getPos().x,
+                                    it->GetComponent<Position>()->getPos().y + it->GetComponent<Collider>()->size_.y));
 					if (col.point.x != -1)
 						return (col);
-					col.point = VectorIntersec(Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y), Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y), it->GetComponent<Position>().getPos(), Vector2f(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y + it->GetComponent<Collider>().size_.y));
+					col.point = VectorIntersec(
+                            Vector2f(CurrentPos.x, CurrentPos.y + BotRight.y),
+                            Vector2f(CurrentPos.x + BotRight.x, CurrentPos.y + BotRight.y),
+                            it->GetComponent<Position>()->getPos(),
+                            Vector2f(
+                                    it->GetComponent<Position>()->getPos().x,
+                                    it->GetComponent<Position>()->getPos().y + it->GetComponent<Collider>()->size_.y));
 					if (col.point.x != -1)
 						return (col);
 				}

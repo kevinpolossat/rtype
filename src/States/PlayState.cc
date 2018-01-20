@@ -24,16 +24,16 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			switch (event.code) 
 			{
 				case sf::Keyboard::Key::Left:
-					world_.players[0]->GetComponent<ge::Velocity>().m_pos.x -= 10;
+					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
 					break;
 				case sf::Keyboard::Key::Right:
-					world_.players[0]->GetComponent<ge::Velocity>().m_pos.x += 10;
+					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x += 10;
 					break;
 				case sf::Keyboard::Key::Up:
-					world_.players[0]->GetComponent<ge::Velocity>().m_pos.y -= 10;
+					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
 					break;
 				case sf::Keyboard::Key::Down:
-					world_.players[0]->GetComponent<ge::Velocity>().m_pos.y += 10;
+					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y += 10;
 					break;
 				default:
 					break;
@@ -49,7 +49,7 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 		if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
 		{
 			this->time_ = std::chrono::high_resolution_clock::now();
-			Vector2f newPos = world_.players[0]->GetComponent<Position>().getPos();
+			Vector2f newPos = world_.players[0]->GetComponent<Position>()->getPos();
 			newPos.y += 25;
 			newPos.x += 70;
 			world_.CreateShoot(newPos, Vector2f(10,0), "Shoot");
@@ -80,14 +80,14 @@ void PlayState::Update(ge::GameEngine & engine)
 	uint32_t i = 0;
 	for (auto const & it : world_.players)
 	{
-		it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 800, 600, 60);
-		it->GetComponent<Velocity>().UpdateVel(1.1f);
+		it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
+		it->GetComponent<Velocity>()->UpdateVel(1.1f);
 		i++;
 	}
 	i = 0;
 	for (auto const & it : world_.projectiles)
 	{
-		ge::Collision col = it->GetComponent<Collider>().CollisionPrediction(it, "Player", world_.players);
+		ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", world_.players);
 		if (col.point.x != -1) // Collision !
 		{
 			world_.players.erase(world_.players.begin() + col.index);
@@ -95,7 +95,7 @@ void PlayState::Update(ge::GameEngine & engine)
 		}
 		else
 		{
-			it->GetComponent<Position>().UpdatePos(it->GetComponent<Velocity>().getVel(), 1000, 800, 30);
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
 		}
 		i++;
 	}
@@ -109,14 +109,14 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 			s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
 			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
 		*/
-		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
-		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
+		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
+		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 	for (auto const & it : world_.projectiles)
 	{
-		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>().textureName));
-		s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>().priority);
+		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
+		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 }

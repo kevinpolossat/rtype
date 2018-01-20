@@ -23,9 +23,9 @@ void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const
 	for (uint32_t i = 1; i <= 10; ++i) {
 		attack.sprites.push_back("resources/knight/Attack (" + std::to_string(i) + ").png");
 	}
-	g->GetComponent<ge::Animator>().AddAnimation("Walk", walk);
-	g->GetComponent<ge::Animator>().AddAnimation("Attack", attack);
-	g->GetComponent<ge::Animator>().SetAnimation("Walk");
+	g->GetComponent<ge::Animator>()->AddAnimation("Walk", walk);
+	g->GetComponent<ge::Animator>()->AddAnimation("Attack", attack);
+	g->GetComponent<ge::Animator>()->SetAnimation("Walk");
 	this->players.push_back(std::move(g));
 }
 

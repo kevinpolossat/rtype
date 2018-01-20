@@ -19,7 +19,7 @@ public:
 	bool Init(ge::GameEngine & engine) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event);
+	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
 
 	std::vector<std::string> _games;
 };
