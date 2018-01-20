@@ -87,6 +87,17 @@ enum ProtocolId {
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
 
+struct Header {
+    ProtocolId id;
+    int size;
+
+    template<typename Archive>
+    void serialize(Archive & ar) {
+        ar(id);
+        ar(size);
+    }
+};
+
 struct QueryList {
     int value; // EMPTY
     template <class Archive>
