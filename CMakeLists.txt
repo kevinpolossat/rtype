@@ -40,6 +40,9 @@ set(SOURCES
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.cc
 		${CMAKE_SOURCE_DIR}/src/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.cc
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
+		${CMAKE_SOURCE_DIR}/src/ia/IArtificialIntelligence.hpp
 		${CMAKE_SOURCE_DIR}/src/PlayWorld.h
 		#[[add source files here]])
 

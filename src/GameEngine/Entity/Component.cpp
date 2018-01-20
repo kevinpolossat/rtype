@@ -10,6 +10,7 @@ CLASS_DEFINITION(ge::Component, ge::Text)
 CLASS_DEFINITION(ge::Component, ge::Input)
 CLASS_DEFINITION(ge::Component, ge::Animator)
 CLASS_DEFINITION(ge::Component, ge::Collider)
+CLASS_DEFINITION(ge::Component, ge::Ia)
 
 
 
@@ -49,6 +50,11 @@ void ge::Position::UpdatePos(ge::Vector2f const & v, uint32_t widht, uint32_t he
 ge::Vector2f ge::Position::getPos() const
 {
 	return (this->m_pos);
+}
+
+void ge::Position::setPos(const ge::Vector2f x)
+{
+	this->m_pos = x;
 }
 
 /*
@@ -118,6 +124,18 @@ ge::Input::Input(int t_inputId) : ge::Component("Input"), id(t_inputId)
 ge::Input::~Input()
 {
 
+}
+
+/*
+	IA Member Functions
+*/
+
+ge::Ia::Ia(std::shared_ptr<IArtificialIntelligence> x) : ge::Component("Ia"), ia(x)
+{
+}
+
+ge::Ia::~Ia()
+{
 }
 
 

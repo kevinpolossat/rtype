@@ -6,6 +6,7 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
 	world_.CreatePlayer(Vector2f(600, 300), "Player1");
+	world_.CreateEnnemy("Player1", 0);
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -19,9 +20,9 @@ void PlayState::Pause() {
 void PlayState::Resume() {
 }
 
-void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) 
+void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event)
 {
-			switch (event.code) 
+			switch (event.code)
 			{
 				case sf::Keyboard::Key::Left:
 					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
@@ -41,7 +42,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	if (event.code == sf::Keyboard::Key::Space) 
+	if (event.code == sf::Keyboard::Key::Space)
 	{
 		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
 		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
@@ -77,11 +78,32 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 
 void PlayState::Update(ge::GameEngine & engine)
 {
+	static int turn = 0;
 	uint32_t i = 0;
+	std::vector<AIPosition> playersPos;
+
 	for (auto const & it : world_.players)
 	{
+		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
 		it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
 		it->GetComponent<Velocity>()->UpdateVel(1.1f);
+		i++;
+	}
+	i = 0;
+
+	for (auto const & it : world_.ennemy)
+	{
+		Action action = it->GetComponent<Ia>()->ia->actualize(playersPos);
+
+		Vector2f v {static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().X), static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().Y)};
+		it->GetComponent<Position>()->setPos(v);
+		if (action == Action::SHOOT)
+		{
+			Vector2f v1 {static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().X), static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().Y)};
+			world_.CreateShoot(it->GetComponent<Position>()->getPos(), v1, "Shoot");
+		}
+		else if (action == Action::DEAD)
+			world_.ennemy.erase(world_.ennemy.begin() + i);
 		i++;
 	}
 	i = 0;
@@ -99,9 +121,11 @@ void PlayState::Update(ge::GameEngine & engine)
 		}
 		i++;
 	}
+	turn++;
+	playersPos.clear();
 }
 
-void PlayState::Display(ge::GameEngine & engine, const float) 
+void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto const & it : world_.players)
 	{
