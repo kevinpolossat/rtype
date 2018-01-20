@@ -52,7 +52,7 @@ void PlayWorld::CreateEnnemy(std::string const & t_textureName, const int t_id)
 	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
 	std::shared_ptr<IArtificialIntelligence> ia = iaLoader_->getIa(t_id);
-	Vector2f v{static_cast<double>(ia->getPosition().X), static_cast<double>(ia->getPosition().Y)};
+	Vector2f v(static_cast<double>(ia->getPosition().X), static_cast<double>(ia->getPosition().Y));
 
 	g->AddComponent<Ia>(ia);
 	g->AddComponent<Position>(v);
