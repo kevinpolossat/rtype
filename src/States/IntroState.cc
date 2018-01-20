@@ -16,11 +16,11 @@ bool IntroState::Init(ge::GameEngine & engine) {
 void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
 	if (event.button == sf::Mouse::Button::Left) {
 		for (auto const & it : world_.buttons) {
-			if(&it->GetComponent<ge::Sprite>() != nullptr) {
-				sf::Sprite t(engine.Texture(it->GetComponent<ge::Sprite>().textureName));
-				t.setPosition(it->GetComponent<ge::Position>().getPos().x, it->GetComponent<ge::Position>().getPos().y);
+			if(it->GetComponent<ge::Sprite>()) {
+				sf::Sprite t(engine.Texture(it->GetComponent<ge::Sprite>()->textureName));
+				t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
 				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
-					switch (it->GetComponent<ge::Input>().id) {
+					switch (it->GetComponent<ge::Input>()->id) {
 						case START:
 							engine.PushState("Login");
 							break;

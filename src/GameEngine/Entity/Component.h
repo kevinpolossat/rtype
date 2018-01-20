@@ -158,7 +158,7 @@ namespace ge {
 		void AddComponent(Args &&... params);
 
 		template<class ComponentType>
-		ComponentType &GetComponent();
+		std::shared_ptr<ComponentType> GetComponent();
 
 		template<class ComponentType>
 		bool RemoveComponent();
@@ -168,7 +168,7 @@ namespace ge {
 		std::string const & getTag() const;
 
 	private:
-		std::vector<std::unique_ptr<Component>> components_;
+		std::vector<std::shared_ptr<Component>> components_;
 		std::string m_tag_;
 
 	};
@@ -184,7 +184,7 @@ namespace ge {
 	public:
 		Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRight, std::string const & t_tag);
 		~Collider();
-		Collision & CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<GameObject>> const & t_gameObjects);
+		Collision CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<GameObject>> const & t_gameObjects);
 	private:
 		bool AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius);
 		Vector2f VectorIntersec(Vector2f const & uStart, Vector2f const & uEnd, Vector2f const & vStart, Vector2f const & vEnd);
@@ -199,16 +199,16 @@ namespace ge {
 
 	template<class ComponentType, typename... Args>
 	void GameObject::AddComponent(Args &&... params) {
-		components_.emplace_back(std::make_unique<ComponentType>(std::forward<Args>(params)...));
+		components_.push_back(std::make_shared<ComponentType>(std::forward<Args>(params)...));
 	}
 
 	template<class ComponentType>
-	ComponentType &GameObject::GetComponent() {
+	std::shared_ptr<ComponentType> GameObject::GetComponent() {
 		for (auto &component : components_) {
 			if (component->IsClassType(ComponentType::Type))
-				return *static_cast<ComponentType *>(component.get());
+				return std::static_pointer_cast<ComponentType>(component);
 		}
-		return *std::unique_ptr<ComponentType>(nullptr);
+		return nullptr;
 	}
 
 	template<class ComponentType>
