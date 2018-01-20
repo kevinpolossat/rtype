@@ -47,6 +47,32 @@ set(SERVER_SOURCES
 
 		#[[add source files here]])
 
+set(NETWORK_SOURCES
+		${PROJECT_SOURCE_DIR}/src/network/Socket.cc
+		${PROJECT_SOURCE_DIR}/src/network/Socket.h
+		${PROJECT_SOURCE_DIR}/src/network/ReactiveSocket.cc
+		${PROJECT_SOURCE_DIR}/src/network/ReactiveSocket.h
+		${PROJECT_SOURCE_DIR}/src/network/Acceptor.cc
+		${PROJECT_SOURCE_DIR}/src/network/Acceptor.h
+		${PROJECT_SOURCE_DIR}/src/network/FDSet.cc
+		${PROJECT_SOURCE_DIR}/src/network/FDSet.h
+		${PROJECT_SOURCE_DIR}/src/network/EndPoint.cc
+		${PROJECT_SOURCE_DIR}/src/network/EndPoint.h
+		${PROJECT_SOURCE_DIR}/src/network/Protocol.cc
+		${PROJECT_SOURCE_DIR}/src/network/Protocol.h
+		${PROJECT_SOURCE_DIR}/src/network/Reactor.cc
+		${PROJECT_SOURCE_DIR}/src/network/Reactor.h
+		${PROJECT_SOURCE_DIR}/src/network/Resolver.cc
+		${PROJECT_SOURCE_DIR}/src/network/Resolver.h
+		${PROJECT_SOURCE_DIR}/src/network/socket_operations.cc
+		${PROJECT_SOURCE_DIR}/src/network/socket_operations.h
+		${PROJECT_SOURCE_DIR}/src/network/WinSockInit.cc
+		${PROJECT_SOURCE_DIR}/src/network/WinSockInit.h
+		${PROJECT_SOURCE_DIR}/src/network/Operation.h
+		${PROJECT_SOURCE_DIR}/src/network/Buffer.cc
+		${PROJECT_SOURCE_DIR}/src/network/Buffer.h
+		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
+
 set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
@@ -63,6 +89,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # and gmock_main
 add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googletest-build")
 
+#client
 add_executable(rtype_client src/client/main.cc)
 target_sources(rtype_client PRIVATE ${CLIENT_SOURCES})
 target_include_directories(rtype_client
@@ -82,12 +109,16 @@ add_custom_command(TARGET rtype_client POST_BUILD
 		COMMAND ${CMAKE_COMMAND} -E copy_directory
 		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype_client>/resources)
 
+#server
 add_executable(rtype_server ${PROJECT_SOURCE_DIR}/src/server/main.cc)
 set_target_properties(rtype_server
 		PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 target_sources(rtype_server
-		PRIVATE ${SERVER_SOURCES})
+		PRIVATE ${SERVER_SOURCES}
+		PRIVATE ${NETWORK_SOURCES})
+target_include_directories(rtype_server
+		PRIVATE ./src/network)
 
 enable_testing()
 #test executable
