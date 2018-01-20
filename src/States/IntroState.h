@@ -3,18 +3,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "AGameState.h"
-#include "IntroWorld.h"
-#include "GameEngine.h"
+#include "MenuState.h"
 
-
-class IntroState : public ge::AGameState {
-	enum ButtonId {
-		START = 0,
-		SETTINGS,
-		QUIT
-	};
-
+class IntroState : public MenuState {
 public:
 	IntroState() = default;
 	IntroState(IntroState const & other) = delete;
@@ -25,19 +16,9 @@ public:
 	IntroState & operator=(IntroState && other) = delete;
 
 	bool Init(ge::GameEngine & engine) override;
-	void Clear() override;
-
-	void Pause() override;
-	void Resume() override;
-
-	void HandleEvent(ge::GameEngine & engine, sf::Event const & event) override;
-	void Update(ge::GameEngine const & engine) override;
-	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event);
-
-	IntroWorld world_;
+	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
 };
 
 #endif /*INTROSTATE_H_*/

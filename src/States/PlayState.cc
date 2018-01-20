@@ -75,7 +75,7 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
-void PlayState::Update(ge::GameEngine const & engine) 
+void PlayState::Update(ge::GameEngine & engine)
 {
 	uint32_t i = 0;
 	for (auto const & it : world_.players)

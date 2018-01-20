@@ -29,7 +29,7 @@ public:
 	void Resume() override;
 
 	void HandleEvent(ge::GameEngine & engine, sf::Event const & event) override;
-	void Update(ge::GameEngine const & engine) override;
+	void Update(ge::GameEngine & engine) override;
 	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
