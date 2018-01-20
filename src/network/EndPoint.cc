@@ -2,6 +2,7 @@
 // Created by Kévin POLOSSAT on 10/01/2018.
 //
 
+#include <cstring>
 #include "EndPoint.h"
 
 lw_network::EndPoint::EndPoint() {
