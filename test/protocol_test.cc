@@ -3,7 +3,7 @@
 //
 
 
-#include "protocol.h"
+#include "Protocol.h"
 #include "gtest/gtest.h"
 
 #include <sstream>

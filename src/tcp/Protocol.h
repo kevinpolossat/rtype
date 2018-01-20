@@ -96,7 +96,7 @@ struct QueryList {
 
     template <class Archive>
     void load(Archive & ar) { ar(value); }
-    bool operator==(QueryList const & rhs) const { return this->value == rhs.value; }
+    bool operator==(QueryList const & rhs) const;
 };
 
 struct GameInfo {
@@ -105,11 +105,7 @@ struct GameInfo {
     int nbPlayerMax;
     std::vector<std::string> playersNames;
     GameInfo() = default;
-    GameInfo(std::string fileName_, int gameId_, int nbPlayerMax_, std::vector<std::string> playersNames_):
-            filename(std::move(fileName_)),
-            gameId(gameId_),
-            nbPlayerMax(nbPlayerMax_),
-            playersNames(std::move(playersNames_)) {}
+    GameInfo(std::string fileName_, int gameId_, int nbPlayerMax_, std::vector<std::string> playersNames_);
 
     template <class Archive>
     void save(Archive & ar) const {
@@ -126,19 +122,13 @@ struct GameInfo {
         ar(nbPlayerMax);
         ar(playersNames);
     }
-    bool operator==(GameInfo const & rhs) const {
-        return
-                this->filename == rhs.filename
-                && this->gameId == rhs.gameId
-                && this->nbPlayerMax == rhs.nbPlayerMax
-                && this->playersNames == rhs.playersNames;
-    }
+    bool operator==(GameInfo const & rhs) const;
 
 };
 
 struct QueryListAnswer {
     std::vector<GameInfo> value;
-    QueryListAnswer(std::vector<GameInfo> gi = std::vector<GameInfo>()): value(std::move(gi)) {}
+    explicit QueryListAnswer(std::vector<GameInfo> gi = std::vector<GameInfo>());
 
     template <class Archive>
     void save(Archive & ar) const {
@@ -148,7 +138,7 @@ struct QueryListAnswer {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryListAnswer const & rhs) const { return this->value == rhs.value; }
+    bool operator==(QueryListAnswer const & rhs) const;
 };
 
 struct CreateGame {
@@ -170,12 +160,7 @@ struct CreateGame {
         ar(nbPlayerMax);
     }
 
-    bool operator==(CreateGame const & rhs) const {
-        return
-                this->fileName == rhs.fileName
-                && this->playerName == rhs.playerName
-                && this->nbPlayerMax == rhs.nbPlayerMax;
-    }
+    bool operator==(CreateGame const & rhs) const;
 };
 
 struct QueryCreateGame {
@@ -189,9 +174,7 @@ struct QueryCreateGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryCreateGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(QueryCreateGame const & rhs) const;
 };
 
 struct AnswerCreateGame {
@@ -205,9 +188,7 @@ struct AnswerCreateGame {
     template <class Archive>
     void load(Archive & ar) { ar(statusOrId); }
 
-    bool operator==(AnswerCreateGame const & rhs) const {
-        return this->statusOrId == rhs.statusOrId;
-    }
+    bool operator==(AnswerCreateGame const & rhs) const;
 };
 
 struct JoinGameInfo {
@@ -226,9 +207,7 @@ struct JoinGameInfo {
         ar(playerName);
     }
 
-    bool operator==(JoinGameInfo const & rhs) const {
-        return this->gameId == rhs.gameId && this->playerName == rhs.playerName;
-    }
+    bool operator==(JoinGameInfo const & rhs) const;
 };
 
 struct QueryJoinGame {
@@ -242,9 +221,7 @@ struct QueryJoinGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryJoinGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(QueryJoinGame const & rhs) const;
 };
 
 struct AnswerJoinGame {
@@ -258,9 +235,7 @@ struct AnswerJoinGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(AnswerJoinGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(AnswerJoinGame const & rhs) const;
 };
 
 struct GameState {
@@ -274,9 +249,7 @@ struct GameState {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(GameState const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(GameState const & rhs) const;
 };
 
 struct NetInfo {
@@ -295,9 +268,7 @@ struct NetInfo {
         ar(port);
     }
 
-    bool operator==(NetInfo const & rhs) const {
-        return this->ip == rhs.ip && this->port == rhs.port;
-    }
+    bool operator==(NetInfo const & rhs) const;
 };
 
 struct GameStart {
@@ -311,9 +282,7 @@ struct GameStart {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(GameStart const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(GameStart const & rhs) const;
 };
 }
 }

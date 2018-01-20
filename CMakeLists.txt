@@ -73,7 +73,9 @@ set(NETWORK_SOURCES
 		${PROJECT_SOURCE_DIR}/src/network/Buffer.h
 		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
 
-set(TCP_PROTOCOL_HEADER ${PROJECT_SOURCE_DIR}/src/tcp/protocol.h)
+set(TCP_PROTOCOL
+		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.h
+		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.cc)
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -139,7 +141,7 @@ target_link_libraries(rtype_test
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 target_sources(rtype_test
-		PRIVATE ${SOURCES} ${TCP_PROTOCOL_HEADER}
+		PRIVATE ${SOURCES} ${TCP_PROTOCOL}
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)
