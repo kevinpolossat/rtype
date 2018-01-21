@@ -99,3 +99,19 @@ void Connection::handleGameState(std::string const &json) {
 void Connection::handleGameStart(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 }
+
+std::string const &Connection::getName() const {
+    return name_;
+}
+
+void Connection::setName(std::string name) {
+    name_ = std::move(name);
+}
+
+int Connection::getIdGame() const {
+    return idGame_;
+}
+
+void Connection::setIdGame(int idGame) {
+    idGame_ = idGame;
+}

@@ -58,6 +58,11 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/Connection.h
 		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.cc
 		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.h
+		${CMAKE_SOURCE_DIR}/src/server/GameManager.cc
+		${CMAKE_SOURCE_DIR}/src/server/GameManager.h
+		${CMAKE_SOURCE_DIR}/src/server/GameLobby.cc
+		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
+		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES

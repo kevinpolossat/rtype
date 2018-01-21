@@ -20,6 +20,10 @@ public:
     Connection & operator = (Connection const & other) = delete;
     void start();
     void stop();
+    std::string const & getName() const;
+    void setName(std::string name);
+    int getIdGame() const;
+    void setIdGame(int idGame);
 private:
     void doRead_();
     void doWrite_();
@@ -30,6 +34,9 @@ private:
     std::string bufferWrite_;
     std::string packet_;
     rtype::protocol_tcp::Header h_;
+    std::string name_;
+    int idGame_ = 0;
+
     using Handle = void (Connection::*)(std::string const & json);
     static std::array<Handle, 9> const handles_;
 
