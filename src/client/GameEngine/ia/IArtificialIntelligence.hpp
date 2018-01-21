@@ -31,7 +31,7 @@ public:
 	virtual ~IArtificialIntelligence() = default;
 
 	virtual IArtificialIntelligence *NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) = 0;
-
+	// CORE
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) = 0;
 
 	virtual bool setDamages(uint32_t dmg) = 0;

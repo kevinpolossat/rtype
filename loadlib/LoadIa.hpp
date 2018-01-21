@@ -11,8 +11,9 @@
 #elif defined (_WIN32) || defined (_WIN64)
   #include <windows.h>
   #include "dirent.h"
-typedef void *(*type)(int, int, int, int);
 #endif
+
+typedef void *(*type)(int, int, int, int);
 
 class loadIa
 {
@@ -20,12 +21,12 @@ public:
   loadIa(std::string pathdir, int width, int height);
   ~loadIa();
   int  getNbIa();
-  std::shared_ptr<IArtificialIntelligence> getIa(int idx);
+  IArtificialIntelligence *getIa(int idx);
 
 private:
     int width;
     int height;
     int x;
     int y;
-    std::vector<std::shared_ptr<IArtificialIntelligence>> _ias;
+    std::vector<IArtificialIntelligence *> _ias;
 };

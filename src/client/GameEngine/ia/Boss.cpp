@@ -74,6 +74,61 @@ Boss::Boss(Boss *c)
 	this->setTurn(c->getTurn());
 }
 
+IArtificialIntelligence *Boss::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+{
+	return new Boss(myX, myY, width, height);
+}
+
+bool Boss::setDamages(uint32_t dmg)
+{
+		uint32_t l = this->getLife();
+
+		this->setLife(l - dmg);
+		return (this->getLife() > 0);
+}
+
+// SETTER | GETTER
+const AIPosition Boss::getPosition() const { return _pos; }
+void Boss::setPosition(const AIPosition p) { _pos = p; }
+
+const std::string &Boss::getName() const { return _name; }
+const void Boss::setName(const std::string &n) { _name = n; }
+
+const uint32_t Boss::getLife() const { return _life; }
+void Boss::setLife(const uint32_t l) { _life = l; }
+
+const uint32_t Boss::getWidth() const { return _width; }
+void Boss::setWidth(const uint32_t l) { _width = l; }
+
+const uint32_t Boss::getHeight() const { return _height; }
+void Boss::setHeight(const uint32_t l) { _height = l; }
+
+const bool Boss::getShoot() const { return _shoot; }
+void Boss::setShoot(const bool x) { _shoot = x; }
+
+const uint32_t Boss::getTurn() const { return _turn; }
+void Boss::setTurn(const uint32_t t) { _turn = t; }
+
+void Boss::setShootVector(const vec2D x) {_shootVector = x;}
+const vec2D Boss::getShootVector() const {return _shootVector;}
+
+AIPosition Boss::getNearPlayer(std::vector<AIPosition>& players) const
+{
+	double min = static_cast<double>(_height) * static_cast<double>(_width);
+	int minIndex = 0;
+	for (int i = 0; i < players.size(); i++)
+	{
+		double stock = sqrt((this->getPosition().X - players.at(i).X) * (this->getPosition().X - players.at(i).X)
+												+ (this->getPosition().Y - players.at(i).Y) * (this->getPosition().Y - players.at(i). Y));
+		if (stock < min)
+		{
+			min = stock;
+			minIndex = i;
+		}
+	}
+	return players.at(minIndex);
+}
+
 Boss::Boss(const int myX, const int myY, const int width, const int height)
 {
   AIPosition p;
@@ -91,7 +146,7 @@ Boss::Boss(const int myX, const int myY, const int width, const int height)
   _YBox = 3;
 }
 
-Action Boss::actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos)
+Action Boss::actualize(std::vector<AIPosition>& enemies, std::vector<AIPosition>& shoots, AIPosition myPos)
 {
   this->setTurn(this->getTurn() + 1);
   this->setPosition(myPos);

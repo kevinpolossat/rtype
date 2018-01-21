@@ -130,7 +130,7 @@ ge::Input::~Input()
 	IA Member Functions
 */
 
-ge::Ia::Ia(std::shared_ptr<IArtificialIntelligence> x) : ge::Component("Ia"), ia(x)
+ge::Ia::Ia(IArtificialIntelligence *x) : ge::Component("Ia"), ia(x)
 {
 }
 

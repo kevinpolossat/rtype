@@ -13,7 +13,7 @@ void *dload(const char *path_lib)
   return(handle);
 }
 
-IArtificialIntelligence *dlib(void *handle,int width,int height, int x, int y)
+IArtificialIntelligence *dlib(void *handle, int width,int height, int x, int y)
 {
   IArtificialIntelligence *(*ptr)(int, int, int, int);
   ptr = reinterpret_cast<IArtificialIntelligence *(*)(int, int, int, int)>(dlsym(handle, "createLib"));
@@ -22,7 +22,7 @@ IArtificialIntelligence *dlib(void *handle,int width,int height, int x, int y)
     std::cout << dlerror() << std::endl;
     return (0);
   }
-    return(ptr(x, y, width, height));
+    return(ptr(x, y, width, height)->NewIA(x, y, width, height));
 }
 
 void dunload(void *handle)
@@ -48,11 +48,11 @@ HINSTANCE dload(const char *path_lib)
 IArtificialIntelligence *dlib(HINSTANCE lhandle,int width,int height, int x , int y)
 {
   type funci = (type)GetProcAddress(lhandle, "createLib");
-    if (!funci)
-    {
-      std::cout << "could not locate the function" << std::endl;
-      return NULL;
-    }
+  if (!funci)
+  {
+    std::cout << "could not locate the function" << std::endl;
+    return NULL;
+  }
   void *monster1 = funci(x, y, width, height);
   return(reinterpret_cast<IArtificialIntelligence*>(monster1));
 }
@@ -64,18 +64,24 @@ std::vector<std::string> getcontents(std::string pathdir)
   DIR *folder;
   dirent *file;
   std::vector<std::string> names;
+
   if ((folder = opendir(pathdir.c_str())) == NULL)
+  {
+    std::cerr << "ERROR OPENDIR" << std::endl;
     exit(0);
+  }
   while((file = readdir(folder)))
   {
     if (file->d_name != "." && file->d_name != "..")
     {
-      //std::cout << file->d_name << '\n';
       names.push_back(file->d_name);
     }
   }
   if (closedir(folder) == -1)
+  {
+    std::cerr << "ERROR CLOSEDIR" << std::endl;
     exit(0);
+  }
   return(names);
 }
 
@@ -84,15 +90,15 @@ loadIa::loadIa(std::string pathdir, int width, int height)
   this->width = width;
   this->height = height;
   this->x = this->width - 1;
-  this->y = rand() % this->height;
+  this->y = this->height / 2;
+
   for (auto it : getcontents(pathdir))
   {
     if (it != "." && it != "..")
     {
-      std::cout << "it = " << it << std::endl;
       std::string pathfile = pathdir + "/" + it;
       const char * path = pathfile.c_str();
-      _ias.push_back(std::make_shared<IArtificialIntelligence>(*dlib(dload(path), width, height, x, y)));
+      _ias.push_back(dlib(dload(path), width, height, x, y));
     }
   }
 }
@@ -102,12 +108,12 @@ int loadIa::getNbIa()
   return(_ias.size());
 }
 
-std::shared_ptr<IArtificialIntelligence> loadIa::getIa(int idx)
+IArtificialIntelligence *loadIa::getIa(int idx)
 {
   if(idx < _ias.size() && idx > -1)
-    return _ias[idx];
+    return _ias[idx]->NewIA(this->x, this->y, this->width, this->height);
   else
-    return (_ias[0]);
+    return (_ias[0])->NewIA(this->x, this->y, this->width, this->height);
 }
 
 loadIa::~loadIa()
@@ -134,4 +140,3 @@ int main(int ac, char ** av)
   while (std::cin.get() != '\n');
   return (0);
 } */
-

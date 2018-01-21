@@ -12,10 +12,10 @@
 #include <vector>
 #include <chrono>
 #include <stack>
-#include <client/GameEngine/Settings.h>
+#include <GameEngine/Settings.h>
 
 #include "Vector2D.h"
-#include "../../ia/IArtificialIntelligence.hpp"
+#include "../ia/IArtificialIntelligence.hpp"
 
 namespace ge {
 	#define TO_STRING( x ) #x
@@ -115,11 +115,11 @@ namespace ge {
 	CLASS_DECLARATION(Ia)
 
 	public:
-		Ia(std::shared_ptr<IArtificialIntelligence>);
+		Ia(IArtificialIntelligence*);
 
 		~Ia();
 
-		std::shared_ptr<IArtificialIntelligence> ia;
+		IArtificialIntelligence* ia;
 	};
 
 	struct Animation {

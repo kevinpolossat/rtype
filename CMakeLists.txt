@@ -43,7 +43,6 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
-		${CMAKE_SOURCE_DIR}/src/ia/IArtificialIntelligence.hpp
 		#[[add source files here]])
 
 set(SERVER_SOURCES
