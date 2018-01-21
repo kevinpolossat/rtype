@@ -67,7 +67,10 @@
 
 #include <vector>
 #include <string>
-#include <serialization/cereal/archives/portable_binary.hpp>
+#include <ostream>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
 
 namespace rtype {
 namespace protocol_tcp {
@@ -86,19 +89,20 @@ enum ProtocolId {
 
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
+static constexpr int headerSize = 9;
 
 struct Header {
-    ProtocolId id;
-    int size;
+    ProtocolId id = UNKNOWN;
 
     template<typename Archive>
     void serialize(Archive & ar) {
         ar(id);
-        ar(size);
     }
+    bool operator==(Header const & rhs) const;
 };
 
 struct QueryList {
+    static ProtocolId const Id;
     int value; // EMPTY
     template <class Archive>
     void save(Archive & ar) const {
@@ -137,9 +141,10 @@ struct GameInfo {
 
 };
 
-struct QueryListAnswer {
+struct AnswerList {
+    static ProtocolId const Id;
     std::vector<GameInfo> value;
-    explicit QueryListAnswer(std::vector<GameInfo> gi = std::vector<GameInfo>());
+    explicit AnswerList(std::vector<GameInfo> gi = std::vector<GameInfo>());
 
     template <class Archive>
     void save(Archive & ar) const {
@@ -149,7 +154,7 @@ struct QueryListAnswer {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryListAnswer const & rhs) const;
+    bool operator==(AnswerList const & rhs) const;
 };
 
 struct CreateGame {
@@ -175,6 +180,7 @@ struct CreateGame {
 };
 
 struct QueryCreateGame {
+    static ProtocolId const Id;
     CreateGame value;
 
     template <class Archive>
@@ -189,6 +195,7 @@ struct QueryCreateGame {
 };
 
 struct AnswerCreateGame {
+    static ProtocolId const Id;
     int statusOrId;
 
     template <class Archive>
@@ -222,6 +229,7 @@ struct JoinGameInfo {
 };
 
 struct QueryJoinGame {
+    static ProtocolId const Id;
     JoinGameInfo value;
 
     template <class Archive>
@@ -236,6 +244,7 @@ struct QueryJoinGame {
 };
 
 struct AnswerJoinGame {
+    static ProtocolId const Id;
     int value;
 
     template <class Archive>
@@ -250,6 +259,7 @@ struct AnswerJoinGame {
 };
 
 struct GameState {
+    static ProtocolId const Id;
     std::vector<std::string> value;
 
     template <class Archive>
@@ -283,6 +293,7 @@ struct NetInfo {
 };
 
 struct GameStart {
+    static ProtocolId const Id;
     NetInfo value;
 
     template <class Archive>
@@ -295,6 +306,19 @@ struct GameStart {
 
     bool operator==(GameStart const & rhs) const;
 };
+
+template<typename T>
+T extract(std::string const & s) {
+    T t;
+    std::stringstream ss;
+    ss << s;
+    {
+        cereal::JSONOutputArchive oa(ss);
+        oa(t);
+    }
+    return t;
+}
+
 }
 }
 

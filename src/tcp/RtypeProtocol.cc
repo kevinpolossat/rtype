@@ -2,9 +2,19 @@
 // Created by Kévin POLOSSAT on 20/01/2018.
 //
 
-#include "Protocol.h"
+#include "RtypeProtocol.h"
+#include <cereal/archives/json.hpp>
 
 using namespace rtype::protocol_tcp;
+
+rtype::protocol_tcp::ProtocolId const QueryList::Id = LIST_GAME;
+rtype::protocol_tcp::ProtocolId const AnswerList::Id = LIST_ANSWER;
+rtype::protocol_tcp::ProtocolId const QueryCreateGame::Id = CREATE_GAME;
+rtype::protocol_tcp::ProtocolId const AnswerCreateGame::Id = CREATE_GAME_ANSWER;
+rtype::protocol_tcp::ProtocolId const QueryJoinGame::Id = JOIN_GAME;
+rtype::protocol_tcp::ProtocolId const AnswerJoinGame::Id = JOIN_GAME_ANSWER;
+rtype::protocol_tcp::ProtocolId const GameState::Id = GAME_STATE;
+rtype::protocol_tcp::ProtocolId const GameStart::Id = GAME_START;
 
 bool QueryList::operator==(QueryList const & rhs) const { return this->value == rhs.value; }
 
@@ -26,9 +36,9 @@ bool GameInfo::operator==(GameInfo const & rhs) const {
             && this->playersNames == rhs.playersNames;
 }
 
-QueryListAnswer::QueryListAnswer(std::vector<GameInfo> gi): value(std::move(gi)) {}
+AnswerList::AnswerList(std::vector<GameInfo> gi): value(std::move(gi)) {}
 
-bool QueryListAnswer::operator==(QueryListAnswer const & rhs) const { return this->value == rhs.value; }
+bool AnswerList::operator==(AnswerList const & rhs) const { return this->value == rhs.value; }
 
 bool CreateGame::operator==(CreateGame const & rhs) const {
     return
@@ -68,4 +78,8 @@ bool NetInfo::operator==(NetInfo const & rhs) const {
 
 bool GameStart::operator==(GameStart const & rhs) const {
     return this->value == rhs.value;
+}
+
+bool Header::operator==(Header const &rhs) const {
+    return this->id == rhs.id;
 }

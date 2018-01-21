@@ -44,7 +44,12 @@ set(CLIENT_SOURCES
 		#[[add source files here]])
 
 set(SERVER_SOURCES
-
+		${CMAKE_SOURCE_DIR}/src/server/Server.cc
+		${CMAKE_SOURCE_DIR}/src/server/Server.h
+		${CMAKE_SOURCE_DIR}/src/server/Connection.cc
+		${CMAKE_SOURCE_DIR}/src/server/Connection.h
+		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.cc
+		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -74,8 +79,8 @@ set(NETWORK_SOURCES
 		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
 
 set(TCP_PROTOCOL
-		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.h
-		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.cc)
+		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.h
+		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.cc)
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -118,9 +123,12 @@ set_target_properties(rtype_server
 		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 target_sources(rtype_server
 		PRIVATE ${SERVER_SOURCES}
-		PRIVATE ${NETWORK_SOURCES})
+		PRIVATE ${NETWORK_SOURCES}
+		PRIVATE ${TCP_PROTOCOL})
 target_include_directories(rtype_server
-		PRIVATE ./src/network)
+		PRIVATE ./src/network
+		PRIVATE ${CEREAL_HEADER}
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp)
 
 enable_testing()
 #test executable
