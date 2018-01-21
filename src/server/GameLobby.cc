@@ -6,22 +6,29 @@
 
 rtype::GameLobby::GameLobby(
         GameManager &gm,
-        rtype::protocol_tcp::GameInfo const &gi,
-        int uid): gm_(gm), gi_(gi), id_(uid) {}
-
-void rtype::GameLobby::joinGame(std::shared_ptr<Connection> cptr) {
+        rtype::protocol_tcp::CreateGame const &cg,
+        std::shared_ptr<Connection> cptr,
+        int uid):
+        gm_(gm) {
+    gi_.gameId = uid;
+    gi_.nbPlayerMax = cg.nbPlayerMax;
+    gi_.filename = cg.fileName;
+    gi_.playersNames.push_back(cg.playerName);
     cs_.push_back(cptr);
-    gi_.playersNames.push_back(cptr->getName());
+}
+
+void rtype::GameLobby::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
+    cs_.push_back(cptr);
+    gi_.playersNames.push_back(jgi.playerName);
 }
 
 void rtype::GameLobby::leaveGame(std::shared_ptr<Connection> cptr) {
-    cs_.erase(std::remove(cs_.begin(), cs_.end(), cptr), cs_.end());
-    gi_.playersNames.erase(
-            std::remove(
-                    gi_.playersNames.begin(),
-                    gi_.playersNames.end(),
-                    cptr->getName()),
-            gi_.playersNames.end());
+    auto it = std::find(cs_.begin(), cs_.end(), cptr);
+    if (it != cs_.end()) {
+        auto i = it - cs_.begin();
+        cs_.erase(it);
+        gi_.playersNames.erase(gi_.playersNames.begin() + i);
+    }
 }
 
 bool rtype::GameLobby::isFull() {
@@ -33,7 +40,7 @@ bool rtype::GameLobby::isEmpty() {
 }
 
 int rtype::GameLobby::getId() const {
-    return id_;
+    return gi_.gameId;
 }
 
 rtype::protocol_tcp::GameInfo const &rtype::GameLobby::getGameInfo() const {

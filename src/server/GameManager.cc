@@ -6,9 +6,10 @@
 
 rtype::GameManager::GameManager(std::unique_ptr<rtype::GameLauncher> gl): launcher_(std::move(gl)) {}
 
-int rtype::GameManager::createGame(rtype::protocol_tcp::GameInfo const &gameInfo, std::shared_ptr<Connection> cptr) {
-    static int uid = 0;
-
+int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, std::shared_ptr<Connection> cptr) {
+    static int uid = 1;
+    auto gl = std::make_shared<GameLobby>(*this, cg, cptr, uid);
+    lobbies_.push_back(gl);
     uid += 1;
     if (uid < 1) {
         uid = 1;
@@ -16,10 +17,11 @@ int rtype::GameManager::createGame(rtype::protocol_tcp::GameInfo const &gameInfo
     return uid;
 }
 
-bool rtype::GameManager::joinGame(int uid, std::shared_ptr<Connection> cptr) {
+bool rtype::GameManager::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
+    auto uid = jgi.gameId;
     auto iOpt = std::find_if(lobbies_.begin(), lobbies_.end(), [uid](auto const & l){ return l->getId() == uid; });
     if (iOpt != lobbies_.end()) {
-        (*iOpt)->joinGame(cptr);
+        (*iOpt)->joinGame(jgi, cptr);
         if ((*iOpt)->isFull()) {
             if (launcher_) {
                 auto ret = launcher_->launch(*iOpt);

@@ -29,7 +29,6 @@ public:
     void setIdGame(int idGame);
 private:
     void doRead_();
-    void doWrite_();
     void onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte, lw_network::error_code ec);
     void send_(std::string &&s);
 
@@ -38,7 +37,6 @@ private:
     ConnectionManager &cm_;
     rtype::GameManager &gm_;
     std::array<char, 1024> bufferRead_;
-    std::string bufferWrite_;
     std::string packet_;
     rtype::protocol_tcp::Header h_;
     std::string name_;

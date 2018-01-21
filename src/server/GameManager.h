@@ -19,8 +19,8 @@ public:
     GameManager & operator = (GameManager const & other) = delete;
     GameManager & operator = (GameManager && other) = delete;
 
-    int createGame(rtype::protocol_tcp::GameInfo const & gameInfo, std::shared_ptr<Connection> cptr);
-    bool joinGame(int uid, std::shared_ptr<Connection> cptr);
+    int createGame(rtype::protocol_tcp::CreateGame const &cg, std::shared_ptr<Connection> cptr);
+    bool joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr);
     bool leaveGame(int uid, std::shared_ptr<Connection> cptr);
     std::vector<rtype::protocol_tcp::GameInfo> getAllGameInfo() const;
 private:

@@ -13,13 +13,13 @@ namespace rtype {
 class GameManager;
 class GameLobby {
 public:
-    GameLobby(GameManager & gm, rtype::protocol_tcp::GameInfo const & gi, int uid);
+    GameLobby(GameManager & gm, rtype::protocol_tcp::CreateGame const & gi, std::shared_ptr<Connection> cptr, int uid);
     GameLobby(GameLobby const &) = delete;
     GameLobby(GameLobby &&) = delete;
     GameLobby & operator = (GameLobby const &) = delete;
     GameLobby & operator = (GameLobby &&) = delete;
 
-    void joinGame(std::shared_ptr<Connection> cptr);
+    void joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr);
     void leaveGame(std::shared_ptr<Connection> cptr);
 
     bool isFull();
@@ -28,7 +28,6 @@ public:
     int getId() const;
     rtype::protocol_tcp::GameInfo const & getGameInfo() const;
 private:
-    int id_;
     std::vector<std::shared_ptr<Connection>> cs_;
     rtype::protocol_tcp::GameInfo gi_;
     GameManager &gm_;

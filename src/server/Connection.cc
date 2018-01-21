@@ -43,16 +43,6 @@ void Connection::onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte,
 //TODO HANDLE ERROR
 }
 
-void Connection::doWrite_() {
-    s_.async_write(
-            lw_network::Buffer(const_cast<void *>(reinterpret_cast<void const *>(bufferWrite_.data())),
-                               bufferWrite_.size()),
-            [this](std::size_t, lw_network::error_code) {
-                doRead_();
-            }
-    );
-}
-
 void Connection::doRead_() {
     s_.async_read_some(
             lw_network::Buffer(bufferRead_.data(), bufferRead_.size()),
@@ -81,31 +71,36 @@ void Connection::handleUnknown(std::string const &json) {
     h_ = rtype::protocol_tcp::extract<rtype::protocol_tcp::Header>(json);
 }
 
-void Connection::handleListQuery(std::string const &json) {
-    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryList>(json);
+void Connection::handleListQuery(std::string const &) {
     rtype::protocol_tcp::AnswerList qla;
     qla.value = std::move(gm_.getAllGameInfo());
-    bufferWrite_ = rtype::protocol_tcp::transform(qla);
+    send_(std::move(rtype::protocol_tcp::transform(qla)));
 }
 
-void Connection::handleListAnswer(std::string const &json) {
-    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
-}
+void Connection::handleListAnswer(std::string const &) {}
 
 void Connection::handleCreateGameQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryCreateGame>(json);
+    idGame_ = gm_.createGame(a.value, shared_from_this());
 }
 
-void Connection::handleCreateGameAnswer(std::string const &json) {
-    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerCreateGame>(json);
-}
+void Connection::handleCreateGameAnswer(std::string const &) {}
 
 void Connection::handleJoinGameQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryJoinGame>(json);
+    auto res = gm_.joinGame(a.value, shared_from_this());
+    if (res) {
+        idGame_ = a.value.gameId;
+    }
 }
 
 void Connection::handleJoinGameAnswer(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerJoinGame>(json);
+}
+
+void Connection::handleLeaveGame(std::string const &json) {
+    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryLeaveGame>(json);
+    idGame_ = 0;
 }
 
 void Connection::handleGameState(std::string const &json) {
@@ -116,14 +111,6 @@ void Connection::handleGameStart(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 }
 
-std::string const &Connection::getName() const {
-    return name_;
-}
-
-void Connection::setName(std::string name) {
-    name_ = std::move(name);
-}
-
 int Connection::getIdGame() const {
     return idGame_;
 }
@@ -132,9 +119,6 @@ void Connection::setIdGame(int idGame) {
     idGame_ = idGame;
 }
 
-void Connection::handleLeaveGame(std::string const &json) {
-    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryLeaveGame>(json);
-}
 
 void Connection::send_(std::string &&s) {
     auto obj = std::make_shared<std::string>(std::move(s));
