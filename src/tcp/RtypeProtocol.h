@@ -67,7 +67,10 @@
 
 #include <vector>
 #include <string>
-#include <serialization/cereal/archives/portable_binary.hpp>
+#include <ostream>
+#include <cereal/archives/json.hpp>
+#include <cereal/types/vector.hpp>
+#include <cereal/types/string.hpp>
 
 namespace rtype {
 namespace protocol_tcp {
@@ -86,8 +89,20 @@ enum ProtocolId {
 
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
+static constexpr int headerSize = 9;
+
+struct Header {
+    ProtocolId id = UNKNOWN;
+
+    template<typename Archive>
+    void serialize(Archive & ar) {
+        ar(id);
+    }
+    bool operator==(Header const & rhs) const;
+};
 
 struct QueryList {
+    static ProtocolId const Id;
     int value; // EMPTY
     template <class Archive>
     void save(Archive & ar) const {
@@ -96,7 +111,7 @@ struct QueryList {
 
     template <class Archive>
     void load(Archive & ar) { ar(value); }
-    bool operator==(QueryList const & rhs) const { return this->value == rhs.value; }
+    bool operator==(QueryList const & rhs) const;
 };
 
 struct GameInfo {
@@ -105,11 +120,7 @@ struct GameInfo {
     int nbPlayerMax;
     std::vector<std::string> playersNames;
     GameInfo() = default;
-    GameInfo(std::string fileName_, int gameId_, int nbPlayerMax_, std::vector<std::string> playersNames_):
-            filename(std::move(fileName_)),
-            gameId(gameId_),
-            nbPlayerMax(nbPlayerMax_),
-            playersNames(std::move(playersNames_)) {}
+    GameInfo(std::string fileName_, int gameId_, int nbPlayerMax_, std::vector<std::string> playersNames_);
 
     template <class Archive>
     void save(Archive & ar) const {
@@ -126,19 +137,14 @@ struct GameInfo {
         ar(nbPlayerMax);
         ar(playersNames);
     }
-    bool operator==(GameInfo const & rhs) const {
-        return
-                this->filename == rhs.filename
-                && this->gameId == rhs.gameId
-                && this->nbPlayerMax == rhs.nbPlayerMax
-                && this->playersNames == rhs.playersNames;
-    }
+    bool operator==(GameInfo const & rhs) const;
 
 };
 
-struct QueryListAnswer {
+struct AnswerList {
+    static ProtocolId const Id;
     std::vector<GameInfo> value;
-    QueryListAnswer(std::vector<GameInfo> gi = std::vector<GameInfo>()): value(std::move(gi)) {}
+    explicit AnswerList(std::vector<GameInfo> gi = std::vector<GameInfo>());
 
     template <class Archive>
     void save(Archive & ar) const {
@@ -148,7 +154,7 @@ struct QueryListAnswer {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryListAnswer const & rhs) const { return this->value == rhs.value; }
+    bool operator==(AnswerList const & rhs) const;
 };
 
 struct CreateGame {
@@ -170,15 +176,11 @@ struct CreateGame {
         ar(nbPlayerMax);
     }
 
-    bool operator==(CreateGame const & rhs) const {
-        return
-                this->fileName == rhs.fileName
-                && this->playerName == rhs.playerName
-                && this->nbPlayerMax == rhs.nbPlayerMax;
-    }
+    bool operator==(CreateGame const & rhs) const;
 };
 
 struct QueryCreateGame {
+    static ProtocolId const Id;
     CreateGame value;
 
     template <class Archive>
@@ -189,12 +191,11 @@ struct QueryCreateGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryCreateGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(QueryCreateGame const & rhs) const;
 };
 
 struct AnswerCreateGame {
+    static ProtocolId const Id;
     int statusOrId;
 
     template <class Archive>
@@ -205,9 +206,7 @@ struct AnswerCreateGame {
     template <class Archive>
     void load(Archive & ar) { ar(statusOrId); }
 
-    bool operator==(AnswerCreateGame const & rhs) const {
-        return this->statusOrId == rhs.statusOrId;
-    }
+    bool operator==(AnswerCreateGame const & rhs) const;
 };
 
 struct JoinGameInfo {
@@ -226,12 +225,11 @@ struct JoinGameInfo {
         ar(playerName);
     }
 
-    bool operator==(JoinGameInfo const & rhs) const {
-        return this->gameId == rhs.gameId && this->playerName == rhs.playerName;
-    }
+    bool operator==(JoinGameInfo const & rhs) const;
 };
 
 struct QueryJoinGame {
+    static ProtocolId const Id;
     JoinGameInfo value;
 
     template <class Archive>
@@ -242,12 +240,11 @@ struct QueryJoinGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(QueryJoinGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(QueryJoinGame const & rhs) const;
 };
 
 struct AnswerJoinGame {
+    static ProtocolId const Id;
     int value;
 
     template <class Archive>
@@ -258,12 +255,11 @@ struct AnswerJoinGame {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(AnswerJoinGame const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(AnswerJoinGame const & rhs) const;
 };
 
 struct GameState {
+    static ProtocolId const Id;
     std::vector<std::string> value;
 
     template <class Archive>
@@ -274,9 +270,7 @@ struct GameState {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(GameState const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(GameState const & rhs) const;
 };
 
 struct NetInfo {
@@ -295,12 +289,11 @@ struct NetInfo {
         ar(port);
     }
 
-    bool operator==(NetInfo const & rhs) const {
-        return this->ip == rhs.ip && this->port == rhs.port;
-    }
+    bool operator==(NetInfo const & rhs) const;
 };
 
 struct GameStart {
+    static ProtocolId const Id;
     NetInfo value;
 
     template <class Archive>
@@ -311,10 +304,21 @@ struct GameStart {
     template <class Archive>
     void load(Archive & ar) { ar(value); }
 
-    bool operator==(GameStart const & rhs) const {
-        return this->value == rhs.value;
-    }
+    bool operator==(GameStart const & rhs) const;
 };
+
+template<typename T>
+T extract(std::string const & s) {
+    T t;
+    std::stringstream ss;
+    ss << s;
+    {
+        cereal::JSONOutputArchive oa(ss);
+        oa(t);
+    }
+    return t;
+}
+
 }
 }
 
