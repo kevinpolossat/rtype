@@ -27,6 +27,15 @@ public:
 
     int getId() const;
     rtype::protocol_tcp::GameInfo const & getGameInfo() const;
+
+    template<typename T>
+    void notifyAll(T const & obj) const {
+        auto s = rtype::protocol_tcp::transform(obj);
+        for (auto c: cs_) {
+            c->sendString(s);
+        }
+    }
+
 private:
     std::vector<std::shared_ptr<Connection>> cs_;
     rtype::protocol_tcp::GameInfo gi_;

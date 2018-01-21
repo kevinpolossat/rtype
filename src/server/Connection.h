@@ -27,10 +27,10 @@ public:
     void setName(std::string name);
     int getIdGame() const;
     void setIdGame(int idGame);
+    void sendString(std::string s);
 private:
     void doRead_();
     void onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte, lw_network::error_code ec);
-    void send_(std::string &&s);
 
 private:
     lw_network::ReactiveSocket s_;

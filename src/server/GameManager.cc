@@ -17,20 +17,21 @@ int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, st
     return uid;
 }
 
-bool rtype::GameManager::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
+rtype::GameManager::JoinGameResult rtype::GameManager::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
     auto uid = jgi.gameId;
     auto iOpt = std::find_if(lobbies_.begin(), lobbies_.end(), [uid](auto const & l){ return l->getId() == uid; });
     if (iOpt != lobbies_.end()) {
         (*iOpt)->joinGame(jgi, cptr);
         if ((*iOpt)->isFull()) {
             if (launcher_) {
-                auto ret = launcher_->launch(*iOpt);
+                auto success = launcher_->launch(*iOpt);
             }
             lobbies_.erase(iOpt);
+            return rtype::GameManager::JoinGameResult::STARTED;
         }
-        return true;
+        return rtype::GameManager::JoinGameResult::JOINED;
     }
-    return false;
+    return rtype::GameManager::JoinGameResult::FAILURE;
 }
 
 bool rtype::GameManager::leaveGame(int uid, std::shared_ptr<Connection> cptr) {
@@ -51,4 +52,9 @@ std::vector<rtype::protocol_tcp::GameInfo> rtype::GameManager::getAllGameInfo() 
         ret.push_back(gl->getGameInfo());
     }
     return ret;
+}
+
+std::shared_ptr<rtype::GameLobby> rtype::GameManager::getGameById(int uid) {
+    auto iOpt = std::find_if(lobbies_.begin(), lobbies_.end(), [uid](auto const & l) { return l->getId() == uid; });
+    return iOpt == lobbies_.end() ? nullptr : *iOpt;
 }
