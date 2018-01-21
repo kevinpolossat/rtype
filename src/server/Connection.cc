@@ -2,11 +2,13 @@
 // Created by Kévin POLOSSAT on 14/01/2018.
 //
 
+#include <functional>
 #include <iostream>
 #include <sstream>
 #include "Buffer.h"
 #include "Connection.h"
 #include "ConnectionManager.h"
+#include "GameManager.h"
 
 std::array<Connection::Handle, 10> const Connection::handles_ = {
         &Connection::handleUnknown,
@@ -35,6 +37,10 @@ void Connection::start() {
 
 void Connection::stop() {
     s_.close();
+}
+
+void Connection::onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte, lw_network::error_code ec) {
+//TODO HANDLE ERROR
 }
 
 void Connection::doWrite_() {
@@ -77,7 +83,9 @@ void Connection::handleUnknown(std::string const &json) {
 
 void Connection::handleListQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryList>(json);
-    auto qla =
+    rtype::protocol_tcp::AnswerList qla;
+    qla.value = std::move(gm_.getAllGameInfo());
+    bufferWrite_ = rtype::protocol_tcp::transform(qla);
 }
 
 void Connection::handleListAnswer(std::string const &json) {
@@ -126,4 +134,11 @@ void Connection::setIdGame(int idGame) {
 
 void Connection::handleLeaveGame(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryLeaveGame>(json);
+}
+
+void Connection::send_(std::string &&s) {
+    auto obj = std::make_shared<std::string>(std::move(s));
+    s_.async_write(
+            lw_network::Buffer(static_cast<void *>(const_cast<char *>(obj->data())), obj->size()),
+            std::bind(&Connection::onSend_, this, obj, std::placeholders::_1, std::placeholders::_2));
 }

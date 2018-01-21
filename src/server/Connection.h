@@ -10,8 +10,10 @@
 #include "ReactiveSocket.h"
 #include "Protocol.h"
 #include "RtypeProtocol.h"
-#include "GameManager.h"
 
+namespace rtype {
+class GameManager;
+}
 class ConnectionManager;
 
 class Connection: public std::enable_shared_from_this<Connection> {
@@ -28,6 +30,9 @@ public:
 private:
     void doRead_();
     void doWrite_();
+    void onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte, lw_network::error_code ec);
+    void send_(std::string &&s);
+
 private:
     lw_network::ReactiveSocket s_;
     ConnectionManager &cm_;

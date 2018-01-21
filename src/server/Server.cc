@@ -8,7 +8,7 @@
 #include "Server.h"
 #include "Resolver.h"
 
-Server::Server(): reactor_(), acceptor_(reactor_) {
+Server::Server(): reactor_(), acceptor_(reactor_), gameManager_(nullptr /*TODO FIXME*/) {
     lw_network::Reactor reactor;
     lw_network::Resolver re;
 	re
@@ -52,7 +52,7 @@ void Server::run() {
 void Server::doAccept_() {
 	acceptor_.asyncAccept(
             [this](lw_network::ReactiveSocket peer, lw_network::error_code ec) {
-                connectionManager_.start(std::make_shared<Connection>(std::move(peer), connectionManager_));
+                connectionManager_.start(std::make_shared<Connection>(std::move(peer), connectionManager_, gameManager_));
                 this->doAccept_();
             }
     );
