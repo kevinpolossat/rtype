@@ -21,7 +21,13 @@ std::array<Connection::Handle, 10> const Connection::handles_ = {
         &Connection::handleGameStart
 };
 
-Connection::Connection(lw_network::ReactiveSocket s, ConnectionManager &cm) : s_(std::move(s)), cm_(cm) {}
+Connection::Connection(
+        lw_network::ReactiveSocket s,
+        ConnectionManager &cm,
+        rtype::GameManager & gameManager):
+        s_(std::move(s)),
+        cm_(cm),
+        gm_(gameManager) {}
 
 void Connection::start() {
     doRead_();
@@ -71,6 +77,7 @@ void Connection::handleUnknown(std::string const &json) {
 
 void Connection::handleListQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryList>(json);
+    auto qla =
 }
 
 void Connection::handleListAnswer(std::string const &json) {

@@ -52,7 +52,7 @@ void Server::run() {
 void Server::doAccept_() {
 	acceptor_.asyncAccept(
             [this](lw_network::ReactiveSocket peer, lw_network::error_code ec) {
-                manager_.start(std::make_shared<Connection>(std::move(peer), manager_));
+                connectionManager_.start(std::make_shared<Connection>(std::move(peer), connectionManager_));
                 this->doAccept_();
             }
     );

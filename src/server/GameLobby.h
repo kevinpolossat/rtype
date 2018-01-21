@@ -26,6 +26,7 @@ public:
     bool isEmpty();
 
     int getId() const;
+    rtype::protocol_tcp::GameInfo const & getGameInfo() const;
 private:
     int id_;
     std::vector<std::shared_ptr<Connection>> cs_;

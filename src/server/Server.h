@@ -9,6 +9,7 @@
 #include <Reactor.h>
 #include <Acceptor.h>
 #include "ConnectionManager.h"
+#include "GameManager.h"
 
 class Server {
 public:
@@ -20,7 +21,8 @@ private:
 private:
     lw_network::Reactor reactor_;
     lw_network::Acceptor acceptor_;
-    ConnectionManager manager_;
+    ConnectionManager connectionManager_;
+    rtype::GameManager gameManager_;
 
 };
 

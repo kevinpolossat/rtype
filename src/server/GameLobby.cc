@@ -35,3 +35,7 @@ bool rtype::GameLobby::isEmpty() {
 int rtype::GameLobby::getId() const {
     return id_;
 }
+
+rtype::protocol_tcp::GameInfo const &rtype::GameLobby::getGameInfo() const {
+    return gi_;
+}

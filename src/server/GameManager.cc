@@ -42,3 +42,11 @@ bool rtype::GameManager::leaveGame(int uid, std::shared_ptr<Connection> cptr) {
     }
     return false;
 }
+
+std::vector<rtype::protocol_tcp::GameInfo> rtype::GameManager::getAllGameInfo() const {
+    std::vector<rtype::protocol_tcp::GameInfo> ret;
+    for (auto const & gl: lobbies_) {
+        ret.push_back(gl->getGameInfo());
+    }
+    return ret;
+}
