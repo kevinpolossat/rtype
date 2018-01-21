@@ -21,7 +21,9 @@ bool rtype::GameManager::joinGame(int uid, std::shared_ptr<Connection> cptr) {
     if (iOpt != lobbies_.end()) {
         (*iOpt)->joinGame(cptr);
         if ((*iOpt)->isFull()) {
-            auto ret = launcher_->launch(*iOpt);
+            if (launcher_) {
+                auto ret = launcher_->launch(*iOpt);
+            }
             lobbies_.erase(iOpt);
         }
         return true;

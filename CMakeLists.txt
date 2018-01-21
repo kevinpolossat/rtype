@@ -149,24 +149,22 @@ target_include_directories(rtype_server
 
 enable_testing()
 #test executable
-add_executable(rtype_test
+add_executable(rtype_server_test
 		${PROJECT_SOURCE_DIR}/test/test.cc
 		#[[add test source files here]])
 
-target_include_directories(rtype_test
+target_include_directories(rtype_server_test
 		PRIVATE "${gtest_SOURCE_DIR}/include"
 		PRIVATE "${gmock_SOURCE_DIR}/include"
-		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/server
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
-		PRIVATE src/client/GameEngine
 		PRIVATE ${SFML_INCLUDE_DIR}
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
 		PRIVATE ${CEREAL_HEADER})
-target_link_libraries(rtype_test
-		PRIVATE gmock_main
-		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
-target_sources(rtype_test
-		PRIVATE ${SOURCES} ${TCP_PROTOCOL}
+target_link_libraries(rtype_server_test
+		PRIVATE gmock_main)
+target_sources(rtype_server_test
+		PRIVATE ${TCP_PROTOCOL}
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
-add_test(NAME testing_rtype_test COMMAND rtype_test)
+add_test(NAME testing_rtype_test COMMAND rtype_server_test)

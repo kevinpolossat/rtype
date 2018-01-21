@@ -83,13 +83,13 @@ enum ProtocolId {
     CREATE_GAME_ANSWER,
     JOIN_GAME,
     JOIN_GAME_ANSWER,
+    LEAVE_GAME,
     GAME_STATE,
     GAME_START
 };
 
 static constexpr int not_ok = -1;
 static constexpr int ok = 0;
-static constexpr int headerSize = 9;
 
 struct Header {
     ProtocolId id = UNKNOWN;
@@ -161,12 +161,14 @@ struct CreateGame {
     std::string fileName;
     std::string playerName;
     int nbPlayerMax;
+    std::string port;
 
     template <class Archive>
     void save(Archive & ar) const {
         ar(fileName);
         ar(playerName);
         ar(nbPlayerMax);
+        ar(port);
     }
 
     template <class Archive>
@@ -174,6 +176,7 @@ struct CreateGame {
         ar(fileName);
         ar(playerName);
         ar(nbPlayerMax);
+        ar(port);
     }
 
     bool operator==(CreateGame const & rhs) const;
@@ -212,17 +215,20 @@ struct AnswerCreateGame {
 struct JoinGameInfo {
     int gameId;
     std::string playerName;
+    std::string port;
 
     template <class Archive>
     void save(Archive & ar) const {
         ar(gameId);
         ar(playerName);
+        ar(port);
     }
 
     template <class Archive>
     void load(Archive & ar) {
         ar(gameId);
         ar(playerName);
+        ar(port);
     }
 
     bool operator==(JoinGameInfo const & rhs) const;
@@ -241,6 +247,22 @@ struct QueryJoinGame {
     void load(Archive & ar) { ar(value); }
 
     bool operator==(QueryJoinGame const & rhs) const;
+};
+
+struct QueryLeaveGame {
+    static ProtocolId  const Id;
+    int value;
+
+    template<typename Archive>
+    void save(Archive & ar) const {
+        ar(value);
+    }
+
+    template<typename Archive>
+    void load(Archive & ar) {
+        ar(value);
+    }
+    bool operator==(QueryLeaveGame const & rhs) const;
 };
 
 struct AnswerJoinGame {

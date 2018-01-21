@@ -38,7 +38,7 @@ private:
     int idGame_ = 0;
 
     using Handle = void (Connection::*)(std::string const & json);
-    static std::array<Handle, 9> const handles_;
+    static std::array<Handle, 10> const handles_;
 
     void handleUnknown(std::string const & json);
     void handleListQuery(std::string const & json);
@@ -47,6 +47,7 @@ private:
     void handleCreateGameAnswer(std::string const & json);
     void handleJoinGameQuery(std::string const & json);
     void handleJoinGameAnswer(std::string const & json);
+    void handleLeaveGame(std::string const & json);
     void handleGameState(std::string const & json);
     void handleGameStart(std::string const & json);
 };

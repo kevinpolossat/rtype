@@ -45,7 +45,7 @@ TEST(Serialization, ProtocolQueryListAnswer) {
 
 TEST(Serialization, ProtocolCreateGame) {
     rtype::protocol_tcp::QueryCreateGame qcg;
-    qcg.value = {"toto.txt", "tata", 3};
+    qcg.value = {"toto.txt", "tata", 3, "4242"};
 
     std::stringstream ss;
     {
@@ -80,7 +80,7 @@ TEST(Serialization, ProtocolAnswerCreateGame) {
 
 TEST(Serialization, ProtocolQueryJoinGame) {
     rtype::protocol_tcp::QueryJoinGame qjg;
-    qjg.value = {99, "titi"};
+    qjg.value = {99, "titi", "4242"};
 
     std::stringstream ss;
 
@@ -175,4 +175,19 @@ TEST(Serialization, ExtractAndTransform) {
     rtype::protocol_tcp::Header h2 = {rtype::protocol_tcp::LIST_GAME};
     ASSERT_EQ(hql, h2);
     ASSERT_EQ(ql, ql2);
+}
+
+TEST(Serialization, ProtocolLeaveGame) {
+    rtype::protocol_tcp::QueryLeaveGame qlg = {42};
+    rtype::protocol_tcp::QueryLeaveGame qlg2;
+    std::stringstream ss;
+    {
+        cereal::JSONOutputArchive oa(ss);
+        oa(qlg);
+    }
+    {
+        cereal::JSONInputArchive ia(ss);
+        ia(qlg2);
+    }
+    ASSERT_EQ(qlg, qlg2);
 }

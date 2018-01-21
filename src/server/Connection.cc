@@ -8,7 +8,7 @@
 #include "Connection.h"
 #include "ConnectionManager.h"
 
-std::array<Connection::Handle, 9> const Connection::handles_ = {
+std::array<Connection::Handle, 10> const Connection::handles_ = {
         &Connection::handleUnknown,
         &Connection::handleListQuery,
         &Connection::handleListAnswer,
@@ -16,6 +16,7 @@ std::array<Connection::Handle, 9> const Connection::handles_ = {
         &Connection::handleCreateGameAnswer,
         &Connection::handleJoinGameQuery,
         &Connection::handleJoinGameAnswer,
+        &Connection::handleLeaveGame,
         &Connection::handleGameState,
         &Connection::handleGameStart
 };
@@ -114,4 +115,8 @@ int Connection::getIdGame() const {
 
 void Connection::setIdGame(int idGame) {
     idGame_ = idGame;
+}
+
+void Connection::handleLeaveGame(std::string const &json) {
+    auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryLeaveGame>(json);
 }

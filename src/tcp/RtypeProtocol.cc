@@ -13,6 +13,7 @@ rtype::protocol_tcp::ProtocolId const QueryCreateGame::Id = CREATE_GAME;
 rtype::protocol_tcp::ProtocolId const AnswerCreateGame::Id = CREATE_GAME_ANSWER;
 rtype::protocol_tcp::ProtocolId const QueryJoinGame::Id = JOIN_GAME;
 rtype::protocol_tcp::ProtocolId const AnswerJoinGame::Id = JOIN_GAME_ANSWER;
+rtype::protocol_tcp::ProtocolId const QueryLeaveGame::Id = LEAVE_GAME;
 rtype::protocol_tcp::ProtocolId const GameState::Id = GAME_STATE;
 rtype::protocol_tcp::ProtocolId const GameStart::Id = GAME_START;
 
@@ -44,7 +45,8 @@ bool CreateGame::operator==(CreateGame const & rhs) const {
     return
             this->fileName == rhs.fileName
             && this->playerName == rhs.playerName
-            && this->nbPlayerMax == rhs.nbPlayerMax;
+            && this->nbPlayerMax == rhs.nbPlayerMax
+            && this->port == rhs.port;
 }
 
 bool QueryCreateGame::operator==(QueryCreateGame const & rhs) const {
@@ -57,7 +59,7 @@ bool AnswerCreateGame::operator==(AnswerCreateGame const & rhs) const {
 
 
 bool JoinGameInfo::operator==(JoinGameInfo const & rhs) const {
-    return this->gameId == rhs.gameId && this->playerName == rhs.playerName;
+    return this->gameId == rhs.gameId && this->playerName == rhs.playerName && this->port == rhs.port;
 }
 
 bool QueryJoinGame::operator==(QueryJoinGame const & rhs) const {
@@ -82,4 +84,8 @@ bool GameStart::operator==(GameStart const & rhs) const {
 
 bool Header::operator==(Header const &rhs) const {
     return this->id == rhs.id;
+}
+
+bool QueryLeaveGame::operator==(QueryLeaveGame const &rhs) const {
+    return this->value == rhs.value;
 }
