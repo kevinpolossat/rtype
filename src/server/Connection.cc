@@ -9,7 +9,15 @@
 #include "ConnectionManager.h"
 
 std::array<Connection::Handle, 9> const Connection::handles_ = {
-
+        &Connection::handleUnknown,
+        &Connection::handleListQuery,
+        &Connection::handleListAnswer,
+        &Connection::handleCreateGameQuery,
+        &Connection::handleCreateGameAnswer,
+        &Connection::handleJoinGameQuery,
+        &Connection::handleJoinGameAnswer,
+        &Connection::handleGameState,
+        &Connection::handleGameStart
 };
 
 Connection::Connection(lw_network::ReactiveSocket s, ConnectionManager &cm) : s_(std::move(s)), cm_(cm) {}
@@ -39,7 +47,6 @@ void Connection::doRead_() {
                 if (nbyte > 0 && ec == lw_network::no_error) {
                     packet_.append(bufferRead_.data(), nbyte);
                     std::size_t p;
-                    std::cout << "before process[" << packet_ << "]" << std::endl;
                     while ((p = packet_.find("\r\n")) != std::string::npos) {
                         auto hId = h_.id;
                         (this->*handles_[h_.id])(packet_.substr(0, p));
@@ -47,7 +54,6 @@ void Connection::doRead_() {
                             h_.id = rtype::protocol_tcp::UNKNOWN;
                         }
                         packet_ = packet_.substr(p + 2/*discard \r\n*/);
-                        std::cout << packet_ << std::endl;
                     }
                     doRead_();
                 }

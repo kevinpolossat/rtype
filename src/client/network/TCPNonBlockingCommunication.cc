@@ -7,12 +7,14 @@
 #include "TCPNonBlockingCommunication.h"
 
 void rtype::network::TCPNonBlockingCommunication::send() {
-/*    while (!toSend_.empty()) {
+    while (!toSend_.empty()) {
         std::string & s = toSend_.front();
         auto ec = lw_network::no_error;
-        auto b = lw_network::Buffer(bufferRead_.data(), bufferRead_.size());
+        auto b = lw_network::Buffer(const_cast<char *>(s.c_str()), s.size());
+        std::cout << "sending : "  << packet_  << std::endl;
         while (!b.exhausted()) {
             auto nbyte = s_.send(b, 0, ec);
+            std::cout << "send=" << nbyte << std::endl;
             if (nbyte < 0 || ec != lw_network::no_error) {
                 break;
             }
@@ -28,7 +30,7 @@ void rtype::network::TCPNonBlockingCommunication::send() {
             s.assign(static_cast<char *>(b.Data()));
             break;
         }
-    }*/
+    }
 }
 
 void rtype::network::TCPNonBlockingCommunication::recv() {

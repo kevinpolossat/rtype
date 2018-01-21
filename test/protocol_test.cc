@@ -161,3 +161,18 @@ TEST(Serialization, ProtocolHeader) {
     }
     ASSERT_EQ(h, h2);
 }
+
+TEST(Serialization, ExtractAndTransform) {
+    rtype::protocol_tcp::QueryList ql;
+    auto s = rtype::protocol_tcp::transform(ql);
+    auto p = s.find("\r\n");
+    auto hs = s.substr(0, p);
+    auto qls = s.substr(p + 2/*discard \r\n*/);
+    qls.pop_back();
+    qls.pop_back();
+    auto hql = rtype::protocol_tcp::extract<rtype::protocol_tcp::Header>(hs);
+    auto ql2 = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryList>(qls);
+    rtype::protocol_tcp::Header h2 = {rtype::protocol_tcp::LIST_GAME};
+    ASSERT_EQ(hql, h2);
+    ASSERT_EQ(ql, ql2);
+}
