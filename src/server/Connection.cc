@@ -36,21 +36,24 @@ void Connection::doRead_() {
     s_.async_read_some(
             lw_network::Buffer(bufferRead_.data(), bufferRead_.size()),
             [this](std::size_t nbyte, lw_network::error_code ec) {
-                packet_.append(bufferRead_.data(), nbyte);
-                std::size_t p;
-                std::cout << packet_ << std::endl;
-                while ((p = packet_.find("\r\n")) != std::string::npos) {
-                    auto hId = h_.id;
-                    (this->*handles_[h_.id])(packet_.substr(0, p));
-                    if (hId != rtype::protocol_tcp::UNKNOWN) {
-                        h_.id = rtype::protocol_tcp::UNKNOWN;
+                if (nbyte > 0 && ec == lw_network::no_error) {
+                    packet_.append(bufferRead_.data(), nbyte);
+                    std::size_t p;
+                    std::cout << "before process[" << packet_ << "]" << std::endl;
+                    while ((p = packet_.find("\r\n")) != std::string::npos) {
+                        auto hId = h_.id;
+                        (this->*handles_[h_.id])(packet_.substr(0, p));
+                        if (hId != rtype::protocol_tcp::UNKNOWN) {
+                            h_.id = rtype::protocol_tcp::UNKNOWN;
+                        }
+                        packet_ = packet_.substr(p + 2/*discard \r\n*/);
+                        std::cout << packet_ << std::endl;
                     }
-                    packet_ = packet_.substr(p);
-                    std::cout << packet_ << std::endl;
+                    doRead_();
                 }
-//                this->bufferWrite_.assign(this->bufferRead_.data(), nbyte);
-//                std::cout << "[" << this->bufferWrite_ << "]" << std::endl;
-                doRead_();
+                else if (nbyte == 0) {
+                    cm_.stop(shared_from_this());
+                }
             }
     );
 }

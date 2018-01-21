@@ -313,10 +313,26 @@ T extract(std::string const & s) {
     std::stringstream ss;
     ss << s;
     {
-        cereal::JSONOutputArchive oa(ss);
+        cereal::JSONInputArchive oa(ss);
         oa(t);
     }
     return t;
+}
+
+template<typename T>
+std::string transform(T const & p) {
+    std::stringstream sH;
+    std::stringstream sT;
+    Header h = {T::Id};
+    {
+        cereal::JSONOutputArchive oa(sH);
+        oa(h);
+    }
+    {
+        cereal::JSONOutputArchive oa(sT);
+        oa(p);
+    }
+    return sH.str() + "\r\n" + sT.str() + "\r\n";
 }
 
 }

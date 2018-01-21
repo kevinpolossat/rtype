@@ -12,7 +12,7 @@ Server::Server(): reactor_(), acceptor_(reactor_) {
     lw_network::Reactor reactor;
     lw_network::Resolver re;
 	re
-            .SetService("27015")
+            .SetService("4242")
             .SetFamily(AF_UNSPEC)
             .SetSockType(SOCK_STREAM)
             .SetFlags(AI_PASSIVE);

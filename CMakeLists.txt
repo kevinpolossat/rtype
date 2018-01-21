@@ -41,6 +41,14 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+
+		# Network
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.h
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.cc
+		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.cc
+
 		#[[add source files here]])
 
 set(SERVER_SOURCES
@@ -98,11 +106,15 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googl
 
 #client
 add_executable(rtype_client src/client/main.cc)
-target_sources(rtype_client PRIVATE ${CLIENT_SOURCES})
+target_sources(rtype_client PRIVATE ${CLIENT_SOURCES} ${NETWORK_SOURCES} ${TCP_PROTOCOL})
 target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/network
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
+        PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${CEREAL_HEADER}
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
