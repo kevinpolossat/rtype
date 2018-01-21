@@ -10,11 +10,12 @@ int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, st
     static int uid = 1;
     auto gl = std::make_shared<GameLobby>(*this, cg, cptr, uid);
     lobbies_.push_back(gl);
+    auto retId = uid;
     uid += 1;
     if (uid < 1) {
         uid = 1;
     }
-    return uid;
+    return retId;
 }
 
 rtype::GameManager::JoinGameResult rtype::GameManager::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {

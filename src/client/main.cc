@@ -34,20 +34,34 @@ int main() {/*
         std::cout << "can't connect to server" << std::endl;
                   return 0;
     }
-/*    tcpConnection->addHandle(
+    tcpConnection->addHandle(
             rtype::protocol_tcp::LIST_ANSWER,
-            [](std::string const & json){
-                std::cout << "HANDLING[" << json << "]" << std::endl;
-                auto a = rtype::protocol_tcp:make:extract<rtype::protocol_tcp::AnswerList>(json);
-    });*/
-    nm.addCommuncation(tcpConnection);
+            [tcpConnection](std::string const & json){
+                std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
+                auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
+                if (a.value.empty()) {
+                    rtype::protocol_tcp::QueryCreateGame cg;
+                    cg.value.fileName = "toto.txt";
+                    cg.value.nbPlayerMax = 4;
+                    cg.value.playerName = "nonmame";
+                    cg.value.port = "myPort";
+                    tcpConnection->sendToServer(cg);
+                }
+    });
+    tcpConnection->addHandle(
+            rtype::protocol_tcp::CREATE_GAME_ANSWER,
+            [](std::string const & json) {
+                std::cout << "HANDLE CREATE HANDLING[" << json << "]" << std::endl;
+            }
+    );
     rtype::protocol_tcp::QueryList ql;
+    tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
+    nm.addCommuncation(tcpConnection);
 	for (;;) {
-//        nm.handleRecvEvent();
-		// process
+        nm.handleRecvEvent();
         std::string s;
+        std::cout << ">" << std::endl;
         std::cin >> s;
-        tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
         nm.handleSendEvent();
 	}
 	return 0;

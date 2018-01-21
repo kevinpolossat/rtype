@@ -38,6 +38,7 @@ void rtype::network::TCPNonBlockingCommunication::recv() {
     auto b = lw_network::Buffer(bufferRead_.data(), bufferRead_.size());
     auto nbyte = s_.recv(b, 0, ec);
     if (nbyte <= 0) { // TODO HANDLE ERROR HERE ?
+        std::cout << "nbyte=" << nbyte << " err=" << ec  << " EWOULDBLOCK=" << EWOULDBLOCK << std::endl;
         return ;
     }
     packet_.append(bufferRead_.data(), nbyte);
@@ -83,9 +84,9 @@ bool rtype::network::TCPNonBlockingCommunication::open(std::string const &host, 
     }
     auto isOpen = s_.isOpen();
     if (isOpen) {
-        std::cout << "::::ICONNECTED::: IS NOT NON BLOCKING" << std::endl;
         auto err = lw_network::no_error;
-//        s_.nonBlocking(true, err);
+        s_.nonBlocking(true, err);
+        std::cout << "::::IS CONNECTED::: nonblocking=" << err << std::endl;
     }
     return isOpen;
 }
