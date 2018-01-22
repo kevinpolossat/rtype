@@ -5,11 +5,11 @@
 #include <algorithm>
 #include "NetworkManager.h"
 
-void rtype::network::NetworkManager::addCommuncation(std::shared_ptr<rtype::network::NetworkCommunication> c) {
+void ge::network::NetworkManager::addCommuncation(std::shared_ptr<ge::network::NetworkCommunication> c) {
     communications_.push_back(c);
 }
 
-void rtype::network::NetworkManager::removeCommuncation(std::shared_ptr<rtype::network::NetworkCommunication> c) {
+void ge::network::NetworkManager::removeCommuncation(std::shared_ptr<ge::network::NetworkCommunication> c) {
     communications_.erase(
             std::remove(
                     communications_.begin(),
@@ -18,19 +18,19 @@ void rtype::network::NetworkManager::removeCommuncation(std::shared_ptr<rtype::n
             communications_.end());
 }
 
-void rtype::network::NetworkManager::shutdownGracefully() {
+void ge::network::NetworkManager::shutdownGracefully() {
     for (auto & c: communications_) {
         c->close();
     }
 }
 
-void rtype::network::NetworkManager::handleSendEvent() {
+void ge::network::NetworkManager::handleSendEvent() {
     for (auto & c: communications_) {
         c->send();
     }
 }
 
-void rtype::network::NetworkManager::handleRecvEvent() {
+void ge::network::NetworkManager::handleRecvEvent() {
     for (auto & c: communications_) {
         c->recv();
     }
