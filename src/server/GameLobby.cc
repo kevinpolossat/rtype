@@ -2,6 +2,7 @@
 // Created by Kévin POLOSSAT on 21/01/2018.
 //
 
+#include <Resolver.h>
 #include "GameLobby.h"
 
 rtype::GameLobby::GameLobby(
@@ -16,6 +17,9 @@ rtype::GameLobby::GameLobby(
 
 void rtype::GameLobby::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
     cs_.push_back(cptr);
+//    auto host = cptr->
+//    endPoints_.push_back();
+    endPoints_.push_back(std::make_pair(cptr->getRemoteIp(), jgi.port));
     gi_.playersNames.push_back(jgi.playerName);
 }
 
@@ -42,4 +46,8 @@ int rtype::GameLobby::getId() const {
 
 rtype::protocol_tcp::GameInfo const &rtype::GameLobby::getGameInfo() const {
     return gi_;
+}
+
+std::vector<std::pair<std::string, std::string>> const & rtype::GameLobby::getEndPoints() const {
+    return endPoints_;
 }

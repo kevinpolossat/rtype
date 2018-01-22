@@ -6,8 +6,9 @@
 #define RTYPE_GAMELOBBY_H
 
 
+#include <utility>
+#include <string>
 #include "Connection.h"
-
 
 namespace rtype {
 class GameManager;
@@ -36,8 +37,10 @@ public:
         }
     }
 
+    std::vector<std::pair<std::string, std::string>> const & getEndPoints() const;
 private:
     std::vector<std::shared_ptr<Connection>> cs_;
+    std::vector<std::pair<std::string, std::string>> endPoints_;
     rtype::protocol_tcp::GameInfo gi_;
     GameManager &gm_;
 };

@@ -23,11 +23,10 @@ public:
     Connection & operator = (Connection const & other) = delete;
     void start();
     void stop();
-    std::string const & getName() const;
-    void setName(std::string name);
     int getIdGame() const;
     void setIdGame(int idGame);
     void sendString(std::string s);
+    std::string getRemoteIp() const;
 private:
     void doRead_();
     void onSend_(std::shared_ptr<std::string> toSend, std::size_t nbyte, lw_network::error_code ec);
@@ -39,7 +38,6 @@ private:
     std::array<char, 1024> bufferRead_;
     std::string packet_;
     rtype::protocol_tcp::Header h_;
-    std::string name_;
     int idGame_ = 0;
 
     using Handle = void (Connection::*)(std::string const & json);

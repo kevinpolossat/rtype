@@ -142,3 +142,8 @@ void Connection::sendString(std::string s) {
             lw_network::Buffer(static_cast<void *>(const_cast<char *>(obj->data())), obj->size()),
             std::bind(&Connection::onSend_, this, obj, std::placeholders::_1, std::placeholders::_2));
 }
+
+std::string Connection::getRemoteIp() const {
+    auto e = lw_network::no_error;
+    return this->s_.remoteEndPoint(e).HostNameStr();
+}
