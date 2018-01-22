@@ -24,15 +24,16 @@ std::pair<rtype::GameManager::JoinGameResult, std::shared_ptr<rtype::GameLobby>>
     auto uid = jgi.gameId;
     auto iOpt = std::find_if(lobbies_.begin(), lobbies_.end(), [uid](auto const & l){ return l->getId() == uid; });
     if (iOpt != lobbies_.end()) {
-        (*iOpt)->joinGame(jgi, cptr);
-        if ((*iOpt)->isFull()) {
+        auto gl = *iOpt;
+        gl->joinGame(jgi, cptr);
+        if (gl->isFull()) {
             if (launcher_) {
-                auto success = launcher_->launch(*iOpt);
+                auto success = launcher_->launch(gl);
             }
             lobbies_.erase(iOpt);
-            return std::make_pair(rtype::GameManager::JoinGameResult::STARTED, *iOpt);
+            return std::make_pair(rtype::GameManager::JoinGameResult::STARTED, gl);
         }
-        return std::make_pair(rtype::GameManager::JoinGameResult::JOINED, *iOpt);
+        return std::make_pair(rtype::GameManager::JoinGameResult::JOINED, gl);
     }
     return std::make_pair(rtype::GameManager::JoinGameResult::FAILURE, nullptr);
 }

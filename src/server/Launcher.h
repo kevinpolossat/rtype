@@ -13,7 +13,6 @@ class Launcher: public rtype::GameLauncher {
 public:
     bool launch(std::shared_ptr<GameLobby> gl) override;
 private:
-    std::vector<std::shared_ptr<GameLobby>> gls_; // TODO TO REMOVE TMP
 };
 }
 

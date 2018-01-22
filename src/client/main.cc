@@ -73,6 +73,12 @@ int main() {/*
                 std::cout << "HANDLE STATE HANDLING[" << json << "]" << std::endl;
             }
     );
+    tcpConnection->addHandle(
+            rtype::protocol_tcp::GAME_START,
+            [](std::string const & json) {
+                std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
+            }
+    );
     rtype::protocol_tcp::QueryList ql;
     tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
     nm.addCommuncation(tcpConnection);
