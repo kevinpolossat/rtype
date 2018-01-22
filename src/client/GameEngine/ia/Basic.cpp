@@ -1,30 +1,5 @@
 #include "Basic.h"
 
-Basic & Basic::operator=(Basic *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-	return *this;
-}
-
-Basic::Basic(Basic *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-}
-
 Basic::Basic(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	AIPosition p;
@@ -43,10 +18,11 @@ Basic::Basic(const uint32_t myX, const uint32_t myY, const uint32_t width, const
 	this->setTurn(0);
 }
 
-IArtificialIntelligence *Basic::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+std::shared_ptr<IArtificialIntelligence> Basic::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
-	return new Basic(myX, myY, width, height);
+	return std::make_shared<Basic>(Basic(myX, myY, width, height));
 }
+
 
 bool Basic::setDamages(uint32_t dmg)
 {
@@ -57,8 +33,8 @@ bool Basic::setDamages(uint32_t dmg)
 }
 
 // SETTER | GETTER
-const AIPosition Basic::getPosition() const { return _pos; }
-void Basic::setPosition(const AIPosition p) { _pos = p; }
+const AIPosition& Basic::getPosition() const { return _pos; }
+void Basic::setPosition(const AIPosition& p) { _pos = p; }
 
 const std::string &Basic::getName() const { return _name; }
 const void Basic::setName(const std::string &n) { _name = n; }
@@ -78,10 +54,10 @@ void Basic::setShoot(const bool x) { _shoot = x; }
 const uint32_t Basic::getTurn() const { return _turn; }
 void Basic::setTurn(const uint32_t t) { _turn = t; }
 
-void Basic::setShootVector(const vec2D x) {_shootVector = x;}
-const vec2D Basic::getShootVector() const {return _shootVector;}
+void Basic::setShootVector(const vec2D& x) {_shootVector = x;}
+const vec2D& Basic::getShootVector() const {return _shootVector;}
 
-AIPosition Basic::getNearPlayer(std::vector<AIPosition>& players) const
+AIPosition& Basic::getNearPlayer(std::vector<AIPosition>& players) const
 {
 	double min = static_cast<double>(_height) * static_cast<double>(_width);
 	int minIndex = 0;
@@ -136,13 +112,13 @@ Action Basic::actualize(std::vector<AIPosition>& players, std::vector<AIPosition
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Basic(a, b, c, d));
+	return (std::make_shared<Basic>(Basic(a, b, c, d)));
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Basic(a, b, c, d));
+	return (std::make_shared<Basic>(Basic(a, b, c, d)));
 }
 #endif

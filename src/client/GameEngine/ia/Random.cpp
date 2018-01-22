@@ -1,30 +1,5 @@
 #include "Random.h"
 
-Random & Random::operator=(Random *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-	return *this;
-}
-
-Random::Random(Random *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-}
-
 Random::Random(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	AIPosition p;
@@ -40,10 +15,11 @@ Random::Random(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	this->setTurn(0);
 }
 
-IArtificialIntelligence *Random::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+std::shared_ptr<IArtificialIntelligence> Random::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
-	return new Random(myX, myY, width, height);
+	return std::make_shared<Random>(Random(myX, myY, width, height));
 }
+
 
 bool Random::setDamages(uint32_t dmg)
 {
@@ -54,8 +30,8 @@ bool Random::setDamages(uint32_t dmg)
 }
 
 // SETTER | GETTER
-const AIPosition Random::getPosition() const { return _pos; }
-void Random::setPosition(const AIPosition p) { _pos = p; }
+const AIPosition& Random::getPosition() const { return _pos; }
+void Random::setPosition(const AIPosition& p) { _pos = p; }
 
 const std::string &Random::getName() const { return _name; }
 const void Random::setName(const std::string &n) { _name = n; }
@@ -75,10 +51,10 @@ void Random::setShoot(const bool x) { _shoot = x; }
 const uint32_t Random::getTurn() const { return _turn; }
 void Random::setTurn(const uint32_t t) { _turn = t; }
 
-void Random::setShootVector(const vec2D x) {_shootVector = x;}
-const vec2D Random::getShootVector() const {return _shootVector;}
+void Random::setShootVector(const vec2D& x) {_shootVector = x;}
+const vec2D& Random::getShootVector() const {return _shootVector;}
 
-AIPosition Random::getNearPlayer(std::vector<AIPosition>& players) const
+AIPosition& Random::getNearPlayer(std::vector<AIPosition>& players) const
 {
 	double min = static_cast<double>(_height) * static_cast<double>(_width);
 	int minIndex = 0;
@@ -94,6 +70,7 @@ AIPosition Random::getNearPlayer(std::vector<AIPosition>& players) const
 	}
 	return players.at(minIndex);
 }
+
 
 
 Action Random::actualize(std::vector<AIPosition>& players, std::vector<AIPosition>&, AIPosition)
@@ -138,13 +115,13 @@ Action Random::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Random(a, b, c, d));
+	return (std::make_shared<Random>(Random(a, b, c, d)));
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Random(a, b, c, d));
+	return (std::make_shared<Random>(Random(a, b, c, d)));
 }
 #endif

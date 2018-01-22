@@ -1,30 +1,5 @@
 #include "Circle.h"
 
-Circle & Circle::operator=(Circle *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-	return *this;
-}
-
-Circle::Circle(Circle *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-}
-
 Circle::Circle(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	AIPosition p;
@@ -45,10 +20,11 @@ Circle::Circle(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	_center.Y = myY;
 }
 
-IArtificialIntelligence *Circle::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+std::shared_ptr<IArtificialIntelligence> Circle::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
-	return new Circle(myX, myY, width, height);
+	return std::make_shared<Circle>(Circle(myX, myY, width, height));
 }
+
 
 bool Circle::setDamages(uint32_t dmg)
 {
@@ -58,9 +34,8 @@ bool Circle::setDamages(uint32_t dmg)
 		return (this->getLife() > 0);
 }
 
-// SETTER | GETTER
-const AIPosition Circle::getPosition() const { return _pos; }
-void Circle::setPosition(const AIPosition p) { _pos = p; }
+const AIPosition& Circle::getPosition() const { return _pos; }
+void Circle::setPosition(const AIPosition& p) { _pos = p; }
 
 const std::string &Circle::getName() const { return _name; }
 const void Circle::setName(const std::string &n) { _name = n; }
@@ -80,10 +55,10 @@ void Circle::setShoot(const bool x) { _shoot = x; }
 const uint32_t Circle::getTurn() const { return _turn; }
 void Circle::setTurn(const uint32_t t) { _turn = t; }
 
-void Circle::setShootVector(const vec2D x) {_shootVector = x;}
-const vec2D Circle::getShootVector() const {return _shootVector;}
+void Circle::setShootVector(const vec2D& x) {_shootVector = x;}
+const vec2D& Circle::getShootVector() const {return _shootVector;}
 
-AIPosition Circle::getNearPlayer(std::vector<AIPosition>& players) const
+AIPosition& Circle::getNearPlayer(std::vector<AIPosition>& players) const
 {
 	double min = static_cast<double>(_height) * static_cast<double>(_width);
 	int minIndex = 0;
@@ -99,6 +74,7 @@ AIPosition Circle::getNearPlayer(std::vector<AIPosition>& players) const
 	}
 	return players.at(minIndex);
 }
+
 
 Action Circle::actualize(std::vector<AIPosition>& players, std::vector<AIPosition>&, AIPosition)
 {
@@ -156,13 +132,13 @@ Action Circle::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Circle(a, b, c, d));
+	return (std::make_shared<Circle>(Circle(a, b, c, d)));
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Circle(a, b, c, d));
+	return (std::make_shared<Circle>(Circle(a, b, c, d)));
 }
 #endif

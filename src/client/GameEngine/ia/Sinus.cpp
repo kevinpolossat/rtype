@@ -1,30 +1,5 @@
 #include "Sinus.h"
 
-Sinus & Sinus::operator=(Sinus *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-	return *this;
-}
-
-Sinus::Sinus(Sinus *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-}
-
 Sinus::Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	_angle = 0;
@@ -44,9 +19,9 @@ Sinus::Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const
 	this->setTurn(0);
 }
 
-IArtificialIntelligence *Sinus::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+std::shared_ptr<IArtificialIntelligence> Sinus::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
-	return new Sinus(myX, myY, width, height);
+	return std::make_shared<Sinus>(Sinus(myX, myY, width, height));
 }
 
 bool Sinus::setDamages(uint32_t dmg)
@@ -58,8 +33,8 @@ bool Sinus::setDamages(uint32_t dmg)
 }
 
 // SETTER | GETTER
-const AIPosition Sinus::getPosition() const { return _pos; }
-void Sinus::setPosition(const AIPosition p) { _pos = p; }
+const AIPosition& Sinus::getPosition() const { return _pos; }
+void Sinus::setPosition(const AIPosition& p) { _pos = p; }
 
 const std::string &Sinus::getName() const { return _name; }
 const void Sinus::setName(const std::string &n) { _name = n; }
@@ -79,10 +54,10 @@ void Sinus::setShoot(const bool x) { _shoot = x; }
 const uint32_t Sinus::getTurn() const { return _turn; }
 void Sinus::setTurn(const uint32_t t) { _turn = t; }
 
-void Sinus::setShootVector(const vec2D x) {_shootVector = x;}
-const vec2D Sinus::getShootVector() const {return _shootVector;}
+void Sinus::setShootVector(const vec2D& x) {_shootVector = x;}
+const vec2D& Sinus::getShootVector() const {return _shootVector;}
 
-AIPosition Sinus::getNearPlayer(std::vector<AIPosition>& players) const
+AIPosition& Sinus::getNearPlayer(std::vector<AIPosition>& players) const
 {
 	double min = static_cast<double>(_height) * static_cast<double>(_width);
 	int minIndex = 0;
@@ -98,6 +73,7 @@ AIPosition Sinus::getNearPlayer(std::vector<AIPosition>& players) const
 	}
 	return players.at(minIndex);
 }
+
 
 
 Action Sinus::actualize(std::vector<AIPosition>& players, std::vector<AIPosition>&, AIPosition)
@@ -144,13 +120,13 @@ Action Sinus::actualize(std::vector<AIPosition>& players, std::vector<AIPosition
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Sinus(a, b, c, d));
+	return (std::make_shared<Sinus>(Sinus(a, b, c, d)));
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Sinus(a, b, c, d));
+	return (std::make_shared<Sinus>(Sinus(a, b, c, d)));
 }
 #endif

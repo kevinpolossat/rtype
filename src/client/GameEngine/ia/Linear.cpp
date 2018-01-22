@@ -1,30 +1,5 @@
 #include "Linear.h"
 
-Linear & Linear::operator=(Linear *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-	return *this;
-}
-
-Linear::Linear(Linear *c)
-{
-	this->setName(c->getName());
-	this->setLife(c->getLife());
-	this->setPosition(c->getPosition());
-	this->setWidth(c->getWidth());
-	this->setHeight(c->getHeight());
-	this->setShoot(c->getShoot());
-	this->setShootVector(c->getShootVector());
-	this->setTurn(c->getTurn());
-}
-
 Linear::Linear(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	AIPosition p;
@@ -41,10 +16,11 @@ Linear::Linear(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	this->setTurn(0);
 }
 
-IArtificialIntelligence *Linear::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
+std::shared_ptr<IArtificialIntelligence> Linear::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
-	return new Linear(myX, myY, width, height);
+	return std::make_shared<Linear>(Linear(myX, myY, width, height));
 }
+
 
 bool Linear::setDamages(uint32_t dmg)
 {
@@ -55,8 +31,8 @@ bool Linear::setDamages(uint32_t dmg)
 }
 
 // SETTER | GETTER
-const AIPosition Linear::getPosition() const { return _pos; }
-void Linear::setPosition(const AIPosition p) { _pos = p; }
+const AIPosition& Linear::getPosition() const { return _pos; }
+void Linear::setPosition(const AIPosition& p) { _pos = p; }
 
 const std::string &Linear::getName() const { return _name; }
 const void Linear::setName(const std::string &n) { _name = n; }
@@ -76,10 +52,10 @@ void Linear::setShoot(const bool x) { _shoot = x; }
 const uint32_t Linear::getTurn() const { return _turn; }
 void Linear::setTurn(const uint32_t t) { _turn = t; }
 
-void Linear::setShootVector(const vec2D x) {_shootVector = x;}
-const vec2D Linear::getShootVector() const {return _shootVector;}
+void Linear::setShootVector(const vec2D& x) {_shootVector = x;}
+const vec2D& Linear::getShootVector() const {return _shootVector;}
 
-AIPosition Linear::getNearPlayer(std::vector<AIPosition>& players) const
+AIPosition& Linear::getNearPlayer(std::vector<AIPosition>& players) const
 {
 	double min = static_cast<double>(_height) * static_cast<double>(_width);
 	int minIndex = 0;
@@ -95,6 +71,7 @@ AIPosition Linear::getNearPlayer(std::vector<AIPosition>& players) const
 	}
 	return players.at(minIndex);
 }
+
 
 Action Linear::actualize(std::vector<AIPosition>& players, std::vector<AIPosition>&, AIPosition)
 {
@@ -144,13 +121,13 @@ Action Linear::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Linear(a, b, c, d));
+	return (std::make_shared<Linear>(Linear(a, b, c, d)));
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
+extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
 {
-	return (new Linear(a, b, c, d));
+	return (std::make_shared<Linear>(Linear(a, b, c, d)));
 }
 #endif

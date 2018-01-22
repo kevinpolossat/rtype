@@ -7,7 +7,6 @@ using ge::Ia;
 
 PlayWorld::PlayWorld()
 {
-	std::cout << "resources/ias" << std::endl;
 	iaLoader_ = new loadIa("resources/ias", 800, 600);
 }
 
@@ -51,7 +50,7 @@ void PlayWorld::CreateEnnemy(std::string const & t_textureName, const int t_id)
 {
 	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
-	IArtificialIntelligence *ia = iaLoader_->getIa(t_id);
+	std::shared_ptr<IArtificialIntelligence> ia = iaLoader_->getIa(t_id);
 	Vector2f v(static_cast<double>(ia->getPosition().X), static_cast<double>(ia->getPosition().Y));
 
 	g->AddComponent<Ia>(ia);

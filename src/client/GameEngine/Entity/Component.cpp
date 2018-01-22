@@ -52,7 +52,7 @@ ge::Vector2f ge::Position::getPos() const
 	return (this->m_pos);
 }
 
-void ge::Position::setPos(const ge::Vector2f x)
+void ge::Position::setPos(const ge::Vector2f& x)
 {
 	this->m_pos = x;
 }
@@ -130,7 +130,7 @@ ge::Input::~Input()
 	IA Member Functions
 */
 
-ge::Ia::Ia(IArtificialIntelligence *x) : ge::Component("Ia"), ia(x)
+ge::Ia::Ia(std::shared_ptr<IArtificialIntelligence> x) : ge::Component("Ia"), ia(x)
 {
 }
 

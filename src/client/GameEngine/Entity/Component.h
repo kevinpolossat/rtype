@@ -54,7 +54,7 @@ namespace ge {
 		~Position();
 		void UpdatePos(Vector2f const &v, uint32_t widht, uint32_t height, uint32_t offset);
 		Vector2f getPos() const;
-		void setPos(const ge::Vector2f x);
+		void setPos(const ge::Vector2f& x);
 
 		Vector2f m_pos;
 	};
@@ -115,11 +115,11 @@ namespace ge {
 	CLASS_DECLARATION(Ia)
 
 	public:
-		Ia(IArtificialIntelligence*);
+		Ia(std::shared_ptr<IArtificialIntelligence>);
 
 		~Ia();
 
-		IArtificialIntelligence* ia;
+		std::shared_ptr<IArtificialIntelligence> ia;
 	};
 
 	struct Animation {

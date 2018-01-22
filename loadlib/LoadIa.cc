@@ -13,11 +13,11 @@ void *dload(const char *path_lib)
   return(handle);
 }
 
-IArtificialIntelligence *dlib(void *handle, int width,int height, int x, int y)
+std::shared_ptr<IArtificialIntelligence> dlib(void *handle, int width,int height, int x, int y)
 {
-  IArtificialIntelligence *(*ptr)(int, int, int, int);
-  ptr = reinterpret_cast<IArtificialIntelligence *(*)(int, int, int, int)>(dlsym(handle, "createLib"));
-  if (ptr == NULL)
+  std::shared_ptr<IArtificialIntelligence> (*ptr)(int, int, int, int);
+  ptr = reinterpret_cast<std::shared_ptr<IArtificialIntelligence> (*)(int, int, int, int)>(dlsym(handle, "createLib"));
+  if (ptr == nullptr)
   {
     std::cout << dlerror() << std::endl;
     return (0);
@@ -40,21 +40,21 @@ HINSTANCE dload(const char *path_lib)
   if (!lhandle)
   {
     std::cout << "could not load the dynamic library" << std::endl;
-    return NULL;
+    return nullptr;
   }
   return(lhandle);
 }
 
-IArtificialIntelligence *dlib(HINSTANCE lhandle,int width,int height, int x , int y)
+shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int height, int x , int y)
 {
-  type funci = (type)GetProcAddress(lhandle, "createLib");
+  type funci = reinterpret_cast<type>(GetProcAddress(lhandle, "createLib"));
   if (!funci)
   {
-    std::cout << "could not locate the function" << std::endl;
-    return NULL;
+    std::cerr << "could not locate the function" << std::endl;
+    return nullptr;
   }
   void *monster1 = funci(x, y, width, height);
-  return(reinterpret_cast<IArtificialIntelligence*>(monster1));
+  return (reinterpret_cast<std::shared_ptr<IArtificialIntelligence>>(monster1));
 }
 
 #endif
@@ -65,7 +65,7 @@ std::vector<std::string> getcontents(std::string pathdir)
   dirent *file;
   std::vector<std::string> names;
 
-  if ((folder = opendir(pathdir.c_str())) == NULL)
+  if ((folder = opendir(pathdir.c_str())) == nullptr)
   {
     std::cerr << "ERROR OPENDIR" << std::endl;
     exit(0);
@@ -108,12 +108,12 @@ int loadIa::getNbIa()
   return(_ias.size());
 }
 
-IArtificialIntelligence *loadIa::getIa(int idx)
+std::shared_ptr<IArtificialIntelligence> loadIa::getIa(int idx)
 {
   if(idx < _ias.size() && idx > -1)
     return _ias[idx]->NewIA(this->x, this->y, this->width, this->height);
   else
-    return (_ias[0])->NewIA(this->x, this->y, this->width, this->height);
+    return _ias[0]->NewIA(this->x, this->y, this->width, this->height);
 }
 
 loadIa::~loadIa()

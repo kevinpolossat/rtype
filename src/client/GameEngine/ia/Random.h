@@ -9,19 +9,16 @@ class Random : public IArtificialIntelligence
 {
 public:
 	Random(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
-	Random(Random *);
 	~Random() {}
 
-	Random & operator=(Random *);
-
-	virtual IArtificialIntelligence *NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) override;
+	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 
 	virtual bool setDamages(uint32_t dmg) override;
 
-	virtual const AIPosition getPosition() const override;
-	virtual void setPosition(const AIPosition p) override;
+	virtual const AIPosition& getPosition() const override;
+	virtual void setPosition(const AIPosition& p) override;
 
 	virtual const std::string &getName() const override;
 	virtual const void setName(const std::string &n) override;
@@ -41,10 +38,11 @@ public:
 	virtual const uint32_t getTurn() const override;
 	virtual void setTurn(const uint32_t t) override;
 
-	virtual void setShootVector(const vec2D x) override;
-	virtual const vec2D getShootVector() const override;
+	virtual void setShootVector(const vec2D& x) override;
+	virtual const vec2D& getShootVector() const override;
 
-	virtual AIPosition getNearPlayer(std::vector<AIPosition>& players) const override;
+	virtual AIPosition& getNearPlayer(std::vector<AIPosition>& players) const override;
+
 
 private:
 	uint32_t			_turn;
