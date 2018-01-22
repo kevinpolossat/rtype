@@ -2,10 +2,16 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
+	engine.Load<ge::Resources::Texture>("Player1", "resources/blue.png");
+	engine.Load<ge::Resources::Texture>("Player2", "resources/red.png");
+	engine.Load<ge::Resources::Texture>("Player3", "resources/yellow.png");
+	engine.Load<ge::Resources::Texture>("Player4", "resources/green.png");
+
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
-	world_.CreatePlayer(Vector2f(600, 300), "Player1");
+	world_.CreatePlayer(Vector2f(600, 300), "Player2");
+	world_.CreatePlayer(Vector2f(100, 200), "Player3");
+	world_.CreatePlayer(Vector2f(100, 500), "Player4");
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -19,9 +25,9 @@ void PlayState::Pause() {
 void PlayState::Resume() {
 }
 
-void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) 
+void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event)
 {
-			switch (event.code) 
+			switch (event.code)
 			{
 				case sf::Keyboard::Key::Left:
 					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
@@ -41,7 +47,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	if (event.code == sf::Keyboard::Key::Space) 
+	if (event.code == sf::Keyboard::Key::Space)
 	{
 		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
 		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
@@ -101,7 +107,7 @@ void PlayState::Update(ge::GameEngine & engine)
 	}
 }
 
-void PlayState::Display(ge::GameEngine & engine, const float) 
+void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto const & it : world_.players)
 	{

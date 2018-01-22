@@ -1,6 +1,8 @@
 #include "MenuState.h"
 
 void MenuState::Clear() {
+	world_.buttons.clear();
+	world_.texts.clear();
 }
 
 void MenuState::Pause() {
