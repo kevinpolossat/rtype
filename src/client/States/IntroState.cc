@@ -3,9 +3,6 @@
 bool IntroState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Font>("arial", "resources/arial.ttf");
 	engine.Load<ge::Resources::Font>("retro", "resources/PressStart2P.ttf");
-	engine.Load<ge::Resources::Texture>("play", "resources/Buttons/button_play.png");
-	engine.Load<ge::Resources::Texture>("settings", "resources/Buttons/button_settings.png");
-	engine.Load<ge::Resources::Texture>("quit", "resources/Buttons/button_quit.png");
 
 	ge::Vector2u size = engine.GetSize();
 	world_.CreateText(ge::Vector2f(size.x / 2 - 50, size.y / 5.f), "Play", "retro", START);
