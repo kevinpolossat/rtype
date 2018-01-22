@@ -45,7 +45,7 @@ HINSTANCE dload(const char *path_lib)
   return(lhandle);
 }
 
-shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int height, int x , int y)
+std::shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int height, int x , int y)
 {
   type funci = reinterpret_cast<type>(GetProcAddress(lhandle, "createLib"));
   if (!funci)
