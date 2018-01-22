@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2 REQUIRED audio graphics window system)
+find_package( Threads )
 
 set(CLIENT_SOURCES
 		# GAME ENGINE
@@ -153,6 +154,8 @@ target_include_directories(rtype_server
 		PRIVATE ${CEREAL_HEADER}
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
 		PRIVATE ./src/client/network)
+target_link_libraries(rtype_server
+		PRIVATE Threads::Threads)
 
 enable_testing()
 #test executable

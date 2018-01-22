@@ -37,7 +37,7 @@ public:
         }
     }
 
-    std::vector<std::pair<std::string, std::string>> const & getEndPoints() const;
+    std::vector<std::pair<std::string, std::string>> const & getIpAndPorts() const;
 private:
     std::vector<std::shared_ptr<Connection>> cs_;
     std::vector<std::pair<std::string, std::string>> endPoints_;

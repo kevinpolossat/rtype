@@ -48,6 +48,6 @@ rtype::protocol_tcp::GameInfo const &rtype::GameLobby::getGameInfo() const {
     return gi_;
 }
 
-std::vector<std::pair<std::string, std::string>> const & rtype::GameLobby::getEndPoints() const {
+std::vector<std::pair<std::string, std::string>> const & rtype::GameLobby::getIpAndPorts() const {
     return endPoints_;
 }

@@ -6,6 +6,7 @@
 #define RTYPE_UDPNONBLOCKINGCOMMUNCATION_H
 
 #include "Socket.h"
+#include <array>
 #include <vector>
 #include <functional>
 #include <unordered_map>
@@ -26,13 +27,14 @@ public:
     bool open(std::string const &port = "0");
     void addDest(std::string const & hostName, std::string const & port);
     void addDest(lw_network::EndPoint const & ep);
-    void addHandle(int packetId, Handle h);
+    void addDests(std::vector<std::pair<std::string, std::string>> const & ipAndPort);
+    void addHandle(Handle h);
     std::string getPort() const;
 private:
     lw_network::Socket s_;
     std::vector<lw_network::EndPoint> dest_;
-    std::unordered_map<int, Handle> handlers_;
-    std::string port_;
+    Handle handler_;
+    std::array<char, 1024> bRead_;
 };
 
 }

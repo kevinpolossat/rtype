@@ -14,6 +14,7 @@
 #include <iostream>
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
+#include "UDPNonBlockingCommunication.h"
 #include "RtypeProtocol.h"
 
 int main() {/*
@@ -34,22 +35,28 @@ int main() {/*
         std::cout << "can't connect to server" << std::endl;
                   return 0;
     }
+    ge::network::UDPNonBlockingCommuncation udp;
+    auto b = udp.open();
+    if (!b) {
+        std::cout << "FAILED TO OPEN UDP" << std::endl;
+    }
     tcpConnection->addHandle(
             rtype::protocol_tcp::LIST_ANSWER,
-            [tcpConnection](std::string const & json) {
+            [tcpConnection, &udp](std::string const & json) {
                 std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
                 auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
+                std::cout << "port=" << udp.getPort() << std::endl;
                 if (a.value.empty()) {
                     rtype::protocol_tcp::QueryCreateGame cg;
                     cg.value.fileName = "toto.txt";
                     cg.value.nbPlayerMax = 1;
                     cg.value.playerName = "nonmame";
-                    cg.value.port = "myPort";
+                    cg.value.port = udp.getPort();
                     tcpConnection->sendToServer(cg);
                 }
                 else {
                     rtype::protocol_tcp::QueryJoinGame jg;
-                    jg.value.port = "4242";
+                    jg.value.port = udp.getPort();
                     jg.value.playerName = "nino";
                     jg.value.gameId = 1;
                     tcpConnection->sendToServer(jg);
@@ -75,8 +82,14 @@ int main() {/*
     );
     tcpConnection->addHandle(
             rtype::protocol_tcp::GAME_START,
-            [](std::string const & json) {
+            [&udp](std::string const & json) {
                 std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
+                auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
+                auto p = gs.value.port;
+                udp.addDest("localhost", gs.value.port);
+                udp.recv();
+                udp.send();
+                udp.close();
             }
     );
     rtype::protocol_tcp::QueryList ql;

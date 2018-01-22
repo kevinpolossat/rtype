@@ -3,15 +3,38 @@
 //
 
 #include <iostream>
+#include <array>
 #include "Resolver.h"
 #include "UDPNonBlockingCommunication.h"
 
 void ge::network::UDPNonBlockingCommuncation::send() {
-
+    for (auto i = 0; i < 10; ++i) {
+        for (auto & ep : dest_) {
+//            auto e = lw_network::no_error;
+//            auto b = lw_network::Buffer(const_cast<char *>(bRead_.data()), bRead_.size());
+//            auto nbyte = s_.sendto(ep, b, 0, e);
+            // TODO DO SOMETHING ?
+        }
+    }
 }
 
 void ge::network::UDPNonBlockingCommuncation::recv() {
-
+    for (;;) {
+        auto e = lw_network::no_error;
+        lw_network::EndPoint ep;
+        auto b = lw_network::Buffer(bRead_.data(), bRead_.size());
+        auto nbyte = s_.recvfrom(ep, b, 0, e);
+        if (e != lw_network::no_error) {
+            continue;
+        }
+        else {
+            std::string d;
+            d.assign(bRead_.data(), nbyte);
+            //trigger here
+            //std::cout << d << std::endl;
+            break;
+        }
+    }
 }
 
 void ge::network::UDPNonBlockingCommuncation::close() {
@@ -21,13 +44,14 @@ void ge::network::UDPNonBlockingCommuncation::close() {
 
 bool ge::network::UDPNonBlockingCommuncation::open(std::string const &port) {
     s_.openAsUdp(port);
+    auto e = lw_network::no_error;
+    s_.nonBlocking(true, e);
     return s_.isOpen();
 }
 
 void ge::network::UDPNonBlockingCommuncation::addHandle(
-        int packetId,
         ge::network::UDPNonBlockingCommuncation::Handle h) {
-    handlers_.insert(std::make_pair(packetId, h));
+    handler_ = h;
 }
 
 void ge::network::UDPNonBlockingCommuncation::addDest(lw_network::EndPoint const &ep) {
@@ -39,9 +63,8 @@ void ge::network::UDPNonBlockingCommuncation::addDest(std::string const &hostNam
     re
             .SetNode(hostName)
             .SetService(port)
-            .SetFamily(AF_UNSPEC)
-            .SetSockType(SOCK_DGRAM)
-            .SetFlags(AI_PASSIVE);
+            .SetFamily(AF_INET)
+            .SetSockType(SOCK_DGRAM);
     lw_network::EndPoint ep = re.Resolve().front();
     this->addDest(ep);
 }
@@ -50,4 +73,10 @@ std::string ge::network::UDPNonBlockingCommuncation::getPort() const {
     auto e = lw_network::no_error;
     auto ep = s_.localEndPoint(e);
     return ep.PortStr();
+}
+
+void ge::network::UDPNonBlockingCommuncation::addDests(std::vector<std::pair<std::string, std::string>> const &ipAndPort) {
+    for (auto const & p : ipAndPort) {
+        this->addDest(p.first, p.second);
+    }
 }
