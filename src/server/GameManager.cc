@@ -18,7 +18,7 @@ int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, st
     return retId;
 }
 
-std::pair<rtype::GameManager::JoinGameResult, std::shared_ptr<rtype::GameLobby>> rtype::GameManager::joinGame(
+std::pair<rtype::GameManager::JoinGameResult, std::shared_ptr<rtype::GameLobby>>  rtype::GameManager::joinGame(
         rtype::protocol_tcp::JoinGameInfo const &jgi,
         std::shared_ptr<Connection> cptr) {
     auto uid = jgi.gameId;

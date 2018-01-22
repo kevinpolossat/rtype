@@ -74,7 +74,7 @@ void Connection::handleUnknown(std::string const &json) {
 void Connection::handleListQuery(std::string const &) {
     rtype::protocol_tcp::AnswerList qla;
     qla.value = std::move(gm_.getAllGameInfo());
-    sendString(std::move(rtype::protocol_tcp::transform(qla)));
+    sendString(rtype::protocol_tcp::transform(qla));
 }
 
 void Connection::handleListAnswer(std::string const &) {}
@@ -84,7 +84,7 @@ void Connection::handleCreateGameQuery(std::string const &json) {
     idGame_ = gm_.createGame(a.value, shared_from_this());
     rtype::protocol_tcp::AnswerCreateGame acg;
     acg.statusOrId = idGame_;
-    sendString(std::move(rtype::protocol_tcp::transform(acg)));
+    sendString(rtype::protocol_tcp::transform(acg));
 }
 
 void Connection::handleCreateGameAnswer(std::string const &) {}
@@ -97,18 +97,13 @@ void Connection::handleJoinGameQuery(std::string const &json) {
     std::tie(res, gl) = gm_.joinGame(a.value, shared_from_this());
     rtype::protocol_tcp::AnswerJoinGame ajg;
     ajg.value = res  == rtype::GameManager::JoinGameResult::FAILURE ? rtype::protocol_tcp::not_ok : rtype::protocol_tcp::ok;
-    sendString(std::move(rtype::protocol_tcp::transform(ajg)));
-    if (res  != rtype::GameManager::JoinGameResult::FAILURE) {
-        if (gl) {
-            rtype::protocol_tcp::GameState gs;
-            gs.value = gl->getGameInfo().playersNames;
-            gl->notifyAll(gs);
-            if (res == rtype::GameManager::JoinGameResult::STARTED) {
-                rtype::protocol_tcp::GameStart gs;
-                gs.value = {"", ""}; // TODO GET PORT AND IP HERE HERE
-                gl->notifyAll(gs);
-            }
-        }
+    if (res != rtype::GameManager::JoinGameResult::STARTED) {
+        sendString(rtype::protocol_tcp::transform(ajg));
+    }
+    if (res == rtype::GameManager::JoinGameResult::JOINED && gl) {
+        rtype::protocol_tcp::GameState gs;
+        gs.value = gl->getGameInfo().playersNames;
+        gl->notifyAll(gs);
     }
 }
 

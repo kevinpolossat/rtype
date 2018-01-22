@@ -36,7 +36,7 @@ int main() {/*
     }
     tcpConnection->addHandle(
             rtype::protocol_tcp::LIST_ANSWER,
-            [tcpConnection](std::string const & json){
+            [tcpConnection](std::string const & json) {
                 std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
                 auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
                 if (a.value.empty()) {
