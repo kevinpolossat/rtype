@@ -54,7 +54,7 @@ std::shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int he
     return nullptr;
   }
   void *monster1 = funci(x, y, width, height);
-  return (reinterpret_cast<std::shared_ptr<IArtificialIntelligence>>(monster1));
+  return (std::make_shared<IArtificialIntelligence>(monster1));
 }
 
 #endif
