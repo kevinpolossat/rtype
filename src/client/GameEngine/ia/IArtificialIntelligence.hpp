@@ -3,9 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include <cmath>
+#include <math.h>
 #include <memory>
-
 
 struct AIPosition
 {
@@ -33,7 +32,7 @@ public:
 	virtual ~IArtificialIntelligence() = default;
 
 	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) = 0;
-
+	// CORE
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) = 0;
 
 	virtual bool setDamages(uint32_t dmg) = 0;

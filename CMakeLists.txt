@@ -41,6 +41,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
 		#[[add source files here]])
 
 set(SERVER_SOURCES
@@ -106,7 +108,8 @@ target_include_directories(rtype_client
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
+		PRIVATE ${SFML_DEPENDENCIES}
+		PRIVATE ${CMAKE_DL_LIBS})
 
 set_target_properties(rtype_client
 		PROPERTIES
@@ -149,7 +152,7 @@ target_link_libraries(rtype_test
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 target_sources(rtype_test
-		PRIVATE ${SOURCES} ${TCP_PROTOCOL}
+		PRIVATE ${TCP_PROTOCOL}
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)

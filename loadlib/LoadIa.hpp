@@ -11,8 +11,9 @@
 #elif defined (_WIN32) || defined (_WIN64)
   #include <windows.h>
   #include "dirent.h"
-typedef void *(*type)(int, int, int, int);
 #endif
+
+typedef std::shared_ptr<IArtificialIntelligence> (*type)(int, int, int, int);
 
 class loadIa
 {
