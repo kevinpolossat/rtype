@@ -16,8 +16,6 @@ public:
 	IntroState & operator=(IntroState && other) = delete;
 
 	bool Init(ge::GameEngine & engine) override;
-	void Display(ge::GameEngine & engine, float interpolation) override;
-
 
 private:
 	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;

@@ -34,4 +34,14 @@ void MenuState::Display(ge::GameEngine & engine, float) {
 			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<ge::Sprite>()->priority);
 		}
 	}
+	if (world_.background)
+	{
+		if (world_.background->GetComponent<ge::Animator>())
+		{
+			sf::Sprite s(engine.Texture(world_.background->GetComponent<ge::Animator>()->GetSprite()));
+			s.setPosition(0, 0);
+			s.scale(1.8f, 1.8f);
+			engine.Draw(std::make_shared<sf::Sprite>(s), 2);
+		}
+	}
 }

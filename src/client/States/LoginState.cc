@@ -11,7 +11,7 @@ bool LoginState::Init(ge::GameEngine & engine) {
 	world_.CreateButton(ge::Vector2f(size.x / 5.f, size.y / 5.f * 2), "arial", CREATE, "create");
 	world_.CreateButton(ge::Vector2f(size.x / 5.f, size.y / 5.f * 3), "arial", JOIN, "join");
 	world_.CreateButton(ge::Vector2f(size.x / 5.f, size.y / 5.f * 4), "arial", CANCEL, "cancel");
-
+	world_.CreateBackground();
 	return true;
 }
 

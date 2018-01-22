@@ -12,6 +12,8 @@ bool JoinState::Init(ge::GameEngine & engine) {
 	}
 	world_.CreateButton(ge::Vector2f(size.x / 5.f, size.y / 5.f * 4), "arial", VALID, "valid");
 	world_.CreateButton(ge::Vector2f(size.x / 5.f * 3, size.y / 5.f * 4), "arial", CANCEL, "cancel");
+	world_.CreateBackground();
+
 
 	return true;
 }
