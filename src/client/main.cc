@@ -28,8 +28,8 @@ int main() {/*
 		gameEngine.Run("Intro");
 	}*/
 	// GAMELOOP
-    rtype::network::NetworkManager nm;
-    auto tcpConnection = std::make_shared<rtype::network::TCPNonBlockingCommunication>();
+    ge::network::NetworkManager nm;
+    auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
     if (!tcpConnection->open("localhost", "4242")) {
         std::cout << "can't connect to server" << std::endl;
                   return 0;
