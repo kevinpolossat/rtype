@@ -41,10 +41,17 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
 		#[[add source files here]])
 
 set(SERVER_SOURCES
-
+		${CMAKE_SOURCE_DIR}/src/server/Server.cc
+		${CMAKE_SOURCE_DIR}/src/server/Server.h
+		${CMAKE_SOURCE_DIR}/src/server/Connection.cc
+		${CMAKE_SOURCE_DIR}/src/server/Connection.h
+		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.cc
+		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -74,8 +81,8 @@ set(NETWORK_SOURCES
 		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
 
 set(TCP_PROTOCOL
-		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.h
-		${PROJECT_SOURCE_DIR}/src/tcp/Protocol.cc)
+		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.h
+		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.cc)
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -101,7 +108,8 @@ target_include_directories(rtype_client
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
+		PRIVATE ${SFML_DEPENDENCIES}
+		PRIVATE ${CMAKE_DL_LIBS})
 
 set_target_properties(rtype_client
 		PROPERTIES
@@ -118,9 +126,12 @@ set_target_properties(rtype_server
 		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 target_sources(rtype_server
 		PRIVATE ${SERVER_SOURCES}
-		PRIVATE ${NETWORK_SOURCES})
+		PRIVATE ${NETWORK_SOURCES}
+		PRIVATE ${TCP_PROTOCOL})
 target_include_directories(rtype_server
-		PRIVATE ./src/network)
+		PRIVATE ./src/network
+		PRIVATE ${CEREAL_HEADER}
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp)
 
 enable_testing()
 #test executable
@@ -141,7 +152,7 @@ target_link_libraries(rtype_test
 		PRIVATE ${SFML_LIBRARIES}
 		PRIVATE ${SFML_DEPENDENCIES})
 target_sources(rtype_test
-		PRIVATE ${SOURCES} ${TCP_PROTOCOL}
+		PRIVATE ${TCP_PROTOCOL}
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_test)

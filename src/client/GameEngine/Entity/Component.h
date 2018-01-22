@@ -12,9 +12,10 @@
 #include <vector>
 #include <chrono>
 #include <stack>
-#include <client/GameEngine/Settings.h>
+#include <GameEngine/Settings.h>
 
 #include "Vector2D.h"
+#include "../ia/IArtificialIntelligence.hpp"
 
 namespace ge {
 	#define TO_STRING( x ) #x
@@ -53,6 +54,7 @@ namespace ge {
 		~Position();
 		void UpdatePos(Vector2f const &v, uint32_t widht, uint32_t height, uint32_t offset);
 		Vector2f getPos() const;
+		void setPos(const ge::Vector2f& x);
 
 		Vector2f m_pos;
 	};
@@ -107,6 +109,17 @@ namespace ge {
 		~Input();
 
 		int id;
+	};
+
+	class Ia : public Component {
+	CLASS_DECLARATION(Ia)
+
+	public:
+		Ia(std::shared_ptr<IArtificialIntelligence>);
+
+		~Ia();
+
+		std::shared_ptr<IArtificialIntelligence> ia;
 	};
 
 	struct Animation {
