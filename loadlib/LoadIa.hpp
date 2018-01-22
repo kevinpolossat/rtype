@@ -13,7 +13,7 @@
   #include "dirent.h"
 #endif
 
-typedef void *(*type)(int, int, int, int);
+typedef std::shared_ptr<IArtificialIntelligence> (*type)(int, int, int, int);
 
 class loadIa
 {

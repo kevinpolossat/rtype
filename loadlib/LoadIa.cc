@@ -53,8 +53,8 @@ std::shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int he
     std::cerr << "could not locate the function" << std::endl;
     return nullptr;
   }
-  void *monster1 = funci(x, y, width, height);
-  return (std::make_shared<IArtificialIntelligence>(monster1));
+  std::shared_ptr<IArtificialIntelligence> monster1 = funci(x, y, width, height);
+  return (monster1);
 }
 
 #endif
