@@ -62,6 +62,8 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/GameManager.h
 		${CMAKE_SOURCE_DIR}/src/server/GameLobby.cc
 		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
+		${CMAKE_SOURCE_DIR}/src/server/Launcher.cc
+		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
 		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
 		#[[add source files here]])
 

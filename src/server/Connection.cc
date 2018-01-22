@@ -91,19 +91,19 @@ void Connection::handleCreateGameAnswer(std::string const &) {}
 
 void Connection::handleJoinGameQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryJoinGame>(json);
-    auto res = gm_.joinGame(a.value, shared_from_this());
+    rtype::protocol_tcp::GameInfo gi;
+    std::shared_ptr<rtype::GameLobby> gl;
+    rtype::GameManager::JoinGameResult res;
+    std::tie(res, gl) = gm_.joinGame(a.value, shared_from_this());
     rtype::protocol_tcp::AnswerJoinGame ajg;
     ajg.value = res  == rtype::GameManager::JoinGameResult::FAILURE ? rtype::protocol_tcp::not_ok : rtype::protocol_tcp::ok;
     sendString(std::move(rtype::protocol_tcp::transform(ajg)));
     if (res  != rtype::GameManager::JoinGameResult::FAILURE) {
-        auto gl = gm_.getGameById(a.value.gameId);
         if (gl) {
-            if (res == rtype::GameManager::JoinGameResult::JOINED) {
-                rtype::protocol_tcp::GameState gs;
-                gs.value = gl->getGameInfo().playersNames;
-                gl->notifyAll(gs);
-            }
-            else {
+            rtype::protocol_tcp::GameState gs;
+            gs.value = gl->getGameInfo().playersNames;
+            gl->notifyAll(gs);
+            if (res == rtype::GameManager::JoinGameResult::STARTED) {
                 rtype::protocol_tcp::GameStart gs;
                 gs.value = {"", ""}; // TODO GET PORT AND IP HERE HERE
                 gl->notifyAll(gs);

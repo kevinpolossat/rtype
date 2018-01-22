@@ -18,7 +18,9 @@ int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, st
     return retId;
 }
 
-rtype::GameManager::JoinGameResult rtype::GameManager::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {
+std::pair<rtype::GameManager::JoinGameResult, std::shared_ptr<rtype::GameLobby>> rtype::GameManager::joinGame(
+        rtype::protocol_tcp::JoinGameInfo const &jgi,
+        std::shared_ptr<Connection> cptr) {
     auto uid = jgi.gameId;
     auto iOpt = std::find_if(lobbies_.begin(), lobbies_.end(), [uid](auto const & l){ return l->getId() == uid; });
     if (iOpt != lobbies_.end()) {
@@ -28,11 +30,11 @@ rtype::GameManager::JoinGameResult rtype::GameManager::joinGame(rtype::protocol_
                 auto success = launcher_->launch(*iOpt);
             }
             lobbies_.erase(iOpt);
-            return rtype::GameManager::JoinGameResult::STARTED;
+            return std::make_pair(rtype::GameManager::JoinGameResult::STARTED, *iOpt);
         }
-        return rtype::GameManager::JoinGameResult::JOINED;
+        return std::make_pair(rtype::GameManager::JoinGameResult::JOINED, *iOpt);
     }
-    return rtype::GameManager::JoinGameResult::FAILURE;
+    return std::make_pair(rtype::GameManager::JoinGameResult::FAILURE, nullptr);
 }
 
 bool rtype::GameManager::leaveGame(int uid, std::shared_ptr<Connection> cptr) {

@@ -47,11 +47,30 @@ int main() {/*
                     cg.value.port = "myPort";
                     tcpConnection->sendToServer(cg);
                 }
+                else {
+                    rtype::protocol_tcp::QueryJoinGame jg;
+                    jg.value.port = "4242";
+                    jg.value.playerName = "nino";
+                    jg.value.gameId = 1;
+                    tcpConnection->sendToServer(jg);
+                }
     });
     tcpConnection->addHandle(
             rtype::protocol_tcp::CREATE_GAME_ANSWER,
             [](std::string const & json) {
                 std::cout << "HANDLE CREATE HANDLING[" << json << "]" << std::endl;
+            }
+    );
+    tcpConnection->addHandle(
+            rtype::protocol_tcp::JOIN_GAME_ANSWER,
+            [](std::string const & json) {
+                std::cout << "HANDLE JOIN HANDLING[" << json << "]" << std::endl;
+            }
+    );
+    tcpConnection->addHandle(
+            rtype::protocol_tcp::GAME_STATE,
+            [](std::string const & json) {
+                std::cout << "HANDLE STATE HANDLING[" << json << "]" << std::endl;
             }
     );
     rtype::protocol_tcp::QueryList ql;
