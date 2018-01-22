@@ -6,7 +6,7 @@
 #include <iostream>
 #include "TCPNonBlockingCommunication.h"
 
-void rtype::network::TCPNonBlockingCommunication::send() {
+void ge::network::TCPNonBlockingCommunication::send() {
     while (!toSend_.empty()) {
         std::string & s = toSend_.front();
         auto ec = lw_network::no_error;
@@ -33,7 +33,7 @@ void rtype::network::TCPNonBlockingCommunication::send() {
     }
 }
 
-void rtype::network::TCPNonBlockingCommunication::recv() {
+void ge::network::TCPNonBlockingCommunication::recv() {
     auto ec = lw_network::no_error;
     auto b = lw_network::Buffer(bufferRead_.data(), bufferRead_.size());
     auto nbyte = s_.recv(b, 0, ec);
@@ -60,12 +60,12 @@ void rtype::network::TCPNonBlockingCommunication::recv() {
     }
 }
 
-void rtype::network::TCPNonBlockingCommunication::close() {
+void ge::network::TCPNonBlockingCommunication::close() {
     auto e = lw_network::no_error;
     s_.close(e);
 }
 
-bool rtype::network::TCPNonBlockingCommunication::open(std::string const &host, std::string const &port) {
+bool ge::network::TCPNonBlockingCommunication::open(std::string const &host, std::string const &port) {
     lw_network::Resolver re;
     re
             .SetNode(host)
@@ -94,12 +94,12 @@ bool rtype::network::TCPNonBlockingCommunication::open(std::string const &host, 
     return isOpen;
 }
 
-void rtype::network::TCPNonBlockingCommunication::pushToSendQueue_(std::string s) {
+void ge::network::TCPNonBlockingCommunication::pushToSendQueue_(std::string s) {
     //std::cout << s << std::endl;
     toSend_.push(std::move(s));
 }
 
-void rtype::network::TCPNonBlockingCommunication::addHandle(int packetId,
-                                                            rtype::network::TCPNonBlockingCommunication::Handle h) {
-        handlers_.insert(std::make_pair(packetId, h));
+void ge::network::TCPNonBlockingCommunication::addHandle(int packetId,
+                                                         ge::network::TCPNonBlockingCommunication::Handle h) {
+    handlers_.insert(std::make_pair(packetId, h));
 }
