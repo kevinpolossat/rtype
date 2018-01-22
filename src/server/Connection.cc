@@ -81,10 +81,18 @@ void Connection::handleListAnswer(std::string const &) {}
 
 void Connection::handleCreateGameQuery(std::string const &json) {
     auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryCreateGame>(json);
-    idGame_ = gm_.createGame(a.value, shared_from_this());
-    rtype::protocol_tcp::AnswerCreateGame acg;
-    acg.statusOrId = idGame_;
-    sendString(rtype::protocol_tcp::transform(acg));
+    idGame_ = gm_.createGame(a.value);
+    rtype::protocol_tcp::JoinGameInfo ji;
+    ji.gameId = idGame_;
+    ji.playerName = a.value.playerName;
+    ji.port = a.value.port;
+    rtype::GameManager::JoinGameResult res;
+    std::tie(res, std::ignore) = gm_.joinGame(ji, shared_from_this());
+    if (res != rtype::GameManager::JoinGameResult::STARTED) {
+        rtype::protocol_tcp::AnswerCreateGame acg;
+        acg.statusOrId = idGame_;
+        sendString(rtype::protocol_tcp::transform(acg));
+    }
 }
 
 void Connection::handleCreateGameAnswer(std::string const &) {}

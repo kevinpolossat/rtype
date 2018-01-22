@@ -296,18 +296,15 @@ struct GameState {
 };
 
 struct NetInfo {
-    std::string ip;
     std::string port;
 
     template <class Archive>
     void save(Archive & ar) const {
-        ar(ip);
         ar(port);
     }
 
     template <class Archive>
     void load(Archive & ar) {
-        ar(ip);
         ar(port);
     }
 

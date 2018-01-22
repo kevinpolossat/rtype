@@ -13,7 +13,7 @@ namespace rtype {
 class GameManager;
 class GameLobby {
 public:
-    GameLobby(GameManager & gm, rtype::protocol_tcp::CreateGame const & gi, std::shared_ptr<Connection> cptr, int uid);
+    GameLobby(GameManager & gm, rtype::protocol_tcp::CreateGame const & gi, int uid);
     GameLobby(GameLobby const &) = delete;
     GameLobby(GameLobby &&) = delete;
     GameLobby & operator = (GameLobby const &) = delete;

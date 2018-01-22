@@ -7,14 +7,11 @@
 rtype::GameLobby::GameLobby(
         GameManager &gm,
         rtype::protocol_tcp::CreateGame const &cg,
-        std::shared_ptr<Connection> cptr,
         int uid):
         gm_(gm) {
     gi_.gameId = uid;
     gi_.nbPlayerMax = cg.nbPlayerMax;
     gi_.filename = cg.fileName;
-    gi_.playersNames.push_back(cg.playerName);
-    cs_.push_back(cptr);
 }
 
 void rtype::GameLobby::joinGame(rtype::protocol_tcp::JoinGameInfo const &jgi, std::shared_ptr<Connection> cptr) {

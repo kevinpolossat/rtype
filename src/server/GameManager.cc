@@ -6,9 +6,9 @@
 
 rtype::GameManager::GameManager(std::unique_ptr<rtype::GameLauncher> gl): launcher_(std::move(gl)) {}
 
-int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg, std::shared_ptr<Connection> cptr) {
+int rtype::GameManager::createGame(rtype::protocol_tcp::CreateGame const &cg) {
     static int uid = 1;
-    auto gl = std::make_shared<GameLobby>(*this, cg, cptr, uid);
+    auto gl = std::make_shared<GameLobby>(*this, cg, uid);
     lobbies_.push_back(gl);
     auto retId = uid;
     uid += 1;

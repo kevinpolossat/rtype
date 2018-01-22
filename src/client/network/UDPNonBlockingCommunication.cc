@@ -2,6 +2,7 @@
 // Created by Kévin POLOSSAT on 22/01/2018.
 //
 
+#include <iostream>
 #include "Resolver.h"
 #include "UDPNonBlockingCommunication.h"
 
@@ -19,29 +20,8 @@ void rtype::network::UDPNonBlockingCommuncation::close() {
 }
 
 bool rtype::network::UDPNonBlockingCommuncation::open(std::string const &port) {
-    lw_network::Socket socket;
-    lw_network::Resolver re;
-    re
-            .SetService("4242")
-            .SetFamily(AF_UNSPEC)
-            .SetSockType(SOCK_DGRAM)
-            .SetFlags(AI_PASSIVE);
-
-    for (auto & endPoint: re.Resolve()) {
-        auto e = lw_network::no_error;
-        socket.open(endPoint.protocol(), e);
-        if (e) {
-            continue;
-        }
-        socket.bind(endPoint, e);
-        if (e) {
-            socket.close(e);
-            continue;
-        }
-        port_ = endPoint.PortStr();
-        break;
-    }
-    return socket.isOpen();
+    s_.openAsUdp(port);
+    return s_.isOpen();
 }
 
 void rtype::network::UDPNonBlockingCommuncation::addHandle(
@@ -66,6 +46,8 @@ void rtype::network::UDPNonBlockingCommuncation::addDest(std::string const &host
     this->addDest(ep);
 }
 
-std::string const & rtype::network::UDPNonBlockingCommuncation::getPort() const {
-    return port_;
+std::string rtype::network::UDPNonBlockingCommuncation::getPort() const {
+    auto e = lw_network::no_error;
+    auto ep = s_.localEndPoint(e);
+    return ep.PortStr();
 }

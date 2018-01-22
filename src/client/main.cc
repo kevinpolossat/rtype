@@ -42,7 +42,7 @@ int main() {/*
                 if (a.value.empty()) {
                     rtype::protocol_tcp::QueryCreateGame cg;
                     cg.value.fileName = "toto.txt";
-                    cg.value.nbPlayerMax = 4;
+                    cg.value.nbPlayerMax = 1;
                     cg.value.playerName = "nonmame";
                     cg.value.port = "myPort";
                     tcpConnection->sendToServer(cg);

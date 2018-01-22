@@ -23,11 +23,11 @@ public:
 
     using Handle = std::function<void(std::vector<std::string> const & json)>;
 
-    bool open(std::string const &port);
+    bool open(std::string const &port = "0");
     void addDest(std::string const & hostName, std::string const & port);
     void addDest(lw_network::EndPoint const & ep);
     void addHandle(int packetId, Handle h);
-    std::string const & getPort() const;
+    std::string getPort() const;
 private:
     lw_network::Socket s_;
     std::vector<lw_network::EndPoint> dest_;

@@ -75,7 +75,7 @@ bool GameState::operator==(GameState const & rhs) const {
 }
 
 bool NetInfo::operator==(NetInfo const & rhs) const {
-    return this->ip == rhs.ip && this->port == rhs.port;
+    return this->port == rhs.port;
 }
 
 bool GameStart::operator==(GameStart const & rhs) const {
