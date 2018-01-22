@@ -15,7 +15,7 @@
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
 #include "UDPNonBlockingCommunication.h"
-#include "RtypeProtocol.h"
+#include "TcpProtocol.h"
 
 int main() {/*
 	ge::GameEngine gameEngine;

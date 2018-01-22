@@ -97,8 +97,12 @@ set(NETWORK_SOURCES
 		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
 
 set(TCP_PROTOCOL
-		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.h
-		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.cc)
+		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.cc)
+set(UDP_PROTOCOL
+		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.cc)
+
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -116,7 +120,12 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googl
 
 #client
 add_executable(rtype_client src/client/main.cc)
-target_sources(rtype_client PRIVATE ${CLIENT_SOURCES} ${NETWORK_SOURCES} ${TCP_PROTOCOL} ${NETWORK_GAME_ENGINE})
+target_sources(rtype_client
+		PRIVATE ${CLIENT_SOURCES}
+		PRIVATE ${NETWORK_SOURCES}
+		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
@@ -125,6 +134,7 @@ target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine/Entity
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
         PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ${CEREAL_HEADER}
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
@@ -148,11 +158,13 @@ target_sources(rtype_server
 		PRIVATE ${SERVER_SOURCES}
 		PRIVATE ${NETWORK_SOURCES}
 		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${UDP_PROTOCOL}
 		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_server
 		PRIVATE ./src/network
 		PRIVATE ${CEREAL_HEADER}
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ./src/client/network)
 target_link_libraries(rtype_server
 		PRIVATE Threads::Threads)

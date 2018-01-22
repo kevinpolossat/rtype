@@ -22,7 +22,7 @@ public:
     void recv() override;
     void close() override;
 
-    using Handle = std::function<void(std::vector<std::string> const & json)>;
+    using Handle = std::function<void(void *, std::size_t size)>;
 
     bool open(std::string const &port = "0");
     void addDest(std::string const & hostName, std::string const & port);
@@ -30,11 +30,17 @@ public:
     void addDests(std::vector<std::pair<std::string, std::string>> const & ipAndPort);
     void addHandle(Handle h);
     std::string getPort() const;
+
+    template<typename T>
+    void notifyAll(T const &toSend);
+
 private:
+    static constexpr int BufferSize = 1024;
     lw_network::Socket s_;
     std::vector<lw_network::EndPoint> dest_;
     Handle handler_;
-    std::array<char, 1024> bRead_;
+    std::array<char, BufferSize> bRead_;
+    std::array<char, BufferSize> bWrite_;
 };
 
 }

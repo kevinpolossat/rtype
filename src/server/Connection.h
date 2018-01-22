@@ -9,7 +9,7 @@
 #include <string>
 #include "ReactiveSocket.h"
 #include "Protocol.h"
-#include "RtypeProtocol.h"
+#include "TcpProtocol.h"
 
 namespace rtype {
 class GameManager;

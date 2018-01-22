@@ -2,7 +2,7 @@
 // Created by Kévin POLOSSAT on 16/01/2018.
 //
 
-#include "RtypeProtocol.h"
+#include "TcpProtocol.h"
 #include "gtest/gtest.h"
 
 #include <iostream>

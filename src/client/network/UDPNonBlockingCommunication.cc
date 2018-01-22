@@ -8,18 +8,16 @@
 #include "UDPNonBlockingCommunication.h"
 
 void ge::network::UDPNonBlockingCommuncation::send() {
-    for (auto i = 0; i < 10; ++i) {
         for (auto & ep : dest_) {
-//            auto e = lw_network::no_error;
-//            auto b = lw_network::Buffer(const_cast<char *>(bRead_.data()), bRead_.size());
-//            auto nbyte = s_.sendto(ep, b, 0, e);
+            auto e = lw_network::no_error;
+            auto b = lw_network::Buffer(bWrite_.data(), bWrite_.size());
+            auto nbyte = s_.sendto(ep, b, 0, e);
             // TODO DO SOMETHING ?
         }
-    }
 }
 
 void ge::network::UDPNonBlockingCommuncation::recv() {
-    for (;;) {
+    for (;;) { // TODO limit here ??
         auto e = lw_network::no_error;
         lw_network::EndPoint ep;
         auto b = lw_network::Buffer(bRead_.data(), bRead_.size());
@@ -28,10 +26,7 @@ void ge::network::UDPNonBlockingCommuncation::recv() {
             continue;
         }
         else {
-            std::string d;
-            d.assign(bRead_.data(), nbyte);
-            //trigger here
-            //std::cout << d << std::endl;
+            handler_(bRead_.data(), nbyte);
             break;
         }
     }
