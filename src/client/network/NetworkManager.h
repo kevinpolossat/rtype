@@ -21,8 +21,8 @@ namespace ge {
 			NetworkManager &operator=(NetworkManager const &) = delete;
 			NetworkManager &operator=(NetworkManager &&) = delete;
 
-			void addCommuncation(std::shared_ptr<ge::network::NetworkCommunication> c);
-			void removeCommuncation(std::shared_ptr<ge::network::NetworkCommunication> c);
+			void addCommunication(std::shared_ptr<ge::network::NetworkCommunication> c);
+			void removeCommunication(std::shared_ptr<ge::network::NetworkCommunication> c);
 
 			void shutdownGracefully();
 			void handleSendEvent();
