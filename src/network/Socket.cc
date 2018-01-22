@@ -141,3 +141,21 @@ signed_size_type lw_network::Socket::sendto(
     }
     return s;
 }
+
+void lw_network::Socket::openAsUdp(std::string const &port) {
+    auto port_ = std::stoi(port);
+    auto e = lw_network::no_error;
+    s_ = socket_operations::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP, e);
+    if (e != lw_network::no_error) {
+        return ;
+    }
+    sockaddr_in addr;
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = htons(port_);
+    socket_operations::bind<SockLenType>(s_, reinterpret_cast<const sockaddr*>(&addr), sizeof(addr), e);
+    if (e != lw_network::no_error) {
+        this->close(e);
+        return ;
+    }
+}

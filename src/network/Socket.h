@@ -29,6 +29,7 @@ public:
     Socket & operator = (Socket && other);
 
     void open(Protocol const & proto, error_code &e);
+    void openAsUdp(std::string const & port);
     bool isOpen() const;
     void close(error_code &e);
     void bind(EndPoint const & endpoint, error_code &e);
