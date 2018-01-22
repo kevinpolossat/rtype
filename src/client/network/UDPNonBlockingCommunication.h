@@ -32,7 +32,7 @@ public:
     std::string getPort() const;
 
     template<typename T>
-    void notifyAll(T const &toSend);
+    void notifyAll(std::vector<T> const &toSend);
 
 private:
     static constexpr int BufferSize = 1024;
