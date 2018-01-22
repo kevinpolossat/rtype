@@ -2,8 +2,8 @@
 // Created by Kévin POLOSSAT on 21/01/2018.
 //
 
-#include <network/Resolver.h>
 #include <iostream>
+#include "Resolver.h"
 #include "TCPNonBlockingCommunication.h"
 
 void rtype::network::TCPNonBlockingCommunication::send() {

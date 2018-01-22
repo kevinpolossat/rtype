@@ -42,14 +42,16 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
 
-		# Network
+		#[[add source files here]])
+
+set(NETWORK_GAME_ENGINE
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.h
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.cc
 		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.h
 		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.cc
-
-		#[[add source files here]])
+		${CMAKE_SOURCE_DIR}/src/client/network/UDPNonBlockingCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/UDPNonBlockingCommunication.cc)
 
 set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/Server.cc
@@ -113,7 +115,7 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googl
 
 #client
 add_executable(rtype_client src/client/main.cc)
-target_sources(rtype_client PRIVATE ${CLIENT_SOURCES} ${NETWORK_SOURCES} ${TCP_PROTOCOL})
+target_sources(rtype_client PRIVATE ${CLIENT_SOURCES} ${NETWORK_SOURCES} ${TCP_PROTOCOL} ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
@@ -143,11 +145,13 @@ set_target_properties(rtype_server
 target_sources(rtype_server
 		PRIVATE ${SERVER_SOURCES}
 		PRIVATE ${NETWORK_SOURCES}
-		PRIVATE ${TCP_PROTOCOL})
+		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_server
 		PRIVATE ./src/network
 		PRIVATE ${CEREAL_HEADER}
-		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp)
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ./src/client/network)
 
 enable_testing()
 #test executable

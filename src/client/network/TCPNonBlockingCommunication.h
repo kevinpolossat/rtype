@@ -9,7 +9,7 @@
 #include <unordered_map>
 #include <array>
 #include <queue>
-#include <tcp/RtypeProtocol.h>
+#include "RtypeProtocol.h"
 #include "NetworkCommunication.h"
 #include "Socket.h"
 
