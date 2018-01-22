@@ -7,10 +7,9 @@
 
 bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) {
     rtype::protocol_tcp::GameStart gs;
-    gl->notifyAll(gs);
-    auto udp = rtype::network::UDPNonBlockingCommuncation();
+    auto udp = ge::network::UDPNonBlockingCommuncation();
     udp.open(/*default port 0*/);
-    std::cout << "bind on port==" << udp.getPort() << std::endl;
     gs.value = {udp.getPort()};
+    gl->notifyAll(gs);
     return true;
 }

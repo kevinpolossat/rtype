@@ -81,7 +81,7 @@ int main() {/*
     );
     rtype::protocol_tcp::QueryList ql;
     tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
-    nm.addCommuncation(tcpConnection);
+    nm.addCommunication(tcpConnection);
 	for (;;) {
         nm.handleRecvEvent();
         std::string s;

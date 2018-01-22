@@ -12,7 +12,7 @@
 
 #include "NetworkCommunication.h"
 
-namespace rtype {
+namespace ge {
 namespace network {
 
 class UDPNonBlockingCommuncation: public NetworkCommunication {
