@@ -44,8 +44,7 @@ bool ge::network::UDPNonBlockingCommuncation::open(std::string const &port) {
     return s_.isOpen();
 }
 
-void ge::network::UDPNonBlockingCommuncation::addHandle(
-        ge::network::UDPNonBlockingCommuncation::Handle h) {
+void ge::network::UDPNonBlockingCommuncation::addHandle(ge::network::UDPNonBlockingCommuncation::Handle h) {
     handler_ = h;
 }
 
