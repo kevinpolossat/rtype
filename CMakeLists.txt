@@ -180,6 +180,7 @@ target_include_directories(rtype_server_test
 		PRIVATE "${gmock_SOURCE_DIR}/include"
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/server
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ${SFML_INCLUDE_DIR}
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
 		PRIVATE ${CEREAL_HEADER})
@@ -187,6 +188,8 @@ target_link_libraries(rtype_server_test
 		PRIVATE gmock_main)
 target_sources(rtype_server_test
 		PRIVATE ${TCP_PROTOCOL}
-		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
+		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_udp_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)

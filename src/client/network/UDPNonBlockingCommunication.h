@@ -12,6 +12,7 @@
 #include <unordered_map>
 
 #include "NetworkCommunication.h"
+#include "UdpProtocol.h"
 
 namespace ge {
 namespace network {
@@ -35,12 +36,11 @@ public:
     void notifyAll(std::vector<T> const &toSend);
 
 private:
-    static constexpr int BufferSize = 1024;
     lw_network::Socket s_;
     std::vector<lw_network::EndPoint> dest_;
     Handle handler_;
-    std::array<char, BufferSize> bRead_;
-    std::array<char, BufferSize> bWrite_;
+    std::array<char, rtype::protocol_udp::MaxPacketSize> bRead_;
+    std::array<char, rtype::protocol_udp::MaxPacketSize> bWrite_;
 };
 
 }

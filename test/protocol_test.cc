@@ -7,9 +7,6 @@
 
 #include <iostream>
 #include <sstream>
-#include <cereal/archives/json.hpp>
-#include <cereal/types/vector.hpp>
-#include <cereal/types/string.hpp>
 
 TEST(Serialization, ProtocolQueryList) {
     rtype::protocol_tcp::QueryList ql;
