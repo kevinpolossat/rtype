@@ -129,7 +129,7 @@ TEST(Serialization, ProtocolGameState) {
 
 TEST(Serialization, ProtocolGameStart) {
     rtype::protocol_tcp::GameStart gs;
-    gs.value = {"424242"};
+    gs.value = {"424242", 666};
 
     std::stringstream ss;
     {

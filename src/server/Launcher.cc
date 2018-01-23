@@ -14,7 +14,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) {
     udp->addDests(gl->getIpAndPorts());
     udp->addHandle([](void *data, std::size_t nbyte) {
         auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Event/*recieving event only*/>(static_cast<char *>(data), nbyte);
-        std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+        //std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
         auto seqId = p.h.seqId; // STORE SEQID TO TREAT ONLY THE MOST RECENT PACKET
         // COMPARE IT WITH PREVIOUSLY TESTED
         // if (seqId > savedSeqId) {
@@ -24,7 +24,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) {
         // discard
         //}
     });
-    gl->notifyAll(gs);
+    gl->notifyAllGameStart(gs);
     auto t = std::thread([udp]() { // GAME HERE // add own class ?
         std::vector<rtype::protocol_udp::Entity> es;
         es.emplace_back(55, 0, 42, 42.0f, 42.0f);

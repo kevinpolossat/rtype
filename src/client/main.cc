@@ -86,15 +86,16 @@ int main() {/*
                 std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
                 auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
                 auto p = gs.value.port;
+                auto idPlayer = gs.value.id; // ID TO MATCH THE GAME ENGINE ID SEND IT IN EVENTS
                 udp.addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
                 udp.addHandle([](void *data, std::size_t nbyte) {
                     auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity/*recieving event only*/>(static_cast<char *>(data), nbyte);
-                    std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+                    //std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
                     auto seqId = p.h.seqId; // STORE SEQID TO TREAT ONLY THE MOST RECENT PACKET
                 });
                 std::vector<rtype::protocol_udp::Event> events;
-                events.emplace_back(42, 0);
-                events.emplace_back(42, 1);
+                events.emplace_back(idPlayer, 0);
+                events.emplace_back(idPlayer, 1);
                 for (;;) {
                     udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
                     udp.notifyAll(events);
