@@ -119,7 +119,7 @@ extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a,
 {
 	return new Random(a, b, c, d);
 }
-extern "C" __declspec(dllexport) void deleteLib(Random *b)
+extern "C" __declspec(dllexport) void deleteLib(IArtificialIntelligence *b)
 {
 	delete b;
 }
@@ -128,7 +128,7 @@ extern "C" IArtificialIntelligence *createLib(const int a, const int b, const in
 {
 	return new Random(a, b, c, d);
 }
-extern "C" void deleteLib(Random *b)
+extern "C" void deleteLib(IArtificialIntelligence *b)
 {
 	delete b;
 }
