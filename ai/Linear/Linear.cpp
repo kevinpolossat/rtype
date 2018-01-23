@@ -121,13 +121,21 @@ Action Linear::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Linear>(Linear(a, b, c, d)));
+	return new Linear(a, b, c, d);
+}
+extern "C" __declspec(dllexport) void deleteLib(Linear *b)
+{
+	delete b;
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Linear>(Linear(a, b, c, d)));
+	return new Linear(a, b, c, d);
+}
+extern "C" void deleteLib(Linear *b)
+{
+	delete b;
 }
 #endif
