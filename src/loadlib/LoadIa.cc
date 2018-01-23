@@ -58,13 +58,13 @@ std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
   if (ctor == nullptr)
   {
     error = true;
-    std::cout << dlerror() << std::endl;
+    std::cerr << "could not locate the function createLib" << std::endl;
   }
   DTOR dtor = reinterpret_cast<DTOR>(GetProcAddress(handle, "deleteLib"));
   if (dtor == nullptr)
   {
     error = true;
-    std::cout << dlerror() << std::endl;
+    std::cerr << "could not locate the function createLib" << std::endl;
   }
   return (std::make_pair(AIInterface(lhandle, ctor, dtor), error));
 }
