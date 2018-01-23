@@ -73,9 +73,9 @@ struct Packet {
 };
 
 template<typename T>
-Packet<T> extract(std::array<char, MaxPacketSize> from, std::size_t s) {
+Packet<T> extract(char *from, std::size_t s) {
     std::stringstream ss;
-    ss.write(from.data(), s);
+    ss.write(from, s);
     Packet<T> obj;
     {
         cereal::PortableBinaryInputArchive ia(ss);

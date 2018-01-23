@@ -33,7 +33,14 @@ public:
     std::string getPort() const;
 
     template<typename T>
-    void notifyAll(std::vector<T> const &toSend);
+    void notifyAll(std::vector<T> const &toSend) {
+        rtype::protocol_udp::Packet<T> obj;
+        obj.elements = toSend;
+        auto s = rtype::protocol_udp::transform(obj);
+        if (s.size() < rtype::protocol_udp::MaxPacketSize) {
+            std::copy(s.begin(), s.end(), bWrite_.begin());
+        }
+    }
 
 private:
     lw_network::Socket s_;
