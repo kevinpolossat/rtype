@@ -136,7 +136,7 @@ extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a,
 {
 	return new Circle(a, b, c, d);
 }
-extern "C" __declspec(dllexport) void deleteLib(Circle *b)
+extern "C" __declspec(dllexport) void deleteLib(IArtificialIntelligence *b)
 {
 	delete b;
 }
@@ -145,7 +145,7 @@ extern "C" IArtificialIntelligence *createLib(const int a, const int b, const in
 {
 	return new Circle(a, b, c, d);
 }
-extern "C" void deleteLib(Circle *b)
+extern "C" void deleteLib(IArtificialIntelligence *b)
 {
 	delete b;
 }
