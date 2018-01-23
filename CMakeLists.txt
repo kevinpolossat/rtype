@@ -47,7 +47,7 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp
 		#[[add source files here]])
 
-set(AI_HEADER ${CMAKE_SOURCE_DIR}/src/ai)
+set(AI_HEADER ${CMAKE_SOURCE_DIR}/ai)
 
 set(NETWORK_GAME_ENGINE
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
