@@ -30,17 +30,17 @@ int main() {/*
 	}*/
 	// GAMELOOP
     ge::network::NetworkManager nm;
-    auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
-    if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
+	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
+	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
         std::cout << "can't connect to server" << std::endl;
                   return 0;
     }
-    ge::network::UDPNonBlockingCommuncation udp;
-    auto b = udp.open();
+	ge::network::UDPNonBlockingCommuncation udp;
+	auto b = udp.open();
     if (!b) {
         std::cout << "FAILED TO OPEN UDP" << std::endl;
     }
-    tcpConnection->addHandle(
+	tcpConnection->addHandle(
             rtype::protocol_tcp::LIST_ANSWER,
             [tcpConnection, &udp](std::string const & json) {
                 std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
