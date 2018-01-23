@@ -8,12 +8,16 @@
 #include "UDPNonBlockingCommunication.h"
 
 void ge::network::UDPNonBlockingCommuncation::send() {
+    while (!toSend_.empty()) {
+        auto & s = toSend_.front();
         for (auto & ep : dest_) {
             auto e = lw_network::no_error;
-            auto b = lw_network::Buffer(bWrite_.data(), bWrite_.size());
+            auto b = lw_network::Buffer(const_cast<char *>(s.data()), s.size());
             auto nbyte = s_.sendto(ep, b, 0, e);
             // TODO DO SOMETHING ?
         }
+        toSend_.pop();
+    }
 }
 
 void ge::network::UDPNonBlockingCommuncation::recv() {

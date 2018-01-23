@@ -8,6 +8,7 @@
 #include "Socket.h"
 #include <array>
 #include <vector>
+#include <queue>
 #include <functional>
 #include <unordered_map>
 
@@ -34,14 +35,13 @@ public:
 
     template<typename T>
     void notifyAll(std::vector<T> const &toSend) {
-        static std::uint64_t seqId = 0;
         rtype::protocol_udp::Packet<T> obj;
         obj.elements = toSend;
-        obj.h.seqId = seqId++;
+        obj.h.seqId = seqId_++;
         obj.h.id = rtype::protocol_udp::ProtcolVersion;
         auto s = rtype::protocol_udp::transform(obj);
         if (s.size() < rtype::protocol_udp::MaxPacketSize) {
-            std::copy(s.begin(), s.end(), bWrite_.begin());
+            toSend_.push(std::move(s));
         }
     }
 
@@ -50,7 +50,8 @@ private:
     std::vector<lw_network::EndPoint> dest_;
     Handle handler_;
     std::array<char, rtype::protocol_udp::MaxPacketSize> bRead_;
-    std::array<char, rtype::protocol_udp::MaxPacketSize> bWrite_;
+    std::queue<std::string> toSend_;
+    std::uint64_t seqId_ = 0;
 };
 
 }
