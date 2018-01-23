@@ -91,6 +91,10 @@ int main() {/*
                 udp.addHandle([](void *data, std::size_t nbyte) {
                     auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity/*recieving event only*/>(static_cast<char *>(data), nbyte);
                     //std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+					for (auto it : p.elements)
+					{
+						//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
+					}
                     auto seqId = p.h.seqId; // STORE SEQID TO TREAT ONLY THE MOST RECENT PACKET
                 });
                 std::vector<rtype::protocol_udp::Event> events;

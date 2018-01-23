@@ -71,7 +71,12 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.cc
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.cpp
 		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES

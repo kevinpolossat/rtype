@@ -62,6 +62,8 @@ namespace ge {
 	bool operator==(Vector2D<T> const & lhs, Vector2D<T> const & rhs) {
 		return lhs.x == rhs.x && lhs.y == rhs.y;
 	}
+	using Vector2f = Vector2D<float>;
+	using Vector2u = Vector2D<uint32_t>;
 }
 
 #endif

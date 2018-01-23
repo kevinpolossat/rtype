@@ -12,9 +12,8 @@
 #include <vector>
 #include <chrono>
 #include <stack>
-#include <GameEngine/Settings.h>
 
-#include "Vector2D.h"
+#include "../client/GameEngine/Vector2D.h"
 #include "../ia/IArtificialIntelligence.hpp"
 
 namespace ge {
@@ -179,6 +178,7 @@ namespace ge {
 		void setTag(std::string const &t_tag);
 
 		std::string const & getTag() const;
+		uint32_t id;
 
 	private:
 		std::vector<std::shared_ptr<Component>> components_;
