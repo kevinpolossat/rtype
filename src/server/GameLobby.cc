@@ -2,6 +2,7 @@
 // Created by Kévin POLOSSAT on 21/01/2018.
 //
 
+#include <algorithm>
 #include <Resolver.h>
 #include "GameLobby.h"
 
