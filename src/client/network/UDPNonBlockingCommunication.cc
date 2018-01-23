@@ -23,11 +23,10 @@ void ge::network::UDPNonBlockingCommuncation::recv() {
         auto b = lw_network::Buffer(bRead_.data(), bRead_.size());
         auto nbyte = s_.recvfrom(ep, b, 0, e);
         if (e != lw_network::no_error) {
-            continue;
+            break;
         }
         else {
             handler_(bRead_.data(), nbyte);
-            break;
         }
     }
 }

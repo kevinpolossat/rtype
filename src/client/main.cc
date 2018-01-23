@@ -31,7 +31,7 @@ int main() {/*
 	// GAMELOOP
     ge::network::NetworkManager nm;
     auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
-    if (!tcpConnection->open("localhost", "4242")) {
+    if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
         std::cout << "can't connect to server" << std::endl;
                   return 0;
     }
@@ -86,10 +86,21 @@ int main() {/*
                 std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
                 auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
                 auto p = gs.value.port;
-                udp.addDest("localhost", gs.value.port);
-                udp.recv();
-                udp.send();
-                udp.close();
+                udp.addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
+                udp.addHandle([](void *data, std::size_t nbyte) {
+                    auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity/*recieving event only*/>(static_cast<char *>(data), nbyte);
+                    std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+                    auto seqId = p.h.seqId; // STORE SEQID TO TREAT ONLY THE MOST RECENT PACKET
+                });
+                std::vector<rtype::protocol_udp::Event> events;
+                events.emplace_back(42, 0);
+                events.emplace_back(42, 1);
+                for (;;) {
+                    udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+                    udp.notifyAll(events);
+                    udp.send(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+                }
+                udp.close(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
             }
     );
     rtype::protocol_tcp::QueryList ql;
