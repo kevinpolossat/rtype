@@ -43,9 +43,11 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
 
-		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
-		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp
 		#[[add source files here]])
+
+set(AI_HEADER ${CMAKE_SOURCE_DIR}/src/ai)
 
 set(NETWORK_GAME_ENGINE
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
@@ -162,6 +164,7 @@ target_sources(rtype_server
 		PRIVATE ${NETWORK_SOURCES}
 		PRIVATE ${TCP_PROTOCOL}
 		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${AI_HEADER}
 		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_server
 		PRIVATE ./src/network

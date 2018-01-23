@@ -6,7 +6,7 @@
 #include "GameEngine.h"
 #include "AGameState.h"
 #include "PlayWorld.h"
-#include "ia/IArtificialIntelligence.hpp"
+#include "ai/IArtificialIntelligence.hpp"
 
 using ge::Velocity;
 using ge::Position;
