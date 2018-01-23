@@ -13,7 +13,7 @@ bool IntroState::Init(ge::GameEngine & engine) {
 	engine.Load(*world_.background->GetComponent<ge::Animator>());
 	return true;
 }
-
+void IntroState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event){}
 void IntroState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
 	if (event.button == sf::Mouse::Button::Left) {
 		for (auto const & it : world_.texts)

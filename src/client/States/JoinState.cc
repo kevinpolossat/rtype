@@ -11,6 +11,7 @@ bool JoinState::Init(ge::GameEngine & engine) {
 	world_.CreateBackground();
 	return true;
 }
+void JoinState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event){}
 
 void JoinState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
 	if (event.button == sf::Mouse::Button::Left) {

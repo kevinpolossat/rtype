@@ -1,23 +1,20 @@
-/*
+
 #include <vector>
 #include <iostream>
 #include "GameEngine.h"
 #include "client/States/IntroState.h"
 #include "client/States/PlayState.h"
 #include "Entity/Component.h"
-#include    "client/States/CreateState.h"
-#include    "client/States/LoginState.h"
+#include "client/States/CreateState.h"
+#include "client/States/LoginState.h"
 #include "client/States/JoinState.h"
-
-*/
-
 #include <iostream>
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
 #include "UDPNonBlockingCommunication.h"
 #include "TcpProtocol.h"
 
-int main() {/*
+int main() {
 	ge::GameEngine gameEngine;
 	if (gameEngine.Init("R-Type", 800, 600, false)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
@@ -27,7 +24,7 @@ int main() {/*
 		gameEngine.AddState("Join", std::make_shared<JoinState>());
 
 		gameEngine.Run("Intro");
-	}*/
+	}
 	// GAMELOOP
     ge::network::NetworkManager nm;
     auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();

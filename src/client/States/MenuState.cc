@@ -1,6 +1,7 @@
 #include "MenuState.h"
 
-void MenuState::Clear() {
+void MenuState::Clear()
+{
 	world_.buttons.clear();
 	world_.texts.clear();
 }
@@ -12,16 +13,20 @@ void MenuState::Resume() {
 }
 
 void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
-	switch (event.type) {
+	switch (event.type)
+	{
 		case sf::Event::MouseButtonPressed:
 			HandleClick_(engine, event.mouseButton);
+		break;
+		case sf::Event::KeyPressed:
+			HandleKey_(engine, event.text);
+		break;
 		default:
 			break;
 	}
 }
 
-void MenuState::Update(ge::GameEngine & game) {
-}
+void MenuState::Update(ge::GameEngine & game){}
 
 void MenuState::Display(ge::GameEngine & engine, float) {
 	for (auto const & it : world_.texts) {
