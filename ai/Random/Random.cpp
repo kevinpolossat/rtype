@@ -115,13 +115,21 @@ Action Random::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Random>(Random(a, b, c, d)));
+	return new Random(a, b, c, d);
+}
+extern "C" __declspec(dllexport) void deleteLib(Random *b)
+{
+	delete b;
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Random>(Random(a, b, c, d)));
+	return new Random(a, b, c, d);
+}
+extern "C" void deleteLib(Random *b)
+{
+	delete b;
 }
 #endif
