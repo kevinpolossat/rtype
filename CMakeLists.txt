@@ -43,6 +43,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
 
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
 		#[[add source files here]])
 
 set(NETWORK_GAME_ENGINE
@@ -139,7 +141,8 @@ target_include_directories(rtype_client
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
+		PRIVATE ${SFML_DEPENDENCIES}
+		PRIVATE ${CMAKE_DL_LIBS})
 
 set_target_properties(rtype_client
 		PROPERTIES
@@ -184,6 +187,7 @@ target_include_directories(rtype_server_test
 		PRIVATE ${SFML_INCLUDE_DIR}
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
 		PRIVATE ${CEREAL_HEADER})
+
 target_link_libraries(rtype_server_test
 		PRIVATE gmock_main)
 target_sources(rtype_server_test
@@ -193,3 +197,4 @@ target_sources(rtype_server_test
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_udp_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)
+

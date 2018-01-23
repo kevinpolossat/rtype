@@ -5,12 +5,14 @@
 
 #include "GameEngine.h"
 #include "AGameState.h"
-#include "client/PlayWorld.h"
+#include "PlayWorld.h"
+#include "ia/IArtificialIntelligence.hpp"
 
 using ge::Velocity;
 using ge::Position;
 using ge::Sprite;
 using ge::Collider;
+using ge::Ia;
 
 class PlayState : public ge::AGameState {
 public:
