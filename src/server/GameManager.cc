@@ -2,6 +2,7 @@
 // Created by Kévin POLOSSAT on 21/01/2018.
 //
 
+#include <algorithm>
 #include "GameManager.h"
 
 rtype::GameManager::GameManager(std::unique_ptr<rtype::GameLauncher> gl): launcher_(std::move(gl)) {}
