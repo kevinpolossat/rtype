@@ -13,8 +13,8 @@ void ge::network::TCPNonBlockingCommunication::send() {
         auto b = lw_network::Buffer(const_cast<char *>(s.c_str()), s.size());
         //std::cout << "sending : "  << packet_  << std::endl;
         while (!b.exhausted()) {
-            auto nbyte = s_.send(b, 0, ec);
-            //std::cout << "send=" << nbyte << std::endl;
+			auto nbyte = s_.send(b, 0, ec);
+			//std::cout << "send=" << nbyte << std::endl;
             if (nbyte < 0 || ec != lw_network::no_error) {
                 break;
             }
@@ -36,20 +36,20 @@ void ge::network::TCPNonBlockingCommunication::send() {
 void ge::network::TCPNonBlockingCommunication::recv() {
     auto ec = lw_network::no_error;
     auto b = lw_network::Buffer(bufferRead_.data(), bufferRead_.size());
-    auto nbyte = s_.recv(b, 0, ec);
-    if (nbyte <= 0) { // TODO HANDLE ERROR HERE ?
-        //std::cout << "nbyte=" << nbyte << " err=" << ec  << " EWOULDBLOCK=" << EWOULDBLOCK << std::endl;
+	auto nbyte = s_.recv(b, 0, ec);
+    if (nbyte <= 0 || ec != lw_network::no_error) { // TODO HANDLE ERROR HERE ?
+		//std::cout << "nbyte=" << nbyte << " err=" << ec  << " EWOULDBLOCK=" << EWOULDBLOCK << std::endl;
         return ;
     }
-    packet_.append(bufferRead_.data(), nbyte);
+	packet_.append(bufferRead_.data(), nbyte);
     std::size_t p;
 //    std::cout << "before process[" << packet_ << "]" << std::endl;
     while ((p = packet_.find("\r\n")) != std::string::npos) {
-        if (h_.id == rtype::protocol_tcp::UNKNOWN) {
-            h_ = rtype::protocol_tcp::extract<rtype::protocol_tcp::Header>(packet_.substr(0, p));
+		if (h_.id == rtype::protocol_tcp::UNKNOWN) {
+			h_ = rtype::protocol_tcp::extract<rtype::protocol_tcp::Header>(packet_.substr(0, p));
         }
         else {
-            auto handleIt = handlers_.find(h_.id);
+			auto handleIt = handlers_.find(h_.id);
             if (handleIt != handlers_.end()) {
                 handlers_[h_.id](packet_.substr(0, p));
             }
