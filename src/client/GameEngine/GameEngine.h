@@ -15,8 +15,9 @@
 #include "AGameState.h"
 #include "ResourcesManager.h"
 #include "StatesManager.h"
-#include "Entity/Component.h"
+#include "Component.h"
 #include "Vector2D.h"
+#include "NetworkManager.h"
 
 namespace ge {
 	// Forward declaration of StatesManager
@@ -43,6 +44,10 @@ namespace ge {
 		void SetFullscreen(bool fullscreen);
 		std::vector<Vector2u> GetResolutionsModes() const;
 		void Quit();
+
+		// NETWORK
+		void AddCommunication(std::shared_ptr<ge::network::NetworkCommunication> const & c);
+		void RemoveCommunication(std::shared_ptr<ge::network::NetworkCommunication> const & c);
 
 		// COMPONENTS
 		/*
@@ -88,6 +93,7 @@ namespace ge {
 		std::string windowTitle_;
 
 		// Using ptr here to avoid circular dependency
+		std::unique_ptr<network::NetworkManager> nm_;
 		std::unique_ptr<ResourcesManager> rm_;
 		std::unique_ptr<StatesManager> st_;
 

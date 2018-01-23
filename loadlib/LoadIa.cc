@@ -72,7 +72,7 @@ std::vector<std::string> getcontents(std::string pathdir)
   }
   while((file = readdir(folder)))
   {
-    if (file->d_name != "." && file->d_name != "..")
+    if (std::string(file->d_name) != "." && std::string(file->d_name) != "..")
     {
       names.push_back(file->d_name);
     }

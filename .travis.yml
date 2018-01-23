@@ -23,4 +23,4 @@ script:
   - cd build
   - cmake ..
   - make
-  - ./rtype_test
+  - ./rtype_server_test

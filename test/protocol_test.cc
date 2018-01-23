@@ -2,14 +2,11 @@
 // Created by Kévin POLOSSAT on 16/01/2018.
 //
 
-#include "RtypeProtocol.h"
+#include "TcpProtocol.h"
 #include "gtest/gtest.h"
 
 #include <iostream>
 #include <sstream>
-#include <cereal/archives/json.hpp>
-#include <cereal/types/vector.hpp>
-#include <cereal/types/string.hpp>
 
 TEST(Serialization, ProtocolQueryList) {
     rtype::protocol_tcp::QueryList ql;
@@ -45,7 +42,7 @@ TEST(Serialization, ProtocolQueryListAnswer) {
 
 TEST(Serialization, ProtocolCreateGame) {
     rtype::protocol_tcp::QueryCreateGame qcg;
-    qcg.value = {"toto.txt", "tata", 3};
+    qcg.value = {"toto.txt", "tata", 3, "4242"};
 
     std::stringstream ss;
     {
@@ -80,7 +77,7 @@ TEST(Serialization, ProtocolAnswerCreateGame) {
 
 TEST(Serialization, ProtocolQueryJoinGame) {
     rtype::protocol_tcp::QueryJoinGame qjg;
-    qjg.value = {99, "titi"};
+    qjg.value = {99, "titi", "4242"};
 
     std::stringstream ss;
 
@@ -132,7 +129,7 @@ TEST(Serialization, ProtocolGameState) {
 
 TEST(Serialization, ProtocolGameStart) {
     rtype::protocol_tcp::GameStart gs;
-    gs.value = {"localhost", "424242"};
+    gs.value = {"424242"};
 
     std::stringstream ss;
     {
@@ -160,4 +157,34 @@ TEST(Serialization, ProtocolHeader) {
         ia(h2);
     }
     ASSERT_EQ(h, h2);
+}
+
+TEST(Serialization, ExtractAndTransform) {
+    rtype::protocol_tcp::QueryList ql;
+    auto s = rtype::protocol_tcp::transform(ql);
+    auto p = s.find("\r\n");
+    auto hs = s.substr(0, p);
+    auto qls = s.substr(p + 2/*discard \r\n*/);
+    qls.pop_back();
+    qls.pop_back();
+    auto hql = rtype::protocol_tcp::extract<rtype::protocol_tcp::Header>(hs);
+    auto ql2 = rtype::protocol_tcp::extract<rtype::protocol_tcp::QueryList>(qls);
+    rtype::protocol_tcp::Header h2 = {rtype::protocol_tcp::LIST_GAME};
+    ASSERT_EQ(hql, h2);
+    ASSERT_EQ(ql, ql2);
+}
+
+TEST(Serialization, ProtocolLeaveGame) {
+    rtype::protocol_tcp::QueryLeaveGame qlg = {42};
+    rtype::protocol_tcp::QueryLeaveGame qlg2;
+    std::stringstream ss;
+    {
+        cereal::JSONOutputArchive oa(ss);
+        oa(qlg);
+    }
+    {
+        cereal::JSONInputArchive ia(ss);
+        ia(qlg2);
+    }
+    ASSERT_EQ(qlg, qlg2);
 }
