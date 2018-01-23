@@ -11,6 +11,7 @@
 #include <functional>
 #include <queue>
 
+#include "LoopTimer.h"
 #include "Settings.h"
 #include "AGameState.h"
 #include "ResourcesManager.h"
