@@ -4,10 +4,10 @@
 
 #include "UdpProtocol.h"
 
-rtype::protocol_udp::Header::Header(int id): id(id) {}
+rtype::protocol_udp::Header::Header(int id, std::uint64_t seqId): id(id), seqId(seqId) {}
 
 bool rtype::protocol_udp::Header::operator==(const rtype::protocol_udp::Header &rhs) const {
-    return this->id == rhs.id;
+    return this->id == rhs.id && this->seqId == rhs.seqId;
 }
 
 rtype::protocol_udp::Entity::Entity(

@@ -34,8 +34,11 @@ public:
 
     template<typename T>
     void notifyAll(std::vector<T> const &toSend) {
+        static std::uint64_t seqId = 0;
         rtype::protocol_udp::Packet<T> obj;
         obj.elements = toSend;
+        obj.h.seqId = seqId;
+        obj.h.id = rtype::protocol_udp::ProtcolVersion;
         auto s = rtype::protocol_udp::transform(obj);
         if (s.size() < rtype::protocol_udp::MaxPacketSize) {
             std::copy(s.begin(), s.end(), bWrite_.begin());

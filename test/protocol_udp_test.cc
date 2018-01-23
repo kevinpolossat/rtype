@@ -13,6 +13,8 @@ TEST(Serialization, ProtocolUdpEvent) {
         pe1.elements.push_back(rtype::protocol_udp::Event(i, i));
     }
     pe1.h.id = 42;
+    pe1.h.seqId = 6666;
+
     auto s = rtype::protocol_udp::transform(pe1);
     std::array<char, rtype::protocol_udp::MaxPacketSize> a_;
     std::copy(s.begin(), s.end(), a_.begin());
@@ -39,6 +41,7 @@ TEST(Serialization, ProtocolUdpEntity) {
         pe1.elements.push_back(rtype::protocol_udp::Entity(777, 3232, 42, 0.5, 0.7));
     }
     pe1.h.id = 42;
+    pe1.h.seqId = 6666;
     auto s = rtype::protocol_udp::transform(pe1);
     std::array<char, rtype::protocol_udp::MaxPacketSize> a_;
     std::copy(s.begin(), s.end(), a_.begin());

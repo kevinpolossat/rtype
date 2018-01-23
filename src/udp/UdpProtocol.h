@@ -16,15 +16,18 @@ namespace rtype {
 namespace protocol_udp {
 
 static constexpr int MaxPacketSize = 4096;
+static constexpr int ProtcolVersion = 1;
 
 struct Header {
-    explicit Header(int id = 0);
+    explicit Header(int id = 0, std::uint64_t seqId = 0);
     int id;
+    std::uint64_t seqId;
 
     template <class Archive>
     void serialize(Archive & ar)
     {
         ar(id);
+        ar(seqId);
     }
     bool operator == (Header const & rhs) const;
 };
