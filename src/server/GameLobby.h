@@ -37,6 +37,7 @@ public:
         }
     }
 
+    void notifyAllGameStart(rtype::protocol_tcp::GameStart & ) const;
     std::vector<std::pair<std::string, std::string>> const & getIpAndPorts() const;
 private:
     std::vector<std::shared_ptr<Connection>> cs_;

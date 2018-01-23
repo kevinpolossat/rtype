@@ -297,15 +297,18 @@ struct GameState {
 
 struct NetInfo {
     std::string port;
+    int id;
 
     template <class Archive>
     void save(Archive & ar) const {
         ar(port);
+        ar(id);
     }
 
     template <class Archive>
     void load(Archive & ar) {
         ar(port);
+        ar(id);
     }
 
     bool operator==(NetInfo const & rhs) const;
