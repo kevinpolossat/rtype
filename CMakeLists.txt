@@ -140,6 +140,7 @@ target_include_directories(rtype_client
         PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ${CEREAL_HEADER}
+		PRIVATE ${AI_HEADER}
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}

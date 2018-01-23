@@ -2,8 +2,8 @@
 #define PLAYWORLD_H_
 
 #include "AWorld.h"
-#include "ai/IArtificialIntelligence.hpp"
-#include "../../loadlib/LoadIa.hpp"
+#include "IArtificialIntelligence.hpp"
+#include "loadlib/LoadIa.hpp"
 using ge::Vector2f;
 using ge::GameObject;
 
