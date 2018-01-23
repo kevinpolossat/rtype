@@ -18,11 +18,11 @@ void CreateState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const
 {
 	for (auto const & it : world_.texts)
 	{
-		if (it->GetComponent<ge::Text>()->text == ("Name Game: " + nameGame))
-		{
-			nameGame += event.unicode;
-			it->GetComponent<ge::Text>()->text += event.unicode;
-		}
+				if (it->GetComponent<ge::Text>()->text == ("Name Game: " + nameGame) && event.unicode < 26)
+				{
+					nameGame += v[event.unicode];
+					it->GetComponent<ge::Text>()->text += v[event.unicode];
+				}
 	}
 }
 

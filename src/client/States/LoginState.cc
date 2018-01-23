@@ -14,11 +14,11 @@ void LoginState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const 
 {
 	for (auto const & it : world_.texts)
 	{
-		if (it->GetComponent<ge::Text>()->text == ("Login: " + login))
-		{
-			login += static_cast<char>(event.unicode);
-			it->GetComponent<ge::Text>()->text += event.unicode;
-		}
+			if (it->GetComponent<ge::Text>()->text == ("Login: " + login) && event.unicode < 26)
+			{
+				login += v[event.unicode];
+				it->GetComponent<ge::Text>()->text += v[event.unicode];
+			}
 	}
 }
 
