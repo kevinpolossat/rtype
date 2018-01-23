@@ -105,7 +105,7 @@ std::string lw_network::EndPoint::PortStr() const {
             sizeof(hoststr),
             servstr,
             sizeof(servstr),
-            NI_NUMERICHOST | NI_NUMERICSERV,
+            0,
             e);
     return std::string(servstr);
 }
@@ -121,7 +121,7 @@ std::string lw_network::EndPoint::HostNameStr() const {
 		sizeof(hoststr),
 		servstr,
 		sizeof(servstr),
-		NI_NUMERICHOST | NI_NUMERICSERV,
+		0,
 		e);
 	return std::string(hoststr);
 }

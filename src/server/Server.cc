@@ -2,17 +2,17 @@
 // Created by Kévin POLOSSAT on 14/01/2018.
 //
 
-
 #include <memory>
 #include <iostream>
 #include "Server.h"
 #include "Resolver.h"
+#include "Launcher.h"
 
-Server::Server(): reactor_(), acceptor_(reactor_) {
+Server::Server(): reactor_(), acceptor_(reactor_), gameManager_(std::make_unique<rtype::Launcher>()) {
     lw_network::Reactor reactor;
     lw_network::Resolver re;
 	re
-            .SetService("27015")
+            .SetService("4242")
             .SetFamily(AF_UNSPEC)
             .SetSockType(SOCK_STREAM)
             .SetFlags(AI_PASSIVE);
@@ -52,7 +52,7 @@ void Server::run() {
 void Server::doAccept_() {
 	acceptor_.asyncAccept(
             [this](lw_network::ReactiveSocket peer, lw_network::error_code ec) {
-                manager_.start(std::make_shared<Connection>(std::move(peer), manager_));
+                connectionManager_.start(std::make_shared<Connection>(std::move(peer), connectionManager_, gameManager_));
                 this->doAccept_();
             }
     );

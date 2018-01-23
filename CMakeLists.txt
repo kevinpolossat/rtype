@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 
 find_package(SFML 2 REQUIRED audio graphics window system)
+find_package( Threads )
 
 set(CLIENT_SOURCES
 		# GAME ENGINE
@@ -41,9 +42,19 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
 		#[[add source files here]])
+
+set(NETWORK_GAME_ENGINE
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.h
+		${CMAKE_SOURCE_DIR}/src/client/network/NetworkManager.cc
+		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/TCPNonBlockingCommunication.cc
+		${CMAKE_SOURCE_DIR}/src/client/network/UDPNonBlockingCommunication.h
+		${CMAKE_SOURCE_DIR}/src/client/network/UDPNonBlockingCommunication.cc)
 
 set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/Server.cc
@@ -52,6 +63,13 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/Connection.h
 		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.cc
 		${CMAKE_SOURCE_DIR}/src/server/ConnectionManager.h
+		${CMAKE_SOURCE_DIR}/src/server/GameManager.cc
+		${CMAKE_SOURCE_DIR}/src/server/GameManager.h
+		${CMAKE_SOURCE_DIR}/src/server/GameLobby.cc
+		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
+		${CMAKE_SOURCE_DIR}/src/server/Launcher.cc
+		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
+		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -81,8 +99,12 @@ set(NETWORK_SOURCES
 		${PROJECT_SOURCE_DIR}/src/network/lw_network_error.h)
 
 set(TCP_PROTOCOL
-		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.h
-		${PROJECT_SOURCE_DIR}/src/tcp/RtypeProtocol.cc)
+		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.cc)
+set(UDP_PROTOCOL
+		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.cc)
+
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
 
 configure_file(CMakeLists.txt.in googletest-download/CMakeLists.txt)
@@ -100,11 +122,22 @@ add_subdirectory("${CMAKE_BINARY_DIR}/googletest-src" "${CMAKE_BINARY_DIR}/googl
 
 #client
 add_executable(rtype_client src/client/main.cc)
-target_sources(rtype_client PRIVATE ${CLIENT_SOURCES})
+target_sources(rtype_client
+		PRIVATE ${CLIENT_SOURCES}
+		PRIVATE ${NETWORK_SOURCES}
+		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/network
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine/Entity
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
+        PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
+		PRIVATE ${CEREAL_HEADER}
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
@@ -127,32 +160,41 @@ set_target_properties(rtype_server
 target_sources(rtype_server
 		PRIVATE ${SERVER_SOURCES}
 		PRIVATE ${NETWORK_SOURCES}
-		PRIVATE ${TCP_PROTOCOL})
+		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_server
 		PRIVATE ./src/network
 		PRIVATE ${CEREAL_HEADER}
-		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp)
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
+		PRIVATE ./src/client/network)
+target_link_libraries(rtype_server
+		PRIVATE Threads::Threads)
 
 enable_testing()
 #test executable
-add_executable(rtype_test
+add_executable(rtype_server_test
 		${PROJECT_SOURCE_DIR}/test/test.cc
 		#[[add test source files here]])
 
-target_include_directories(rtype_test
+target_include_directories(rtype_server_test
 		PRIVATE "${gtest_SOURCE_DIR}/include"
 		PRIVATE "${gmock_SOURCE_DIR}/include"
-		PRIVATE ${PROJECT_SOURCE_DIR}/src
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/server
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
-		PRIVATE src/client/GameEngine
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ${SFML_INCLUDE_DIR}
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
 		PRIVATE ${CEREAL_HEADER})
-target_link_libraries(rtype_test
-		PRIVATE gmock_main
-		PRIVATE ${SFML_LIBRARIES}
-		PRIVATE ${SFML_DEPENDENCIES})
-target_sources(rtype_test
-		PRIVATE ${TCP_PROTOCOL}
-		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc)
 
-add_test(NAME testing_rtype_test COMMAND rtype_test)
+target_link_libraries(rtype_server_test
+		PRIVATE gmock_main)
+target_sources(rtype_server_test
+		PRIVATE ${TCP_PROTOCOL}
+		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_test.cc
+		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_udp_test.cc)
+
+add_test(NAME testing_rtype_test COMMAND rtype_server_test)
+

@@ -2,7 +2,8 @@
 #include "Vector2D.h"
 
 ge::GameEngine::GameEngine()
-		: rm_(std::make_unique<ge::ResourcesManager>()),
+		: nm_(std::make_unique<ge::network::NetworkManager>()),
+		  rm_(std::make_unique<ge::ResourcesManager>()),
 		  st_(std::make_unique<ge::StatesManager>()),
 		  toDraw_([](PrioritizedDrawable const & d1, PrioritizedDrawable const & d2) { return d1.first < d2.first; }) {
 }
@@ -58,9 +59,11 @@ void ge::GameEngine::Run(std::string const & initState) {
 	while (window_.isOpen()) {
 		loops = 0;
 		while (std::chrono::high_resolution_clock::now() > nextGameTick && loops < maxFrameSkip) {
+			nm_->handleRecvEvent();
 			HandleEvents_();
 			st_->GetCurrentState()->Update(*this);
 			nextGameTick += std::chrono::milliseconds(msToSkip);
+			nm_->handleSendEvent();
 			++loops;
 		}
 
@@ -105,6 +108,16 @@ std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
 
 void ge::GameEngine::Quit() {
 	window_.close();
+}
+
+/*
+**** NETWORK
+*/
+void ge::GameEngine::AddCommunication(std::shared_ptr<ge::network::NetworkCommunication> const & c) {
+	nm_->addCommunication(c);
+}
+void ge::GameEngine::RemoveCommunication(std::shared_ptr<ge::network::NetworkCommunication> const & c) {
+	nm_->removeCommunication(c);
 }
 
 /*
