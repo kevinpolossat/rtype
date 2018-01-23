@@ -57,6 +57,11 @@ std::shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int he
   return (monster1);
 }
 
+void dunload(void *handle)
+{
+  if(FreeLibrary(handle);)
+    std::cout << dlerror() << std::endl;
+}
 #endif
 
 std::vector<std::string> getcontents(std::string pathdir)

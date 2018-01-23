@@ -202,3 +202,4 @@ target_sources(rtype_server_test
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)
 
+add_subdirectory(ai)
