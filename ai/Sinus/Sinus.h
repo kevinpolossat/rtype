@@ -10,7 +10,7 @@ public:
 	Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
 	~Sinus() {}
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) override;
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) override;
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 

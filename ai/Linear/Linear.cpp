@@ -15,12 +15,12 @@ Linear::Linear(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	this->setShoot(false);
 	this->setTurn(0);
 }
-
+/*
 std::shared_ptr<IArtificialIntelligence> Linear::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	return std::make_shared<Linear>(Linear(myX, myY, width, height));
 }
-
+*/
 
 bool Linear::setDamages(uint32_t dmg)
 {

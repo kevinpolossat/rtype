@@ -19,12 +19,12 @@ Circle::Circle(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	_center.X = myX;
 	_center.Y = myY;
 }
-
+/*
 std::shared_ptr<IArtificialIntelligence> Circle::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	return std::make_shared<Circle>(Circle(myX, myY, width, height));
 }
-
+*/
 
 bool Circle::setDamages(uint32_t dmg)
 {

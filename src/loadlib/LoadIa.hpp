@@ -2,18 +2,30 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include "IArtificialIntelligence.hpp"
+#include <utility>
 #include <sys/types.h>
+#include "IArtificialIntelligence.hpp"
 
 #if defined (__linux__) || defined (__APPLE__)
   #include <dlfcn.h>
   #include <dirent.h>
+using LibType = void *;
 #elif defined (_WIN32) || defined (_WIN64)
   #include <windows.h>
   #include "dirent.h"
+using LibType = HINSTANCE;
 #endif
 
-typedef std::shared_ptr<IArtificialIntelligence> (*type)(int, int, int, int);
+using CTOR = IArtificialIntelligence* (*)(int, int, int, int);
+using DTOR = void (*)(IArtificialIntelligence *);
+
+struct AIInterface {
+    AIInterface(LibType ref, CTOR c, DTOR d);
+    void close();
+    LibType libref;
+    CTOR ctor;
+    DTOR dtor;
+};
 
 class loadIa
 {
@@ -28,5 +40,5 @@ private:
     int height;
     int x;
     int y;
-    std::vector<std::shared_ptr<IArtificialIntelligence>> _ias;
+    std::vector<AIInterface> libInterfaces_;
 };

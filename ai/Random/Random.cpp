@@ -14,12 +14,12 @@ Random::Random(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	this->setShoot(false);
 	this->setTurn(0);
 }
-
+/*
 std::shared_ptr<IArtificialIntelligence> Random::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	return std::make_shared<Random>(Random(myX, myY, width, height));
 }
-
+*/
 
 bool Random::setDamages(uint32_t dmg)
 {

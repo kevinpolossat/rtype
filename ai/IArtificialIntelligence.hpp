@@ -31,7 +31,7 @@ public:
 	explicit IArtificialIntelligence() = default;
 	virtual ~IArtificialIntelligence() = default;
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) = 0;
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) = 0;
 	// CORE
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) = 0;
 

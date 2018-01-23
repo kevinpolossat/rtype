@@ -18,12 +18,12 @@ Sinus::Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const
 	this->setShoot(false);
 	this->setTurn(0);
 }
-
+/*
 std::shared_ptr<IArtificialIntelligence> Sinus::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	return std::make_shared<Sinus>(Sinus(myX, myY, width, height));
 }
-
+*/
 bool Sinus::setDamages(uint32_t dmg)
 {
 		uint32_t l = this->getLife();
