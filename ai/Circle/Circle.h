@@ -1,16 +1,16 @@
-#ifndef __LINEAR_HPP__
-#define __LINEAR_HPP__
+#ifndef __CIRCLE_HPP__
+#define __CIRCLE_HPP__
 
 #include <math.h>
 #include "IArtificialIntelligence.hpp"
 
-class Linear : public IArtificialIntelligence
+class Circle : public IArtificialIntelligence
 {
 public:
-	Linear(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
-	~Linear() {}
+	Circle(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	~Circle() {}
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 
@@ -42,6 +42,7 @@ public:
 
 	virtual AIPosition& getNearPlayer(std::vector<AIPosition>& players) const override;
 
+
 private:
 	uint32_t			_turn;
 	uint32_t			_width;
@@ -51,8 +52,9 @@ private:
 	uint32_t			_life;
 	bool					_shoot;
 	vec2D					_shootVector;
-	int _x;
-
+	float 		_angle;
+	float 		_rayon;
+	AIPosition _center;
 };
 
 #endif

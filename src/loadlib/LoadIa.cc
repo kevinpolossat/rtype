@@ -13,16 +13,22 @@ void *dload(const char *path_lib)
   return(handle);
 }
 
-std::shared_ptr<IArtificialIntelligence> dlib(void *handle, int width,int height, int x, int y)
+std::pair<AIInterface, bool> dlib(void *handle)
 {
-  std::shared_ptr<IArtificialIntelligence> (*ptr)(int, int, int, int);
-  ptr = reinterpret_cast<std::shared_ptr<IArtificialIntelligence> (*)(int, int, int, int)>(dlsym(handle, "createLib"));
-  if (ptr == nullptr)
+  bool error = false;
+  CTOR ctor = reinterpret_cast<CTOR>(dlsym(handle, "createLib"));
+  if (ctor == nullptr)
   {
+    error = true;
     std::cout << dlerror() << std::endl;
-    return (0);
   }
-    return(ptr(x, y, width, height)->NewIA(x, y, width, height));
+  DTOR dtor = reinterpret_cast<DTOR>(dlsym(handle, "deleteLib"));
+  if (dtor == nullptr)
+  {
+    error = true;
+    std::cout << dlerror() << std::endl;
+  }
+  return (std::make_pair(AIInterface(handle, ctor, dtor), error));
 }
 
 void dunload(void *handle)
@@ -45,18 +51,30 @@ HINSTANCE dload(const char *path_lib)
   return(lhandle);
 }
 
-std::shared_ptr<IArtificialIntelligence> dlib(HINSTANCE lhandle,int width,int height, int x , int y)
+std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
 {
-  type funci = reinterpret_cast<type>(GetProcAddress(lhandle, "createLib"));
-  if (!funci)
+  bool error = false;
+  CTOR ctor = reinterpret_cast<CTOR>(GetProcAddress(lhandle, "createLib"));
+  if (ctor == nullptr)
   {
-    std::cerr << "could not locate the function" << std::endl;
-    return nullptr;
+    error = true;
+    std::cerr << "could not locate the function createLib" << std::endl;
   }
-  std::shared_ptr<IArtificialIntelligence> monster1 = funci(x, y, width, height);
-  return (monster1);
+  DTOR dtor = reinterpret_cast<DTOR>(GetProcAddress(lhandle, "deleteLib"));
+  if (dtor == nullptr)
+  {
+    error = true;
+    std::cerr << "could not locate the function createLib" << std::endl;
+  }
+  return (std::make_pair(AIInterface(lhandle, ctor, dtor), error));
 }
 
+void dunload(HINSTANCE handle)
+{
+   if(FreeLibrary(handle)) {
+        std::cout << "can't free library" << std::endl;
+   }
+}
 #endif
 
 std::vector<std::string> getcontents(std::string pathdir)
@@ -98,27 +116,32 @@ loadIa::loadIa(std::string pathdir, int width, int height)
     {
       std::string pathfile = pathdir + "/" + it;
       const char * path = pathfile.c_str();
-      _ias.push_back(dlib(dload(path), width, height, x, y));
+      auto li = dlib(dload(path));
+      if (!li.second) { // NO ERROR
+        libInterfaces_.push_back(li.first);
+      }
     }
   }
 }
 
 int loadIa::getNbIa()
 {
-  return(_ias.size());
+  return(libInterfaces_.size());
 }
 
 std::shared_ptr<IArtificialIntelligence> loadIa::getIa(int idx)
 {
-  if(idx < _ias.size() && idx > -1)
-    return _ias[idx]->NewIA(this->x, this->y, this->width, this->height);
+  if(idx < libInterfaces_.size() && idx > -1)
+    return std::shared_ptr<IArtificialIntelligence>(libInterfaces_[idx].ctor(this->x, this->y, this->width, this->height), libInterfaces_[idx].dtor);
   else
-    return _ias[0]->NewIA(this->x, this->y, this->width, this->height);
+    return nullptr;
 }
 
 loadIa::~loadIa()
 {
-  _ias.clear();
+  for (auto & li : libInterfaces_) {
+    li.close();
+  }
 }
 
 /*
@@ -140,3 +163,8 @@ int main(int ac, char ** av)
   while (std::cin.get() != '\n');
   return (0);
 } */
+AIInterface::AIInterface(LibType ref, CTOR c, DTOR d): libref(ref), ctor(c), dtor(d) {}
+
+void AIInterface::close() {
+  dunload(libref);
+}

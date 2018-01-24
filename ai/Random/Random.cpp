@@ -14,12 +14,12 @@ Random::Random(const uint32_t myX, const uint32_t myY, const uint32_t width, con
 	this->setShoot(false);
 	this->setTurn(0);
 }
-
+/*
 std::shared_ptr<IArtificialIntelligence> Random::NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height)
 {
 	return std::make_shared<Random>(Random(myX, myY, width, height));
 }
-
+*/
 
 bool Random::setDamages(uint32_t dmg)
 {
@@ -115,13 +115,21 @@ Action Random::actualize(std::vector<AIPosition>& players, std::vector<AIPositio
 }
 
 #if defined (_WIN32) || defined (_WIN64)
-extern "C" __declspec(dllexport) std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" __declspec(dllexport) IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Random>(Random(a, b, c, d)));
+	return new Random(a, b, c, d);
+}
+extern "C" __declspec(dllexport) void deleteLib(IArtificialIntelligence *b)
+{
+	delete b;
 }
 #elif defined (__linux__) || defined (__APPLE__)
-extern "C" std::shared_ptr<IArtificialIntelligence> createLib(const int a, const int b, const int c, const int d)
+extern "C" IArtificialIntelligence *createLib(const int a, const int b, const int c, const int d)
 {
-	return (std::make_shared<Random>(Random(a, b, c, d)));
+	return new Random(a, b, c, d);
+}
+extern "C" void deleteLib(IArtificialIntelligence *b)
+{
+	delete b;
 }
 #endif

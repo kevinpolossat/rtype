@@ -1,16 +1,16 @@
-#ifndef __SINUS_HPP__
-#define __SINUS_HPP__
+#ifndef __LINEAR_HPP__
+#define __LINEAR_HPP__
 
 #include <math.h>
 #include "IArtificialIntelligence.hpp"
 
-class Sinus : public IArtificialIntelligence
+class Linear : public IArtificialIntelligence
 {
 public:
-	Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
-	~Sinus() {}
+	Linear(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	~Linear() {}
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) override;
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 
@@ -51,9 +51,8 @@ private:
 	uint32_t			_life;
 	bool					_shoot;
 	vec2D					_shootVector;
-	float 			_angle;
-	float 			_rayon;
-	int 				_stockY;
+	int _x;
+
 };
 
 #endif

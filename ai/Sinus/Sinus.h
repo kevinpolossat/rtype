@@ -1,17 +1,16 @@
-#ifndef __RANDOM_HPP__
-#define __RANDOM_HPP__
+#ifndef __SINUS_HPP__
+#define __SINUS_HPP__
 
-#include <iostream>
 #include <math.h>
 #include "IArtificialIntelligence.hpp"
 
-class Random : public IArtificialIntelligence
+class Sinus : public IArtificialIntelligence
 {
 public:
-	Random(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
-	~Random() {}
+	Sinus(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	~Sinus() {}
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height) override;
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 
@@ -43,7 +42,6 @@ public:
 
 	virtual AIPosition& getNearPlayer(std::vector<AIPosition>& players) const override;
 
-
 private:
 	uint32_t			_turn;
 	uint32_t			_width;
@@ -53,7 +51,9 @@ private:
 	uint32_t			_life;
 	bool					_shoot;
 	vec2D					_shootVector;
-
+	float 			_angle;
+	float 			_rayon;
+	int 				_stockY;
 };
 
-#endif //__BASIC_HPP__
+#endif
