@@ -44,6 +44,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+		${CMAKE_SOURCE_DIR}/src/client/MenuValue.h
+		${CMAKE_SOURCE_DIR}/src/client/MenuValue.cc
 
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
@@ -199,4 +201,3 @@ target_sources(rtype_server_test
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_udp_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)
-
