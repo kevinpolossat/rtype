@@ -87,11 +87,11 @@ int main() {
 		std::vector<rtype::protocol_udp::Event> events;
 		events.emplace_back(idPlayer, 0);
 		events.emplace_back(idPlayer, 1);
-		for (;;) {
-			udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
-			udp.notifyAll(events);
-			udp.send(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
-		}
+		//for (;;) {
+			//udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+			//udp.notifyAll(events);
+			//udp.send(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+		//}
 		udp.close(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
 	}
 	);

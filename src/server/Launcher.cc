@@ -41,7 +41,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) {
 			std::vector<rtype::protocol_udp::Entity> es;
 			for (auto const & it : g.players)
 			{
-				std::shared_ptr<ge::Position> & p = it->GetComponent<ge::Position>();
+				std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
 				es.emplace_back(it->id,0, 0, p->getPos().x, p->getPos().y);
 			}
             udp->notifyAll(es);

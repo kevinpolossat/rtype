@@ -90,6 +90,7 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 
 void PlayState::Update(ge::GameEngine & engine)
 {
+	/*
 	uint32_t i = 0;
 	std::vector<AIPosition> playersPos;
 	std::vector<AIPosition> shoots;
@@ -150,6 +151,7 @@ void PlayState::Update(ge::GameEngine & engine)
 	}
 	playersPos.clear();
 	shoots.clear();
+	*/
 }
 
 void PlayState::Display(ge::GameEngine & engine, const float)
