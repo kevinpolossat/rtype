@@ -7,10 +7,12 @@
 #include "AGameState.h"
 #include "PlayWorld.h"
 #include "ia/IArtificialIntelligence.hpp"
+#include "UDPNonBlockingCommunication.h"
+
 
 class PlayState : public ge::AGameState {
 public:
-	PlayState() = default;
+	PlayState(ge::network::UDPNonBlockingCommuncation & t_udp);
 	PlayState(PlayState const & other) = delete;
 	PlayState(PlayState && other) = delete;
 	~PlayState() override = default;
@@ -32,9 +34,12 @@ private:
 	void HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
 	void HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
+	void HandleUdp_(void *data, std::size_t nbyte);
 
 	PlayWorld world_;
+	ge::network::UDPNonBlockingCommuncation udp_;
 	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
+	std::vector<std::string> playersSprites_;
 
 };
 

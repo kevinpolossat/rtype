@@ -76,8 +76,8 @@ int main() {
 		udp.addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
 		//gameEngine.PushState("Play");
 		udp.addHandle([](void *data, std::size_t nbyte) {
-			auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity/*recieving event only*/>(static_cast<char *>(data), nbyte);
-			//std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+			auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity>(static_cast<char *>(data), nbyte);
+			std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
 			for (auto it : p.elements)
 			{
 				//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
@@ -87,20 +87,21 @@ int main() {
 		std::vector<rtype::protocol_udp::Event> events;
 		events.emplace_back(idPlayer, 0);
 		events.emplace_back(idPlayer, 1);
-		//for (;;) {
-			//udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
-			//udp.notifyAll(events);
-			//udp.send(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
-		//}
-		udp.close(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+		/*for (;;) {
+			udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+			udp.notifyAll(events);
+			udp.send(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
+		}
+		udp.close(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr */
 	}
 	);
 	rtype::protocol_tcp::QueryList ql;
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
 	gameEngine.AddCommunication(tcpConnection);
+
 	if (gameEngine.Init("R-Type", 800, 600, false)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
-		gameEngine.AddState("Play", std::make_shared<PlayState>());
+		gameEngine.AddState("Play", std::make_shared<PlayState>(udp));
 		gameEngine.AddState("Create", std::make_shared<CreateState>());
 		gameEngine.AddState("Login", std::make_shared<LoginState>());
 		gameEngine.AddState("Join", std::make_shared<JoinState>());

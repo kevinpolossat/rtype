@@ -7,6 +7,17 @@ using ge::Ia;
 using ge::Sprite;
 using ge::Velocity;
 using ge::Collider;
+
+PlayState::PlayState(ge::network::UDPNonBlockingCommuncation & t_udp)
+{
+	this->udp_ = t_udp;
+	this->udp_.addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
+	this->playersSprites_.push_back("Player1");
+	this->playersSprites_.push_back("Player2");
+	this->playersSprites_.push_back("Player3");
+	this->playersSprites_.push_back("Player4");
+}
+
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/blue.png");
 	engine.Load<ge::Resources::Texture>("Player2", "resources/red.png");
@@ -15,10 +26,6 @@ bool PlayState::Init(ge::GameEngine & engine) {
 
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	engine.Load<ge::Resources::Texture>("Mechant", "resources/mechant.png");
-	world_.CreatePlayer(Vector2f(300, 300), "Player1");
-	world_.CreatePlayer(Vector2f(600, 300), "Player2");
-	world_.CreatePlayer(Vector2f(100, 200), "Player3");
-	world_.CreatePlayer(Vector2f(100, 500), "Player4");
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -88,8 +95,25 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
+void PlayState::HandleUdp_(void *data, std::size_t nbyte)
+{
+	auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity>(static_cast<char *>(data), nbyte);
+	world_.players.clear();
+	uint32_t i = 0;
+	for (auto it : p.elements)
+	{
+		world_.CreatePlayer(Vector2f(300, 300), playersSprites_[i]);
+		i++;
+		//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
+	}
+	auto seqId = p.h.seqId;
+}
+
 void PlayState::Update(ge::GameEngine & engine)
 {
+	this->udp_.recv();
+	//udp.notifyAll(events);
+	this->udp_.send(); 
 	/*
 	uint32_t i = 0;
 	std::vector<AIPosition> playersPos;
