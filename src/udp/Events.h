@@ -1,0 +1,21 @@
+#ifndef EVENTS_H
+#define EVENTS_H
+
+enum class EVENTTYPE : int
+{
+	PLAYERUP = 0,
+	PLAYERDOWN,
+	PLAYERRIGHT,
+	PLAYERLEFT,
+	PLAYERSHOOT
+};
+
+enum class ENTITYTYPE : int
+{
+	PLAYER = 0,
+	PLAYERSHOOT,
+	ENNEMYSHOOT,
+	ENNEMY
+};
+
+#endif

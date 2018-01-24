@@ -1,6 +1,23 @@
 #include "PlayState.h"
 #include "GameEngine.h"
 
+using ge::Position;
+using ge::Animation;
+using ge::Ia;
+using ge::Sprite;
+using ge::Velocity;
+using ge::Collider;
+
+PlayState::PlayState(std::shared_ptr<ge::network::UDPNonBlockingCommuncation> & t_udp)
+{
+	this->udp_ = t_udp;
+	this->udp_->addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
+	this->playersSprites_.push_back("Player1");
+	this->playersSprites_.push_back("Player2");
+	this->playersSprites_.push_back("Player3");
+	this->playersSprites_.push_back("Player4");
+}
+
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/blue.png");
 	engine.Load<ge::Resources::Texture>("Player2", "resources/red.png");
@@ -10,10 +27,6 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
 	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
-	world_.CreatePlayer(Vector2f(300, 300), "Player1");
-	world_.CreatePlayer(Vector2f(600, 300), "Player2");
-	world_.CreatePlayer(Vector2f(100, 200), "Player3");
-	world_.CreatePlayer(Vector2f(100, 500), "Player4");
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }
@@ -32,16 +45,19 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			switch (event.code)
 			{
 				case sf::Keyboard::Key::Left:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERLEFT));
 					break;
 				case sf::Keyboard::Key::Right:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x += 10;
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERRIGHT));
 					break;
 				case sf::Keyboard::Key::Up:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERUP));
 					break;
 				case sf::Keyboard::Key::Down:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y += 10;
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERDOWN));
+					break;
+				case sf::Keyboard::Key::Space:
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERSHOOT));
 					break;
 				default:
 					break;
@@ -49,20 +65,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	if (event.code == sf::Keyboard::Key::Space)
-	{
-		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
-		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
-		std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_);
-		if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
-		{
-			this->time_ = std::chrono::high_resolution_clock::now();
-			Vector2f newPos = world_.players[0]->GetComponent<Position>()->getPos();
-			newPos.y += 25;
-			newPos.x += 70;
-			world_.CreateShoot(newPos, Vector2f(10,0), "Shoot");
-		}
-	}
+	
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
@@ -83,15 +86,44 @@ void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
+void PlayState::HandleUdp_(void *data, std::size_t nbyte)
+{
+	auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity>(static_cast<char *>(data), nbyte);
+	world_.players.clear();
+	world_.projectiles.clear();
+	for (auto it : p.elements)
+	{
+			switch (it.type)
+			{
+			case static_cast<int>(ENTITYTYPE::PLAYER) :
+				world_.CreatePlayer(Vector2f(it.x, it.y), playersSprites_[it.id]);
+				break;
+			case static_cast<int>(ENTITYTYPE::PLAYERSHOOT) :
+				world_.CreateShoot(Vector2f(it.x, it.y));
+				break;
+			default:
+				break;
+			}
+		//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
+	}
+	auto seqId = p.h.seqId;
+}
+
 void PlayState::Update(ge::GameEngine & engine)
 {
+	if (events_.size() != 0)
+	{
+		this->udp_->notifyAll(events_);
+		events_.clear();
+	}
+	/*
 	uint32_t i = 0;
 	std::vector<AIPosition> playersPos;
 	std::vector<AIPosition> shoots;
 
 	for (auto const & it : world_.players)
 	{
-		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
+		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->tgePos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
 		it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
 		it->GetComponent<Velocity>()->UpdateVel(1.1f);
 		i++;
@@ -148,7 +180,7 @@ void PlayState::Update(ge::GameEngine & engine)
 			world_.ennemy_projectiles.erase(world_.ennemy_projectiles.begin() + k);
 	}
 
-	// CREATION DES MECHANTS A CHANGER AVEC LEVEL DESIGN
+	
 	static int lapin = 0;
 	if (world_.ennemy.size() == 0)
 		world_.CreateEnnemy("Ennemy", (lapin++) % 5);
@@ -171,6 +203,7 @@ void PlayState::Update(ge::GameEngine & engine)
 	}
 	playersPos.clear();
 	shoots.clear();
+	*/
 }
 
 void PlayState::Display(ge::GameEngine & engine, const float)

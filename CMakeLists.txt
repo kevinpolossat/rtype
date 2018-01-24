@@ -75,7 +75,14 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.cc
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.cpp
 		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -109,6 +116,7 @@ set(TCP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.cc)
 set(UDP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/udp/Events.h
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.cc)
 
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
