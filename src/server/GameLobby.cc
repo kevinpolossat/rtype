@@ -52,3 +52,12 @@ rtype::protocol_tcp::GameInfo const &rtype::GameLobby::getGameInfo() const {
 std::vector<std::pair<std::string, std::string>> const & rtype::GameLobby::getIpAndPorts() const {
     return endPoints_;
 }
+
+void rtype::GameLobby::notifyAllGameStart(rtype::protocol_tcp::GameStart &gs) const {
+    int i = 1;
+    for (auto c: cs_) {
+        gs.value.id = i++;
+        auto s = rtype::protocol_tcp::transform(gs);
+        c->sendString(s);
+    }
+}

@@ -27,17 +27,17 @@ int main() {
 	}
 	// GAMELOOP
     ge::network::NetworkManager nm;
-    auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
-    if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
+	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
+	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
         std::cout << "can't connect to server" << std::endl;
                   return 0;
     }
-    ge::network::UDPNonBlockingCommuncation udp;
-    auto b = udp.open();
+	ge::network::UDPNonBlockingCommuncation udp;
+	auto b = udp.open();
     if (!b) {
         std::cout << "FAILED TO OPEN UDP" << std::endl;
     }
-    tcpConnection->addHandle(
+	tcpConnection->addHandle(
             rtype::protocol_tcp::LIST_ANSWER,
             [tcpConnection, &udp](std::string const & json) {
                 std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
@@ -83,15 +83,16 @@ int main() {
                 std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
                 auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
                 auto p = gs.value.port;
+                auto idPlayer = gs.value.id; // ID TO MATCH THE GAME ENGINE ID SEND IT IN EVENTS
                 udp.addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
                 udp.addHandle([](void *data, std::size_t nbyte) {
                     auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity/*recieving event only*/>(static_cast<char *>(data), nbyte);
-                    std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
+                    //std::cout << "HANDLING PACKET WITH SEQID=" << p.h.seqId << std::endl;
                     auto seqId = p.h.seqId; // STORE SEQID TO TREAT ONLY THE MOST RECENT PACKET
                 });
                 std::vector<rtype::protocol_udp::Event> events;
-                events.emplace_back(42, 0);
-                events.emplace_back(42, 1);
+                events.emplace_back(idPlayer, 0);
+                events.emplace_back(idPlayer, 1);
                 for (;;) {
                     udp.recv(); // DO NOT CALL DIRECRTY USE NETWORK MANAGEr
                     udp.notifyAll(events);
