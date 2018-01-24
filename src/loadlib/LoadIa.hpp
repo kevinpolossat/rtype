@@ -11,7 +11,6 @@
   #include <dirent.h>
 using LibType = void *;
 #elif defined (_WIN32) || defined (_WIN64)
-  //#include <windows.h>
   #include "dirent.h"
 using LibType = HINSTANCE;
 #endif

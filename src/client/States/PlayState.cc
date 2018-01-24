@@ -2,11 +2,18 @@
 #include "GameEngine.h"
 
 bool PlayState::Init(ge::GameEngine & engine) {
-	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
+	engine.Load<ge::Resources::Texture>("Player1", "resources/blue.png");
+	engine.Load<ge::Resources::Texture>("Player2", "resources/red.png");
+	engine.Load<ge::Resources::Texture>("Player3", "resources/yellow.png");
+	engine.Load<ge::Resources::Texture>("Player4", "resources/green.png");
+
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
 	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
 	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
+	world_.CreatePlayer(Vector2f(600, 300), "Player2");
+	world_.CreatePlayer(Vector2f(100, 200), "Player3");
+	world_.CreatePlayer(Vector2f(100, 500), "Player4");
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
 }

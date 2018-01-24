@@ -1,6 +1,7 @@
 #ifndef PLAYWORLD_H_
 #define PLAYWORLD_H_
 
+#include <memory>
 #include "AWorld.h"
 #include "IArtificialIntelligence.hpp"
 #include "loadlib/LoadIa.hpp"
@@ -31,7 +32,7 @@ public:
 	std::vector<std::unique_ptr<GameObject>> 		ennemy;
 
 	private:
-		loadIa			*iaLoader_;
+		std::unique_ptr<loadIa>			iaLoader_;
 };
 
 #endif /* PLAYWORLD_H_ */

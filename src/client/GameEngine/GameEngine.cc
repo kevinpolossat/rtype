@@ -48,16 +48,25 @@ bool ge::GameEngine::Init(std::string const & title, ge::Vector2u const & size, 
 
 void ge::GameEngine::Run(std::string const & initState) {
 	PushState(initState);
-	const int updatePerSecond = 25;
-	const int msToSkip = 1000 / updatePerSecond;
-	const int maxFrameSkip = 5;
+	LoopTimer timer;
 
-	auto nextGameTick = std::chrono::high_resolution_clock::now();
+	while (window_.isOpen()) {
+		timer.Start();
+		while (timer.Update()) {
+			nm_->handleRecvEvent();
+			HandleEvents_();
+			st_->GetCurrentState()->Update(*this);
+			nm_->handleSendEvent();
+		}
+		Display_(timer.GetInterpolation());
+	}
+
+/*	auto nextGameTick = std::chrono::high_resolution_clock::now();
 	int loops;
 	float interpolation;
 
 	while (window_.isOpen()) {
-		loops = 0;
+		timer.Start();
 		while (std::chrono::high_resolution_clock::now() > nextGameTick && loops < maxFrameSkip) {
 			nm_->handleRecvEvent();
 			HandleEvents_();
@@ -70,7 +79,7 @@ void ge::GameEngine::Run(std::string const & initState) {
 		interpolation = std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() + std::chrono::duration<float, std::milli>(msToSkip) - nextGameTick)
 		                / std::chrono::duration<float, std::milli>(msToSkip);
 		Display_(interpolation);
-	}
+	}*/
 }
 
 void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {

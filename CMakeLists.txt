@@ -15,6 +15,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/AWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/GameEngine.cc
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/GameEngine.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/ResourcesManager.cc
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/ResourcesManager.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/StatesManager.cc
@@ -42,6 +44,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.cc
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
+		${CMAKE_SOURCE_DIR}/src/client/MenuValue.h
+		${CMAKE_SOURCE_DIR}/src/client/MenuValue.cc
 
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp

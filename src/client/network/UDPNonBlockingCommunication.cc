@@ -21,7 +21,7 @@ void ge::network::UDPNonBlockingCommuncation::send() {
 }
 
 void ge::network::UDPNonBlockingCommuncation::recv() {
-    for (;;) { // TODO limit here ??
+	for (int i = 0; i < 10; ++i) { // TODO limit here ??
         auto e = lw_network::no_error;
         lw_network::EndPoint ep;
         auto b = lw_network::Buffer(bRead_.data(), bRead_.size());

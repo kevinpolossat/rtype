@@ -13,11 +13,15 @@ public:
 	IntroWorld & operator=(IntroWorld const & other) = delete;
 	IntroWorld & operator=(IntroWorld && other) = delete;
 
+	void CreateText(ge::Vector2f const & pos, std::string const & text, std::string const & font, int input);
 	void CreateText(ge::Vector2f const & pos, std::string const & text, std::string const & font);
 	void CreateButton(ge::Vector2f const & pos, std::string const & font, int input, std::string const & imgName);
+	void CreateBackground();
+
 
 	std::vector<std::unique_ptr<ge::GameObject>> buttons;
 	std::vector<std::unique_ptr<ge::GameObject>> texts;
+	std::unique_ptr<ge::GameObject> background;
 };
 
 #endif /* WORLD_H_ */
