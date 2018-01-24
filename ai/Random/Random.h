@@ -1,16 +1,17 @@
-#ifndef __CIRCLE_HPP__
-#define __CIRCLE_HPP__
+#ifndef __RANDOM_HPP__
+#define __RANDOM_HPP__
 
+#include <iostream>
 #include <math.h>
 #include "IArtificialIntelligence.hpp"
 
-class Circle : public IArtificialIntelligence
+class Random : public IArtificialIntelligence
 {
 public:
-	Circle(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
-	~Circle() {}
+	Random(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	~Random() {}
 
-	virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
+	//virtual std::shared_ptr<IArtificialIntelligence> NewIA(const uint32_t myX, const uint32_t myY, const uint32_t width, const uint32_t height);
 
 	virtual Action actualize(std::vector<AIPosition>& shoots, std::vector<AIPosition>& enemies, AIPosition myPos) override;
 
@@ -52,9 +53,7 @@ private:
 	uint32_t			_life;
 	bool					_shoot;
 	vec2D					_shootVector;
-	float 		_angle;
-	float 		_rayon;
-	AIPosition _center;
+
 };
 
-#endif
+#endif //__BASIC_HPP__
