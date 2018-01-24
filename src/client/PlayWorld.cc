@@ -7,7 +7,7 @@ using ge::Ia;
 
 PlayWorld::PlayWorld()
 {
-	iaLoader_ = new loadIa("resources/ias", 800, 600);
+	//iaLoader_ = new loadIa("resources/ias", 800, 600);
 }
 
 void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const & t_velocity)
