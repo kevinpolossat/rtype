@@ -31,23 +31,23 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				   switch (it.type)
 				   {
 				   case static_cast<int>(EVENTTYPE::PLAYERUP):
-					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
+					   g->players[it.from -1]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERDOWN):
-					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.y += 10;
+					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.y += 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERRIGHT):
-					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.x += 10;
+					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.x += 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERLEFT):
-					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
+					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERSHOOT) :
 					   std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - g->time_);
 					   if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
 					   {
 						   g->time_ = std::chrono::high_resolution_clock::now();
-						   Vector2f newPos = g->players[it.from]->GetComponent<ge::Position>()->getPos();
+						   Vector2f newPos = g->players[it.from - 1]->GetComponent<ge::Position>()->getPos();
 						   newPos.y += 30;
 						   newPos.x += 90;
 						   g->CreateShoot(newPos);

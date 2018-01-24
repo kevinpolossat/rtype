@@ -32,6 +32,7 @@ int main() {
 		std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
 		auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
 		std::cout << "port=" << udp->getPort() << std::endl;
+		std::cout << a.value.size() << std::endl;
 		if (a.value.empty()) {
 			rtype::protocol_tcp::QueryCreateGame cg;
 			cg.value.fileName = "toto.txt";
@@ -68,11 +69,11 @@ int main() {
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::GAME_START,
-		[&udp](std::string const & json) {
+		[&udp, &gameEngine](std::string const & json) {
 		std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
 		auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 		auto p = gs.value.port;
-		auto idPlayer = gs.value.id;
+		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
 	}
 	);

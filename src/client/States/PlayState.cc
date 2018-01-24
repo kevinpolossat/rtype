@@ -44,19 +44,19 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			switch (event.code)
 			{
 				case sf::Keyboard::Key::Left:
-					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERLEFT));
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERLEFT));
 					break;
 				case sf::Keyboard::Key::Right:
-					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERRIGHT));
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERRIGHT));
 					break;
 				case sf::Keyboard::Key::Up:
-					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERUP));
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERUP));
 					break;
 				case sf::Keyboard::Key::Down:
-					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERDOWN));
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERDOWN));
 					break;
 				case sf::Keyboard::Key::Space:
-					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERSHOOT));
+					events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERSHOOT));
 					break;
 				default:
 					break;

@@ -84,7 +84,7 @@ namespace ge {
 
 		sf::Texture & Texture(std::string const & name);
 		sf::Font & Font(std::string const & name);
-
+		uint32_t playerID;
 	private:
 		// CORE
 		void HandleEvents_();
