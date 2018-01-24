@@ -7,6 +7,8 @@ using ge::Ia;
 
 Game::Game()
 {
+	time_ = std::chrono::high_resolution_clock::now();
+
 }
 
 Game::~Game()

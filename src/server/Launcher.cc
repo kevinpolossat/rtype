@@ -20,6 +20,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
     udp->addHandle([g](void *data, std::size_t nbyte) {
       static auto savedSeqId = 0;
 	  std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
+	  std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - g->time_);
         auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Event>(static_cast<char *>(data), nbyte);
         auto seqId = p.h.seqId; 
 
@@ -43,8 +44,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERSHOOT) :
-					   std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - g->time_);
-					   if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
+					   if (static_cast<double>(ms.count() / 1000) > 0.3f) // Fire Rate 1 Shot every 0.5 sec
 					   {
 						   g->time_ = std::chrono::high_resolution_clock::now();
 						   Vector2f newPos = g->players[it.from - 1]->GetComponent<ge::Position>()->getPos();
