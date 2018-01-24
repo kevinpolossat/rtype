@@ -9,7 +9,7 @@
   #include <dlfcn.h>
   #include <dirent.h>
 #elif defined (_WIN32) || defined (_WIN64)
-  #include <windows.h>
+  //#include <windows.h>
   #include "dirent.h"
 #endif
 

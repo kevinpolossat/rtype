@@ -4,6 +4,7 @@
 #include "AWorld.h"
 #include "ia/IArtificialIntelligence.hpp"
 #include "../../loadlib/LoadIa.hpp"
+
 using ge::Vector2f;
 using ge::GameObject;
 

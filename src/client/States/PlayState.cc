@@ -1,6 +1,12 @@
 #include "PlayState.h"
 #include "GameEngine.h"
 
+using ge::Position;
+using ge::Animation;
+using ge::Ia;
+using ge::Sprite;
+using ge::Velocity;
+using ge::Collider;
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
@@ -115,7 +121,7 @@ void PlayState::Update(ge::GameEngine & engine)
 			world_.projectiles.erase(world_.projectiles.begin() + k);
 	}
 
-	// CREATION DES MECHANTS A CHANGER AVEC LEVEL DESIGN
+	
 	static int lapin = 0;
 	if (world_.ennemy.size() == 0)
 		world_.CreateEnnemy("Player1", (lapin++) % 5);
