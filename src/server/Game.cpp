@@ -7,7 +7,6 @@ using ge::Ia;
 
 Game::Game()
 {
-
 }
 
 Game::~Game()
@@ -38,5 +37,12 @@ void Game::CreatePlayer()
 
 void Game::Update()
 {
-
+	while (lt.Update())
+	{
+		for (auto const & it : players)
+		{
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
+			it->GetComponent<Velocity>()->UpdateVel(1.1f);
+		}
+	}
 }

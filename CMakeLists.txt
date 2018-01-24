@@ -79,6 +79,8 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES

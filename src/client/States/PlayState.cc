@@ -8,10 +8,10 @@ using ge::Sprite;
 using ge::Velocity;
 using ge::Collider;
 
-PlayState::PlayState(ge::network::UDPNonBlockingCommuncation & t_udp)
+PlayState::PlayState(std::shared_ptr<ge::network::UDPNonBlockingCommuncation> & t_udp)
 {
 	this->udp_ = t_udp;
-	this->udp_.addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
+	this->udp_->addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
 	this->playersSprites_.push_back("Player1");
 	this->playersSprites_.push_back("Player2");
 	this->playersSprites_.push_back("Player3");
@@ -102,7 +102,7 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 	uint32_t i = 0;
 	for (auto it : p.elements)
 	{
-		world_.CreatePlayer(Vector2f(300, 300), playersSprites_[i]);
+		world_.CreatePlayer(Vector2f(it.x, it.y), playersSprites_[i]);
 		i++;
 		//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
 	}
@@ -111,13 +111,11 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 
 void PlayState::Update(ge::GameEngine & engine)
 {
-	this->udp_.recv();
 	if (events_.size() != 0)
 	{
-		this->udp_.notifyAll(events_);
+		this->udp_->notifyAll(events_);
 		events_.clear();
 	}
-	this->udp_.send(); 
 	/*
 	uint32_t i = 0;
 	std::vector<AIPosition> playersPos;
@@ -125,7 +123,7 @@ void PlayState::Update(ge::GameEngine & engine)
 
 	for (auto const & it : world_.players)
 	{
-		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
+		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->tgePos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
 		it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
 		it->GetComponent<Velocity>()->UpdateVel(1.1f);
 		i++;

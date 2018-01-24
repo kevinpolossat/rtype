@@ -13,7 +13,7 @@
 
 class PlayState : public ge::AGameState {
 public:
-	PlayState(ge::network::UDPNonBlockingCommuncation & t_udp);
+	PlayState(std::shared_ptr<ge::network::UDPNonBlockingCommuncation> & t_udp);
 	PlayState(PlayState const & other) = delete;
 	PlayState(PlayState && other) = delete;
 	~PlayState() override = default;
@@ -38,7 +38,7 @@ private:
 	void HandleUdp_(void *data, std::size_t nbyte);
 
 	PlayWorld world_;
-	ge::network::UDPNonBlockingCommuncation udp_;
+	std::shared_ptr<ge::network::UDPNonBlockingCommuncation> udp_;
 	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 	std::vector<std::string> playersSprites_;
 	std::vector<rtype::protocol_udp::Event> events_;

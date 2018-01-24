@@ -21,29 +21,24 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
       static auto savedSeqId = 0;
         auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Event>(static_cast<char *>(data), nbyte);
         auto seqId = p.h.seqId; 
-		std::cout << "PACKET" << std::endl;
 
          if (seqId > savedSeqId)
          {
            savedSeqId = seqId;
-		   std::cout << "ici" << std::endl;
 			   for (auto & it : p.elements)
 			   {
-				   std::cout << "elements" << std::endl;
-				   switch (static_cast<EVENTTYPE>(it.type))
+				   switch (it.type)
 				   {
-				   case EVENTTYPE::PLAYERUP:
-					   std::cout << "UP" << std::endl;
+				   case static_cast<int>(EVENTTYPE::PLAYERUP):
 					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
 					   break;
-				   case EVENTTYPE::PLAYERDOWN:
-					   std::cout << "DOWN" << std::endl;
+				   case static_cast<int>(EVENTTYPE::PLAYERDOWN):
 					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.y += 10;
 					   break;
-				   case EVENTTYPE::PLAYERRIGHT:
+				   case static_cast<int>(EVENTTYPE::PLAYERRIGHT):
 					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.x += 10;
 					   break;
-				   case EVENTTYPE::PLAYERLEFT:
+				   case static_cast<int>(EVENTTYPE::PLAYERLEFT):
 					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
 					   break;
 				   default:
@@ -66,6 +61,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 			g->CreatePlayer();
         for (;;) {
             udp->recv(); // DO NOT USE DIRECTLY USE NOTIFYALL AND NETWORK MANAGER
+			g->lt.Start();
 			g->Update();
 			std::vector<rtype::protocol_udp::Entity> es;
 			for (auto const & it : g->players)
