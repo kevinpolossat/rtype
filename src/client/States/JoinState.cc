@@ -1,13 +1,16 @@
 #include "JoinState.h"
 
 bool JoinState::Init(ge::GameEngine & engine) {
+	int i = 2;
 	ge::Vector2u size = engine.GetSize();
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), "GAMES : ", "retro");
-	for(auto const & it : _games) {
-		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), it, "arial");
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f), "GAMES : ", "retro");
+	for(auto const & it : _games)
+	{
+		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i), it, "arial");
+		i++;
 	}
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f * 4), "Valid", "retro", VALID);
-	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 5.f * 4), "Cancel", "retro", CANCEL);
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i + 1), "Valid", "retro", VALID);
+	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 10.f * i + 2), "Cancel", "retro", CANCEL);
 	world_.CreateBackground();
 	return true;
 }

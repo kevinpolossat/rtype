@@ -62,6 +62,10 @@ void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEv
 							}
 							break;
 						case VALID:
+							/*ge::MenuValue &val = ge::MenuValue::Instance();
+							val.c_game.value.playerName = nameGame;
+							val.c_game.value.nbPlayerMax = nbPlayers;
+							val.tcpConnection->sendToServer(val.c_game);*/
 							engine.PushState("Play");
 							break;
 						case CANCEL:

@@ -1,5 +1,12 @@
 #include "LoginState.h"
-bool LoginState::Init(ge::GameEngine & engine) {
+
+LoginState::LoginState(ge::MenuValue *v)
+{
+	val = v;
+}
+
+bool LoginState::Init(ge::GameEngine & engine)
+{
 	ge::Vector2u size = engine.GetSize();
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), "Login: " + login, "retro");
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f * 2), "Create",  "retro", CREATE);
@@ -8,7 +15,6 @@ bool LoginState::Init(ge::GameEngine & engine) {
 	world_.CreateBackground();
 	return true;
 }
-
 
 void LoginState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event)
 {

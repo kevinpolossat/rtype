@@ -30,8 +30,8 @@ int main() {
         std::cout << "FAILED TO OPEN UDP" << std::endl;
     }
 
-		ge::MenuValue *val = new ge::MenuValue(tcpConnection);
-
+		ge::MenuValue &v = ge::MenuValue::Instance();
+		v.tcpConnection = tcpConnection;
 		if (gameEngine.Init("R-Type", 800, 600, false))
 		{
 			gameEngine.AddState("Intro", std::make_shared<IntroState>());
