@@ -14,7 +14,7 @@
 #include <stack>
 
 #include "../client/GameEngine/Vector2D.h"
-#include "../ia/IArtificialIntelligence.hpp"
+#include "../../ai/IArtificialIntelligence.hpp"
 
 namespace ge {
 	#define TO_STRING( x ) #x

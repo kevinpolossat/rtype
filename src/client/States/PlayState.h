@@ -6,9 +6,9 @@
 #include "GameEngine.h"
 #include "AGameState.h"
 #include "PlayWorld.h"
-#include "ia/IArtificialIntelligence.hpp"
 #include "UDPNonBlockingCommunication.h"
 #include "Events.h"
+#include "IArtificialIntelligence.hpp"
 
 
 class PlayState : public ge::AGameState {

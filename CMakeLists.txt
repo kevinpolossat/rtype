@@ -47,9 +47,11 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/MenuValue.h
 		${CMAKE_SOURCE_DIR}/src/client/MenuValue.cc
 
-		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.cc
-		${CMAKE_SOURCE_DIR}/loadlib/LoadIa.hpp
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp
 		#[[add source files here]])
+
+set(AI_HEADER ${CMAKE_SOURCE_DIR}/ai)
 
 set(NETWORK_GAME_ENGINE
 		${CMAKE_SOURCE_DIR}/src/client/network/NetworkCommunication.h
@@ -150,6 +152,7 @@ target_include_directories(rtype_client
         PRIVATE ${PROJECT_SOURCE_DIR}/src/tcp
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ${CEREAL_HEADER}
+		PRIVATE ${AI_HEADER}
 		PRIVATE ${SFML_INCLUDE_DIR})
 target_link_libraries(rtype_client
 		PRIVATE ${SFML_LIBRARIES}
@@ -174,6 +177,7 @@ target_sources(rtype_server
 		PRIVATE ${NETWORK_SOURCES}
 		PRIVATE ${TCP_PROTOCOL}
 		PRIVATE ${UDP_PROTOCOL}
+		PRIVATE ${AI_HEADER}
 		PRIVATE ${NETWORK_GAME_ENGINE})
 target_include_directories(rtype_server
 		PRIVATE ./src/network
@@ -209,3 +213,5 @@ target_sources(rtype_server_test
 		PRIVATE ${PROJECT_SOURCE_DIR}/test/protocol_udp_test.cc)
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)
+
+add_subdirectory(ai)

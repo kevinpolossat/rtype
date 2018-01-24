@@ -7,7 +7,6 @@ using ge::Ia;
 
 PlayWorld::PlayWorld()
 {
-	//iaLoader_ = new loadIa("resources/ias", 800, 600);
 }
 
 void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const & t_velocity)
@@ -42,7 +41,7 @@ void PlayWorld::CreatePlayer(Vector2f const & t_position, std::string const & t_
 	g->AddComponent<Position>(t_position);
 	g->AddComponent<Velocity>(t_velocity);
 	g->AddComponent<Sprite>(t_textureName, 2);
-	g->AddComponent<Collider>(t_position,Vector2f(60,60),"Player");
+	g->AddComponent<Collider>(t_position,Vector2f(60, 60),"Player");
 	this->players.push_back(std::move(g));
 }
 
@@ -69,4 +68,15 @@ void PlayWorld::CreateShoot(Vector2f const & t_position)
 	g->AddComponent<Sprite>("Shoot", 2);
 	g->AddComponent<Collider>(t_position, Vector2f(30, 15), "Player Shoot");
 	this->projectiles.push_back(std::move(g));
+}
+
+void PlayWorld::CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName)
+{
+	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
+
+	g->AddComponent<Position>(t_position);
+	g->AddComponent<Velocity>(t_velocity);
+	g->AddComponent<Sprite>(t_textureName, 2);
+	g->AddComponent<Collider>(t_position, Vector2f(30, 15), "Player Shoot");
+	this->ennemy_projectiles.push_back(std::move(g));
 }

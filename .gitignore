@@ -292,3 +292,4 @@ bin
 *.lo
 *.o
 *.obj
+my_credentials
