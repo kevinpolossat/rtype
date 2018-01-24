@@ -3,9 +3,9 @@
 bool CreateState::Init(ge::GameEngine & engine)
 {
 	ge::Vector2u size = engine.GetSize();
-	world_.CreateText(ge::Vector2f(size.x / 5.f, 0), "Name Game: " + nameGame , "retro");
+	world_.CreateText(ge::Vector2f(size.x / 5.f, 0), "Name Game: " + nameGame , "retro", NONE);
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), "-","retro", MOINS);
-	world_.CreateText(ge::Vector2f(size.x / 5.f * 2, size.y / 5.f), std::to_string(nbPlayers), "retro");
+	world_.CreateText(ge::Vector2f(size.x / 5.f * 2, size.y / 5.f), std::to_string(nbPlayers), "retro", NONE);
 	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 5.f), "+", "retro", PLUS);
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f * 2), "Valid", "retro", VALID);
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f * 3), "Cancel",  "retro", CANCEL);

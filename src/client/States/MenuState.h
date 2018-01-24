@@ -26,7 +26,8 @@ public:
 	void Display(ge::GameEngine & engine, float interpolation) override;
 
 protected:
-	enum ButtonId {
+	enum ButtonId
+	{
 		START = 0,
 		CREATE,
 		JOIN,

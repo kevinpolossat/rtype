@@ -3,10 +3,10 @@
 bool JoinState::Init(ge::GameEngine & engine) {
 	int i = 2;
 	ge::Vector2u size = engine.GetSize();
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f), "GAMES : ", "retro");
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f), "GAMES : ", "retro", NONE);
 	for(auto const & it : _games)
 	{
-		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i), it, "arial");
+		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i), it, "arial", NONE + i - 1);
 		i++;
 	}
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i + 1), "Valid", "retro", VALID);
@@ -30,7 +30,11 @@ void JoinState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 						case CANCEL:
 							engine.PopState();
 							break;
+							case NONE:
+							break;
 						default:
+						_gamechose = _games[it->GetComponent<ge::Input>()->id - 10];
+						std::cout << _gamechose << std::endl;
 							break;
 					}
 				}

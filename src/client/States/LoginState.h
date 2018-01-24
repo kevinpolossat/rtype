@@ -8,7 +8,6 @@
 class LoginState : public MenuState {
 public:
 	LoginState() = default;
-	LoginState(ge::MenuValue *v);
 	LoginState(LoginState const & other) = delete;
 	LoginState(LoginState && other) = delete;
 	~LoginState() override = default;
