@@ -72,7 +72,7 @@ std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
 void dunload(HINSTANCE handle)
 {
    if(FreeLibrary(handle)) {
-        std::cout << dlerror() << std::endl;
+        std::cout << "can't free library" << std::endl;
    }
 }
 #endif
