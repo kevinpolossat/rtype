@@ -55,26 +55,16 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 				case sf::Keyboard::Key::Down:
 					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERDOWN));
 					break;
+				case sf::Keyboard::Key::Space:
+					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERSHOOT));
+					break;
 				default:
 					break;
 			}
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	if (event.code == sf::Keyboard::Key::Space)
-	{
-		//world_.players[0]->GetComponent<Animator>().DoOnce("Attack");
-		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
-		std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - this->time_);
-		if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
-		{
-			this->time_ = std::chrono::high_resolution_clock::now();
-			Vector2f newPos = world_.players[0]->GetComponent<Position>()->getPos();
-			newPos.y += 25;
-			newPos.x += 70;
-			world_.CreateShoot(newPos, Vector2f(10,0), "Shoot");
-		}
-	}
+	
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
@@ -99,11 +89,20 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 {
 	auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity>(static_cast<char *>(data), nbyte);
 	world_.players.clear();
-	uint32_t i = 0;
+	world_.projectiles.clear();
 	for (auto it : p.elements)
 	{
-		world_.CreatePlayer(Vector2f(it.x, it.y), playersSprites_[i]);
-		i++;
+			switch (it.type)
+			{
+			case static_cast<int>(ENTITYTYPE::PLAYER) :
+				world_.CreatePlayer(Vector2f(it.x, it.y), playersSprites_[it.id]);
+				break;
+			case static_cast<int>(ENTITYTYPE::PLAYERSHOOT) :
+				world_.CreateShoot(Vector2f(it.x, it.y));
+				break;
+			default:
+				break;
+			}
 		//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
 	}
 	auto seqId = p.h.seqId;

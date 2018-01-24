@@ -19,6 +19,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
     udp->addDests(gl->getIpAndPorts());
     udp->addHandle([g](void *data, std::size_t nbyte) {
       static auto savedSeqId = 0;
+	  std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
         auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Event>(static_cast<char *>(data), nbyte);
         auto seqId = p.h.seqId; 
 
@@ -41,6 +42,17 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				   case static_cast<int>(EVENTTYPE::PLAYERLEFT):
 					   g->players[it.from]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
 					   break;
+				   case static_cast<int>(EVENTTYPE::PLAYERSHOOT) :
+					   std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - g->time_);
+					   if (static_cast<double>(ms.count() / 1000) > 0.5f) // Fire Rate 1 Shot every 0.5 sec
+					   {
+						   g->time_ = std::chrono::high_resolution_clock::now();
+						   Vector2f newPos = g->players[it.from]->GetComponent<ge::Position>()->getPos();
+						   newPos.y += 30;
+						   newPos.x += 90;
+						   g->CreateShoot(newPos);
+					   }
+					   break;
 				   default:
 					   break;
 				   }
@@ -59,20 +71,29 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 		g->setGameInfo(gl->getGameInfo());
 		for (int i = 0; i < g->getGameInfo().nbPlayerMax; i++)
 			g->CreatePlayer();
+
         for (;;) {
-            udp->recv(); // DO NOT USE DIRECTLY USE NOTIFYALL AND NETWORK MANAGER
 			g->lt.Start();
-			g->Update();
-			std::vector<rtype::protocol_udp::Entity> es;
-			for (auto const & it : g->players)
+			while (g->lt.Update())
 			{
-				std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
-				es.emplace_back(it->id,0, 0, p->getPos().x, p->getPos().y);
+				udp->recv(); 
+				g->Update();
+				std::vector<rtype::protocol_udp::Entity> es;
+				for (auto const & it : g->players)
+				{
+					std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+					es.emplace_back(it->id, static_cast<int>(ENTITYTYPE::PLAYER), 0, p->getPos().x, p->getPos().y);
+				}
+				for (auto const & it : g->projectiles)
+				{
+					std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+					es.emplace_back(it->id, static_cast<int>(ENTITYTYPE::PLAYERSHOOT), 0, p->getPos().x, p->getPos().y);
+				}
+				udp->notifyAll(es);
+				udp->send(); 
 			}
-            udp->notifyAll(es);
-            udp->send(); // DO NOT USE DIRECTLY USE NOTIFYALL AND NETWORK MANAGER
         }
-        udp->close(); // DO NOT USE DIRECTLY USE NOTIFYALL AND NETWORK MANAGER
+        udp->close(); 
     });
     t.detach();
     return true;
