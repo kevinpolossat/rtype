@@ -12,9 +12,9 @@ namespace ge
   public:
     static MenuValue& Instance();
 
-    rtype::protocol_tcp::QueryCreateGame c_game;
-    rtype::protocol_tcp::QueryJoinGame  j_game;
-    rtype::protocol_tcp::QueryList     l_game;
+    rtype::protocol_tcp::QueryCreateGame  c_game;
+    rtype::protocol_tcp::QueryJoinGame    j_game;
+    rtype::protocol_tcp::QueryList        l_game;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
     MenuValue();
     ~MenuValue();

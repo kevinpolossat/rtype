@@ -27,6 +27,7 @@ void CreateState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const
 }
 
 void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
+	ge::MenuValue &val = ge::MenuValue::Instance();
 	if (event.button == sf::Mouse::Button::Left) {
 		for (auto const & it : world_.texts) {
 			if(it->GetComponent<ge::Text>())
@@ -62,13 +63,14 @@ void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEv
 							}
 							break;
 						case VALID:
-							/*ge::MenuValue &val = ge::MenuValue::Instance();
-							val.c_game.value.playerName = nameGame;
+							val.c_game.value.nameGame = nameGame;
 							val.c_game.value.nbPlayerMax = nbPlayers;
-							val.tcpConnection->sendToServer(val.c_game);*/
+							val.tcpConnection->sendToServer(val.c_game);
 							engine.PushState("Play");
 							break;
 						case CANCEL:
+						nameGame = "";
+						nbPlayers = 1;
 							engine.PopState();
 							break;
 						default:

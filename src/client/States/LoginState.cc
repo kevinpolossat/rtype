@@ -29,6 +29,7 @@ void LoginState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const 
 }
 
 void LoginState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
+	ge::MenuValue &val = ge::MenuValue::Instance();
 	if (event.button == sf::Mouse::Button::Left) {
 		for (auto const & it : world_.texts) {
 		if(it->GetComponent<ge::Text>())
@@ -38,12 +39,17 @@ void LoginState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
 					switch (it->GetComponent<ge::Input>()->id) {
 						case CREATE:
+							val.c_game.value.playerName = login;
+							login = "";
 							engine.PushState("Create");
 							break;
 						case JOIN:
+							val.j_game.value.playerName = login;
+							login = "";
 							engine.PushState("Join");
 							break;
 						case CANCEL:
+						login = "";
 							engine.PopState();
 							break;
 						default:

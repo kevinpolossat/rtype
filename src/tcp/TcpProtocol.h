@@ -160,6 +160,7 @@ struct AnswerList {
 struct CreateGame {
     std::string fileName;
     std::string playerName;
+    std::string nameGame;
     int nbPlayerMax;
     std::string port;
 
