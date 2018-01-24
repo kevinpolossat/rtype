@@ -16,7 +16,6 @@
 
 int main() {
 	ge::GameEngine gameEngine;
-	ge::network::NetworkManager nm;
 	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
 	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
 		std::cout << "can't connect to server" << std::endl;
@@ -98,7 +97,7 @@ int main() {
 	);
 	rtype::protocol_tcp::QueryList ql;
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
-	nm.addCommunication(tcpConnection);
+	gameEngine.AddCommunication(tcpConnection);
 	if (gameEngine.Init("R-Type", 800, 600, false)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
 		gameEngine.AddState("Play", std::make_shared<PlayState>());
@@ -111,11 +110,11 @@ int main() {
 	// GAMELOOP
    
 	for (;;) {
-        nm.handleRecvEvent();
+        //nm.handleRecvEvent();
         std::string s;
         std::cout << ">" << std::endl;
         std::cin >> s;
-        nm.handleSendEvent();
+        //nm.handleSendEvent();
 	}
 	return 0;
 }
