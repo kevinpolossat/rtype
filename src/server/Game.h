@@ -13,6 +13,7 @@ class Game
 		void setGameInfo(rtype::protocol_tcp::GameInfo const &t_gi);
 		rtype::protocol_tcp::GameInfo const & getGameInfo();
 		void CreatePlayer();
+		void Update();
 		std::vector<std::unique_ptr<GameObject>> 		players;
 		std::vector<std::unique_ptr<GameObject>> 		projectiles;
 		std::vector<std::unique_ptr<GameObject>> 		ennemy;

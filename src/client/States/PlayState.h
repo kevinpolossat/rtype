@@ -8,6 +8,7 @@
 #include "PlayWorld.h"
 #include "ia/IArtificialIntelligence.hpp"
 #include "UDPNonBlockingCommunication.h"
+#include "Events.h"
 
 
 class PlayState : public ge::AGameState {
@@ -40,6 +41,7 @@ private:
 	ge::network::UDPNonBlockingCommuncation udp_;
 	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 	std::vector<std::string> playersSprites_;
+	std::vector<rtype::protocol_udp::Event> events_;
 
 };
 

@@ -44,16 +44,16 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 			switch (event.code)
 			{
 				case sf::Keyboard::Key::Left:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x -= 10;
+					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERLEFT));
 					break;
 				case sf::Keyboard::Key::Right:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.x += 10;
+					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERRIGHT));
 					break;
 				case sf::Keyboard::Key::Up:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
+					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERUP));
 					break;
 				case sf::Keyboard::Key::Down:
-					world_.players[0]->GetComponent<ge::Velocity>()->m_pos.y += 10;
+					events_.emplace_back(0, static_cast<int>(EVENTTYPE::PLAYERDOWN));
 					break;
 				default:
 					break;
@@ -112,7 +112,11 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 void PlayState::Update(ge::GameEngine & engine)
 {
 	this->udp_.recv();
-	//udp.notifyAll(events);
+	if (events_.size() != 0)
+	{
+		this->udp_.notifyAll(events_);
+		events_.clear();
+	}
 	this->udp_.send(); 
 	/*
 	uint32_t i = 0;

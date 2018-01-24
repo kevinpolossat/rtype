@@ -35,3 +35,8 @@ void Game::CreatePlayer()
 	g->id = this->players.size();
 	this->players.push_back(std::move(g));
 }
+
+void Game::Update()
+{
+
+}

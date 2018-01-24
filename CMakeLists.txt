@@ -112,6 +112,7 @@ set(TCP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.cc)
 set(UDP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/udp/Events.h
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.cc)
 
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
