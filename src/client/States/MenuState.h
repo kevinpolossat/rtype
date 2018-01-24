@@ -40,6 +40,7 @@ protected:
 	};
 
 	virtual void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) = 0;
+	virtual	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) = 0;
 
 	IntroWorld world_;
 };

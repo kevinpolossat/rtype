@@ -5,14 +5,14 @@
 #include "client/States/IntroState.h"
 #include "client/States/PlayState.h"
 #include "Entity/Component.h"
-#include    "client/States/CreateState.h"
-#include    "client/States/LoginState.h"
+#include "client/States/CreateState.h"
+#include "client/States/LoginState.h"
 #include "client/States/JoinState.h"
-
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
 #include "UDPNonBlockingCommunication.h"
 #include "TcpProtocol.h"
+#include	"MenuValue.h"
 
 int main() {
 	ge::GameEngine gameEngine;
@@ -107,8 +107,6 @@ int main() {
 
 		gameEngine.Run("Intro");
 	}
-	// GAMELOOP
-   
 	for (;;) {
         //nm.handleRecvEvent();
         std::string s;
