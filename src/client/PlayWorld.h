@@ -21,11 +21,13 @@ public:
 	void CreatePlayer(Vector2f const & t_position, Vector2f const & t_velocity = Vector2f(0,0));
 	void CreatePlayer(Vector2f const & t_position, std::string const & t_textureName, Vector2f const & t_velocity = Vector2f(0, 0));
 	void CreateShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName);
+	void CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName);
 	void CreateEnnemy(std::string const & t_textureName, const int t_id);
 
 
 	std::vector<std::unique_ptr<GameObject>> 		players;
 	std::vector<std::unique_ptr<GameObject>> 		projectiles;
+	std::vector<std::unique_ptr<GameObject>> 		ennemy_projectiles;
 	std::vector<std::unique_ptr<GameObject>> 		ennemy;
 
 	private:

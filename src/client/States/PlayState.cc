@@ -4,7 +4,8 @@
 bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player1", "resources/SpaceShip.png");
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
-	engine.Load<ge::Resources::Texture>("Mechant", "resources/mechant.png");
+	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
+	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
 	world_.CreatePlayer(Vector2f(300, 300), "Player1");
 	this->time_ = std::chrono::high_resolution_clock::now();
 	return true;
@@ -93,11 +94,28 @@ void PlayState::Update(ge::GameEngine & engine)
 	for (auto const & it : world_.projectiles)
 	{
 		shoots.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
+		ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", world_.ennemy);
+		if (col.point.x != -1) // Collision !
+		{
+			world_.ennemy.erase(world_.ennemy.begin() + col.index);
+			world_.projectiles.erase(world_.projectiles.begin() + i);
+		}
+		else
+		{
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
+		}
+		i++;
+	}
+
+	i = 0;
+	for (auto const & it : world_.ennemy_projectiles)
+	{
+		shoots.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
 		ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", world_.players);
 		if (col.point.x != -1) // Collision !
 		{
 			world_.players.erase(world_.players.begin() + col.index);
-			world_.projectiles.erase(world_.projectiles.begin() + i);
+			world_.ennemy_projectiles.erase(world_.projectiles.begin() + i);
 		}
 		else
 		{
@@ -108,28 +126,37 @@ void PlayState::Update(ge::GameEngine & engine)
 
 	for (int k = 0; k < world_.projectiles.size(); k++)
 	{
-		if (world_.projectiles.at(k)->GetComponent<Position>()->getPos().x < 10
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().x > 780
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y < 10
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y > 580)
+		if (world_.projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
+				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
+				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
+				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
 			world_.projectiles.erase(world_.projectiles.begin() + k);
+	}
+	for (int k = 0; k < world_.ennemy_projectiles.size(); k++)
+	{
+		if (world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
+				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
+				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
+				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
+			world_.ennemy_projectiles.erase(world_.ennemy_projectiles.begin() + k);
 	}
 
 	// CREATION DES MECHANTS A CHANGER AVEC LEVEL DESIGN
 	static int lapin = 0;
 	if (world_.ennemy.size() == 0)
-		world_.CreateEnnemy("Player1", (lapin++) % 5);
+		world_.CreateEnnemy("Ennemy", (lapin++) % 5);
 
 	i = 0;
 	for (auto const & it : world_.ennemy)
 	{
 		Action action = it->GetComponent<Ia>()->ia->actualize(playersPos, shoots, {static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
 		Vector2f v(static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().X), static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().Y));
+
 		it->GetComponent<Position>()->setPos(v);
 		if (action == Action::SHOOT)
 		{
 			Vector2f v1(static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().X) * -10, static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().Y) * -10);
-			world_.CreateShoot(it->GetComponent<Position>()->getPos(), v1, "Shoot");
+			world_.CreateEnnemyShoot(it->GetComponent<Position>()->getPos(), v1, "ShootEnnemy");
 		}
 		else if (action == Action::DEAD)
 			world_.ennemy.erase(world_.ennemy.begin() + i);
@@ -143,25 +170,23 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	for (auto const & it : world_.players)
 	{
-		/*	sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
-			s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
-		*/
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
 		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
 		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 	for (auto const & it : world_.ennemy)
 	{
-		/*	sf::Sprite s(engine.Texture(it->GetComponent<Animator>().GetSprite()));
-			s.setPosition(it->GetComponent<Position>().getPos().x, it->GetComponent<Position>().getPos().y);
-			engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Animator>().GetPriority());
-		*/
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
 		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
 		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 	for (auto const & it : world_.projectiles)
+	{
+		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
+		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
+	}
+	for (auto const & it : world_.ennemy_projectiles)
 	{
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
 		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
