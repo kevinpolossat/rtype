@@ -69,10 +69,11 @@ std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
   return (std::make_pair(AIInterface(lhandle, ctor, dtor), error));
 }
 
-void dunload(void *handle)
+void dunload(HINSTANCE handle)
 {
-  // if(FreeLibrary(handle))
-  //   std::cout << dlerror() << std::endl;
+   if(FreeLibrary(handle)) {
+        std::cout << dlerror() << std::endl;
+   }
 }
 #endif
 
