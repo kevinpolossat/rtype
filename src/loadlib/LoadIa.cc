@@ -54,13 +54,13 @@ HINSTANCE dload(const char *path_lib)
 std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
 {
   bool error = false;
-  CTOR ctor = reinterpret_cast<CTOR>(GetProcAddress(handle, "createLib"));
+  CTOR ctor = reinterpret_cast<CTOR>(GetProcAddress(lhandle, "createLib"));
   if (ctor == nullptr)
   {
     error = true;
     std::cerr << "could not locate the function createLib" << std::endl;
   }
-  DTOR dtor = reinterpret_cast<DTOR>(GetProcAddress(handle, "deleteLib"));
+  DTOR dtor = reinterpret_cast<DTOR>(GetProcAddress(lhandle, "deleteLib"));
   if (dtor == nullptr)
   {
     error = true;
@@ -71,8 +71,8 @@ std::pair<AIInterface, bool> dlib(HINSTANCE lhandle)
 
 void dunload(void *handle)
 {
-  if(FreeLibrary(handle);)
-    std::cout << dlerror() << std::endl;
+  // if(FreeLibrary(handle))
+  //   std::cout << dlerror() << std::endl;
 }
 #endif
 
