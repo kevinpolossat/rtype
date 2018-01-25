@@ -86,12 +86,5 @@ int main() {
 
 		gameEngine.Run("Intro");
 	}
-	for (;;) {
-        //nm.handleRecvEvent();
-        std::string s;
-        std::cout << ">" << std::endl;
-        std::cin >> s;
-        //nm.handleSendEvent();
-	}
 	return 0;
 }
