@@ -4,12 +4,14 @@
 #include "TcpProtocol.h"
 #include "GameEngine.h"
 #include "TCPNonBlockingCommunication.h"
+#include "GameConfiguration.h"
 
 namespace ge
 {
   class MenuValue
   {
   public:
+      ~MenuValue() = default;
     static MenuValue& Instance();
 
     rtype::protocol_tcp::QueryCreateGame  c_game;
@@ -18,12 +20,15 @@ namespace ge
     std::vector<std::string>              games;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
     std::string  Port;
-    MenuValue();
-    ~MenuValue();
+
+      GameConfiguration const & getGameConfiguration() const;
   private:
-    MenuValue& operator= (const MenuValue&){}
-    MenuValue (const MenuValue&);
-    static MenuValue m_instance;
+      GameConfiguration configuration_;
+      MenuValue() = default;
+      MenuValue(MenuValue const &) = delete;
+      MenuValue(MenuValue &&) = delete;
+      MenuValue & operator = (MenuValue const &) = delete;
+      MenuValue & operator = (MenuValue &&) = delete;
   };
 }
 
