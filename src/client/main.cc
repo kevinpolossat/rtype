@@ -36,14 +36,20 @@ int main() {
 		std::cout << a.value.size() << std::endl;
 		if (a.value.empty()) {
 			ge::MenuValue &v = ge::MenuValue::Instance();
+			v.gi.clear();
 			v.games.clear();
 			v.games.push_back("pas de game");
 		}
 		else {
 			ge::MenuValue &v = ge::MenuValue::Instance();
 			v.games.clear();
+			v.gi.clear();
 			for (auto it : a.value)
-				v.games.push_back(it.filename);
+			{
+				v.gi.push_back(it);
+				v.games.push_back(it.playersNames[0] + " " + std::to_string(it.playersNames.size()) + "/" + std::to_string(it.nbPlayerMax));
+				std::cout << v.games[v.games.size() - 1] << it.filename << std::endl;
+			}
 		}
 	});
 	tcpConnection->addHandle(
@@ -54,6 +60,7 @@ int main() {
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::JOIN_GAME_ANSWER,
 		[](std::string const & json) {
+		std::cout << "JOIN" << std::endl;
 	}
 	);
 	tcpConnection->addHandle(
@@ -68,6 +75,7 @@ int main() {
 		auto p = gs.value.port;
 		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
+		gameEngine.PushState("Play");
 	}
 	);
 	ge::MenuValue &v = ge::MenuValue::Instance();
