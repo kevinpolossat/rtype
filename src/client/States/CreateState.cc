@@ -67,7 +67,7 @@ void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEv
 							val.c_game.value.nbPlayerMax = nbPlayers;
 							val.c_game.value.port = val.Port;
 							val.tcpConnection->sendToServer(val.c_game);
-							//engine.PushState("Play"); // TODO State Waiting
+							engine.PushState("Waiting");
 							break;
 						case CANCEL:
 						nameGame = "";

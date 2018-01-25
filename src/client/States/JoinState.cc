@@ -22,8 +22,7 @@ void JoinState::UpdateList(ge::Vector2u const & size)
 		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i), it, "retro", NONE + i - 1);
 		i++;
 	}
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i + 1), "Valid", "retro", VALID);
-	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 10.f * i + 2), "Cancel", "retro", CANCEL);
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i + 2), "Cancel", "retro", CANCEL);
 }
 
 void JoinState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {

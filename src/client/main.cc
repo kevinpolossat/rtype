@@ -8,6 +8,7 @@
 #include "client/States/CreateState.h"
 #include "client/States/LoginState.h"
 #include "client/States/JoinState.h"
+#include "client/States/WaitingState.h"
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
 #include "UDPNonBlockingCommunication.h"
@@ -91,6 +92,7 @@ int main() {
 		gameEngine.AddState("Create", std::make_shared<CreateState>());
 		gameEngine.AddState("Login", std::make_shared<LoginState>());
 		gameEngine.AddState("Join", std::make_shared<JoinState>());
+		gameEngine.AddState("Waiting", std::make_shared<WaitingState>());
 
 		gameEngine.Run("Intro");
 	}
