@@ -41,6 +41,7 @@ void LoginState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEve
 						case JOIN:
 							val.j_game.value.playerName = login;
 							login = "";
+							val.tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(val.l_game);
 							engine.PushState("Join");
 							break;
 						case CANCEL:

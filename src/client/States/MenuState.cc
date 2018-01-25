@@ -28,8 +28,7 @@ void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 
 void MenuState::Update(ge::GameEngine & game)
 {
-	ge::MenuValue &val = ge::MenuValue::Instance();
-	val.tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(val.l_game);
+
 }
 
 void MenuState::Display(ge::GameEngine & engine, float) {
