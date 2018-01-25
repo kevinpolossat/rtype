@@ -17,6 +17,7 @@ namespace ge
     rtype::protocol_tcp::QueryList        l_game;
     std::vector<std::string>              games;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
+    std::string  Port;
     MenuValue();
     ~MenuValue();
   private:

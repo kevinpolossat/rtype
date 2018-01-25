@@ -72,6 +72,7 @@ int main() {
 	);
 	ge::MenuValue &v = ge::MenuValue::Instance();
 	v.tcpConnection = tcpConnection;
+	v.Port = udp->getPort();
 	rtype::protocol_tcp::QueryList ql;
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
 	gameEngine.AddCommunication(tcpConnection);
