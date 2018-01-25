@@ -2,7 +2,7 @@
 #define CreateState_H_
 
 #include <SFML/Graphics.hpp>
-
+#include "MenuValue.h"
 #include "MenuState.h"
 
 class CreateState : public MenuState {

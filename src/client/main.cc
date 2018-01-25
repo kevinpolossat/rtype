@@ -31,54 +31,48 @@ int main() {
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::LIST_ANSWER,
 		[tcpConnection, &udp](std::string const & json) {
-		std::cout << "HANDLE LIST HANDLING[" << json << "]" << std::endl;
 		auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
-		std::cout << "port=" << udp->getPort() << std::endl;
+	//	std::cout << "port=" << udp->getPort() << std::endl;
 		std::cout << a.value.size() << std::endl;
 		if (a.value.empty()) {
-			rtype::protocol_tcp::QueryCreateGame cg;
-			cg.value.fileName = "toto.txt";
-			cg.value.nbPlayerMax = 1;
-			cg.value.playerName = "nonmame";
-			cg.value.port = udp->getPort();
-			tcpConnection->sendToServer(cg);
+			ge::MenuValue &v = ge::MenuValue::Instance();
+			v.games.clear();
+			v.games.push_back("pas de game");
 		}
 		else {
-			rtype::protocol_tcp::QueryJoinGame jg;
-			jg.value.port = udp->getPort();
-			jg.value.playerName = "nino";
-			jg.value.gameId = 1;
-			tcpConnection->sendToServer(jg);
+			ge::MenuValue &v = ge::MenuValue::Instance();
+			v.games.clear();
+			for (auto it : a.value)
+				v.games.push_back(it.filename);
 		}
 	});
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::CREATE_GAME_ANSWER,
 		[](std::string const & json) {
-		std::cout << "HANDLE CREATE HANDLING[" << json << "]" << std::endl;
 	}
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::JOIN_GAME_ANSWER,
 		[](std::string const & json) {
-		std::cout << "HANDLE JOIN HANDLING[" << json << "]" << std::endl;
 	}
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::GAME_STATE,
 		[](std::string const & json) {
-		std::cout << "HANDLE STATE HANDLING[" << json << "]" << std::endl;
 	}
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::GAME_START,
 		[&udp, &gameEngine](std::string const & json) {
-		std::cout << "HANDLE START HANDLING[" << json << "]" << std::endl;
 		auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 		auto p = gs.value.port;
 		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
 	}
 	);
+	ge::MenuValue &v = ge::MenuValue::Instance();
+	v.tcpConnection = tcpConnection;
+	v.Port = udp->getPort();
 	rtype::protocol_tcp::QueryList ql;
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
 	gameEngine.AddCommunication(tcpConnection);

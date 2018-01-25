@@ -10,13 +10,20 @@ namespace ge
   class MenuValue
   {
   public:
-    MenuValue(std::shared_ptr<ge::network::TCPNonBlockingCommunication>  tcpConnection);
-    ~MenuValue();
-    rtype::protocol_tcp::GameInfo      i_game;
-    rtype::protocol_tcp::CreateGame    c_game;
-    rtype::protocol_tcp::JoinGameInfo  j_game;
-    rtype::protocol_tcp::GameState     s_game;
+    static MenuValue& Instance();
+
+    rtype::protocol_tcp::QueryCreateGame  c_game;
+    rtype::protocol_tcp::QueryJoinGame    j_game;
+    rtype::protocol_tcp::QueryList        l_game;
+    std::vector<std::string>              games;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
+    std::string  Port;
+    MenuValue();
+    ~MenuValue();
+  private:
+    MenuValue& operator= (const MenuValue&){}
+    MenuValue (const MenuValue&);
+    static MenuValue m_instance;
   };
 }
 

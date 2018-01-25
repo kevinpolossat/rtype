@@ -42,7 +42,7 @@ TEST(Serialization, ProtocolQueryListAnswer) {
 
 TEST(Serialization, ProtocolCreateGame) {
     rtype::protocol_tcp::QueryCreateGame qcg;
-    qcg.value = {"toto.txt", "tata", 3, "4242"};
+    qcg.value = {"toto.txt", "tata", "toto", 3, "4242"};
 
     std::stringstream ss;
     {

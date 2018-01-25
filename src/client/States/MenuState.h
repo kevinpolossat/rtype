@@ -4,6 +4,7 @@
 #include "client/IntroWorld.h"
 #include "AGameState.h"
 #include "GameEngine.h"
+#include	"MenuValue.h"
 
 class MenuState : public ge::AGameState {
 public:
@@ -26,7 +27,8 @@ public:
 	void Display(ge::GameEngine & engine, float interpolation) override;
 
 protected:
-	enum ButtonId {
+	enum ButtonId
+	{
 		START = 0,
 		CREATE,
 		JOIN,

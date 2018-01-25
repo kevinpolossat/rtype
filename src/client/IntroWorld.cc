@@ -43,7 +43,7 @@ void IntroWorld::CreateBackground()
 	scroll.priority = 1;
 	scroll.speed = 50;
 	bool done = false;
-	for (uint32_t i = 0; i < 2; ++i) 
+	for (uint32_t i = 0; i < 2; ++i)
 	{
 		for (uint32_t j = 0; j < 10; ++j)
 		{

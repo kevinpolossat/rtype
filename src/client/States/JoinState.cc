@@ -1,13 +1,19 @@
 #include "JoinState.h"
 
-bool JoinState::Init(ge::GameEngine & engine) {
+bool JoinState::Init(ge::GameEngine & engine)
+{
+	ge::MenuValue &val = ge::MenuValue::Instance();
+	_games = val.games;
+	int i = 2;
 	ge::Vector2u size = engine.GetSize();
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), "GAMES : ", "retro");
-	for(auto const & it : _games) {
-		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f), it, "arial");
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f), "GAMES : ", "retro", NONE);
+	for(auto const & it : _games)
+	{
+		world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i), it, "arial", NONE + i - 1);
+		i++;
 	}
-	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 5.f * 4), "Valid", "retro", VALID);
-	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 5.f * 4), "Cancel", "retro", CANCEL);
+	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f * i + 1), "Valid", "retro", VALID);
+	world_.CreateText(ge::Vector2f(size.x / 5.f * 3, size.y / 10.f * i + 2), "Cancel", "retro", CANCEL);
 	world_.CreateBackground();
 	return true;
 }
@@ -27,7 +33,11 @@ void JoinState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 						case CANCEL:
 							engine.PopState();
 							break;
+							case NONE:
+							break;
 						default:
+						_gamechose = _games[it->GetComponent<ge::Input>()->id - 10];
+						std::cout << _gamechose << std::endl;
 							break;
 					}
 				}
