@@ -20,6 +20,12 @@ namespace network {
 
 class UDPNonBlockingCommuncation: public NetworkCommunication {
 public:
+    UDPNonBlockingCommuncation() = default;
+    UDPNonBlockingCommuncation(UDPNonBlockingCommuncation const &) = delete;
+    UDPNonBlockingCommuncation(UDPNonBlockingCommuncation &&) = delete;
+    UDPNonBlockingCommuncation & operator = (UDPNonBlockingCommuncation &&) = delete;
+    UDPNonBlockingCommuncation & operator = (UDPNonBlockingCommuncation const &) = delete;
+
     void send() override; // DO NOT CALL FOR THE NETWORKMANAGER
     void recv() override;
     void close() override;

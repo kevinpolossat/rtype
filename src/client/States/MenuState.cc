@@ -26,13 +26,34 @@ void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
-void MenuState::Update(ge::GameEngine & game){}
+void MenuState::Update(ge::GameEngine & game)
+{
+	ge::MenuValue &val = ge::MenuValue::Instance();
+	val.tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(val.l_game);
+}
 
 void MenuState::Display(ge::GameEngine & engine, float) {
+	int i = 0;
+	ge::MenuValue &val = ge::MenuValue::Instance();
 	for (auto const & it : world_.texts) {
 		sf::Text t(it->GetComponent<ge::Text>()->text, engine.Font(it->GetComponent<ge::Text>()->fontName));
-		t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
-		engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+		if(it->GetComponent<ge::Input>()->id > NONE)
+		{
+			if (i < val.games.size())
+			{
+				it->GetComponent<ge::Text>()->text = val.games[i];
+				t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
+				engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+			}
+			else
+				it->GetComponent<ge::Text>()->text = "";
+			i++;
+		}
+		else
+		 {
+			 t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
+			 engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+		 }
 	}
 	for (auto const & it : world_.buttons) {
 		if(it->GetComponent<ge::Sprite>()) {

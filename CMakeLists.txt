@@ -8,6 +8,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
 find_package(SFML 2 REQUIRED audio graphics window system)
 find_package( Threads )
 
+set(RESOURCES_DIR ${PROJECT_SOURCE_DIR}/resources)
 set(CLIENT_SOURCES
 		# GAME ENGINE
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/AGameState.h
@@ -75,7 +76,14 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/GameLobby.h
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.cc
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.h
+		${CMAKE_SOURCE_DIR}/src/server/Game.cpp
 		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.cc
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -109,6 +117,7 @@ set(TCP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/tcp/TcpProtocol.cc)
 set(UDP_PROTOCOL
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.h
+		${PROJECT_SOURCE_DIR}/src/udp/Events.h
 		${PROJECT_SOURCE_DIR}/src/udp/UdpProtocol.cc)
 
 set(CEREAL_HEADER ${PROJECT_SOURCE_DIR}/src/serialization)
@@ -154,11 +163,6 @@ target_link_libraries(rtype_client
 set_target_properties(rtype_client
 		PROPERTIES
 		RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
-
-add_custom_command(TARGET rtype_client POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_directory
-		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype_client>/resources)
-
 #server
 add_executable(rtype_server ${PROJECT_SOURCE_DIR}/src/server/main.cc)
 set_target_properties(rtype_server
@@ -206,4 +210,52 @@ target_sources(rtype_server_test
 
 add_test(NAME testing_rtype_test COMMAND rtype_server_test)
 
-add_subdirectory(ai)
+set(BASIC_SOURCE
+		ai/Basic/Basic.cpp
+		ai/Basic/Basic.h)
+set(CIRCLE_SOURCE
+		ai/Circle/Circle.cpp
+		ai/Circle/Circle.h)
+set(LINEAR_SOURCE
+		ai/Linear/Linear.cpp
+		ai/Linear/Linear.h)
+set(RANDOM_SOURCE
+		ai/Random/Random.cpp
+		ai/Random/Random.h)
+set(SINUS_SOURCE
+		ai/Sinus/Sinus.cpp
+		ai/Sinus/Sinus.h)
+set(BOSS_SOURCE
+		ai/Boss/Boss.cpp
+		ai/Boss/Boss.h
+		ai/Boss/TreeSearch.cpp
+		ai/Boss/TreeSearch.hpp)
+
+include_directories(./)
+add_library(Basic SHARED ${BASIC_SOURCE})
+add_library(Circle SHARED ${CIRCLE_SOURCE})
+add_library(Linear SHARED ${LINEAR_SOURCE})
+add_library(Random SHARED ${RANDOM_SOURCE})
+add_library(Sinus SHARED ${SINUS_SOURCE})
+add_library(Boss SHARED ${BOSS_SOURCE})
+
+set_target_properties(Basic Circle Linear Random Sinus Boss
+		PROPERTIES
+		LIBRARY_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/resources/ai")
+target_include_directories(Basic
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+target_include_directories(Circle
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+target_include_directories(Linear
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+target_include_directories(Random
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+target_include_directories(Sinus
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+target_include_directories(Boss
+		PRIVATE ${PROJECT_SOURCE_DIR}/ai)
+
+add_dependencies(rtype_server Basic Random Circle Linear Sinus Boss)
+add_custom_command(TARGET rtype_server POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${PROJECT_SOURCE_DIR}/resources $<TARGET_FILE_DIR:rtype_client>/resources)

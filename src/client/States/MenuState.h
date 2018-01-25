@@ -4,6 +4,7 @@
 #include "client/IntroWorld.h"
 #include "AGameState.h"
 #include "GameEngine.h"
+#include	"MenuValue.h"
 
 class MenuState : public ge::AGameState {
 public:

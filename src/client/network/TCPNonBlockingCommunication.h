@@ -19,6 +19,10 @@ namespace ge {
         class TCPNonBlockingCommunication: public NetworkCommunication {
         public:
             TCPNonBlockingCommunication() = default;
+            TCPNonBlockingCommunication(TCPNonBlockingCommunication const & other) = delete;
+            TCPNonBlockingCommunication(TCPNonBlockingCommunication && other) = delete;
+            TCPNonBlockingCommunication & operator = (TCPNonBlockingCommunication const & other) = delete;
+            TCPNonBlockingCommunication & operator = (TCPNonBlockingCommunication && other) = delete;
             using Handle = std::function<void(std::string const & json)>;
             bool open(std::string const & host, std::string const & port);
             void send() override; // DO NOT CALL FOR THE NETWORKMANAGER

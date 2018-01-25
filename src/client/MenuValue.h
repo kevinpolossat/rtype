@@ -15,13 +15,13 @@ namespace ge
     rtype::protocol_tcp::QueryCreateGame  c_game;
     rtype::protocol_tcp::QueryJoinGame    j_game;
     rtype::protocol_tcp::QueryList        l_game;
+    std::vector<std::string>              games;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
     MenuValue();
     ~MenuValue();
   private:
     MenuValue& operator= (const MenuValue&){}
     MenuValue (const MenuValue&);
-
     static MenuValue m_instance;
   };
 }

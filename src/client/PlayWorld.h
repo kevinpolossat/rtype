@@ -3,8 +3,10 @@
 
 #include <memory>
 #include "AWorld.h"
-#include "IArtificialIntelligence.hpp"
-#include "loadlib/LoadIa.hpp"
+#include "../ai/IArtificialIntelligence.hpp"
+#include "../../loadlib/LoadIa.hpp"
+
+
 using ge::Vector2f;
 using ge::GameObject;
 
@@ -21,7 +23,7 @@ public:
 
 	void CreatePlayer(Vector2f const & t_position, Vector2f const & t_velocity = Vector2f(0,0));
 	void CreatePlayer(Vector2f const & t_position, std::string const & t_textureName, Vector2f const & t_velocity = Vector2f(0, 0));
-	void CreateShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName);
+	void CreateShoot(Vector2f const & t_position);
 	void CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName);
 	void CreateEnnemy(std::string const & t_textureName, const int t_id);
 

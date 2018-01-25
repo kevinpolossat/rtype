@@ -59,13 +59,13 @@ void PlayWorld::CreateEnnemy(std::string const & t_textureName, const int t_id)
 	this->ennemy.push_back(std::move(g));
 }
 
-void PlayWorld::CreateShoot(Vector2f const & t_position, Vector2f const & t_velocity, std::string const & t_textureName)
+
+void PlayWorld::CreateShoot(Vector2f const & t_position)
 {
 	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
 	g->AddComponent<Position>(t_position);
-	g->AddComponent<Velocity>(t_velocity);
-	g->AddComponent<Sprite>(t_textureName, 2);
+	g->AddComponent<Sprite>("Shoot", 2);
 	g->AddComponent<Collider>(t_position, Vector2f(30, 15), "Player Shoot");
 	this->projectiles.push_back(std::move(g));
 }

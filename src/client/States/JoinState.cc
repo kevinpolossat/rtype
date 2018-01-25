@@ -1,6 +1,9 @@
 #include "JoinState.h"
 
-bool JoinState::Init(ge::GameEngine & engine) {
+bool JoinState::Init(ge::GameEngine & engine)
+{
+	ge::MenuValue &val = ge::MenuValue::Instance();
+	_games = val.games;
 	int i = 2;
 	ge::Vector2u size = engine.GetSize();
 	world_.CreateText(ge::Vector2f(size.x / 5.f, size.y / 10.f), "GAMES : ", "retro", NONE);

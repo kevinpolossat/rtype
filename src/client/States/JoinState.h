@@ -3,7 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
-
+#include "MenuValue.h"
 #include "MenuState.h"
 
 class JoinState : public MenuState {
@@ -22,7 +22,7 @@ private:
 	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
 	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) override;
 
-	std::vector<std::string> _games{"tonton", "tata"};
+	std::vector<std::string> _games;
 	std::string _gamechose = "";
 };
 
