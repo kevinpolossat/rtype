@@ -52,6 +52,10 @@ set(CLIENT_SOURCES
 
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp
+
+		# CONF
+		${CMAKE_SOURCE_DIR}/src/client/GameConfiguration.h
+        ${CMAKE_SOURCE_DIR}/src/client/GameConfiguration.cc
 		#[[add source files here]])
 
 set(AI_HEADER ${CMAKE_SOURCE_DIR}/ai)
