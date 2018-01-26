@@ -21,6 +21,7 @@ public:
 
 	std::vector<std::unique_ptr<ge::GameObject>> buttons;
 	std::vector<std::unique_ptr<ge::GameObject>> texts;
+	std::vector<std::unique_ptr<ge::GameObject>> games;
 	std::unique_ptr<ge::GameObject> background;
 };
 

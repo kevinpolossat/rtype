@@ -18,6 +18,7 @@ namespace ge
     rtype::protocol_tcp::QueryJoinGame    j_game;
     rtype::protocol_tcp::QueryList        l_game;
     std::vector<std::string>              games;
+	std::vector<rtype::protocol_tcp::GameInfo> gi;
     std::shared_ptr<ge::network::TCPNonBlockingCommunication> tcpConnection;
     std::string  Port;
 

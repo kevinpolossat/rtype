@@ -8,6 +8,7 @@
 #include "client/States/CreateState.h"
 #include "client/States/LoginState.h"
 #include "client/States/JoinState.h"
+#include "client/States/WaitingState.h"
 #include "NetworkManager.h"
 #include "TCPNonBlockingCommunication.h"
 #include "UDPNonBlockingCommunication.h"
@@ -32,18 +33,21 @@ int main() {
 		rtype::protocol_tcp::LIST_ANSWER,
 		[tcpConnection, &udp](std::string const & json) {
 		auto a = rtype::protocol_tcp::extract<rtype::protocol_tcp::AnswerList>(json);
-	//	std::cout << "port=" << udp->getPort() << std::endl;
-		std::cout << a.value.size() << std::endl;
 		if (a.value.empty()) {
 			ge::MenuValue &v = ge::MenuValue::Instance();
+			v.gi.clear();
 			v.games.clear();
-			v.games.push_back("pas de game");
+			//v.games.push_back("pas de game");
 		}
 		else {
 			ge::MenuValue &v = ge::MenuValue::Instance();
 			v.games.clear();
+			v.gi.clear();
 			for (auto it : a.value)
-				v.games.push_back(it.filename);
+			{
+				v.gi.push_back(it);
+				v.games.push_back(it.playersNames[0] + " " + std::to_string(it.playersNames.size()) + "/" + std::to_string(it.nbPlayerMax));
+			}
 		}
 	});
 	tcpConnection->addHandle(
@@ -54,6 +58,7 @@ int main() {
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::JOIN_GAME_ANSWER,
 		[](std::string const & json) {
+		std::cout << "JOIN" << std::endl;
 	}
 	);
 	tcpConnection->addHandle(
@@ -68,6 +73,7 @@ int main() {
 		auto p = gs.value.port;
 		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
+		gameEngine.PushState("Play");
 	}
 	);
 	ge::MenuValue &v = ge::MenuValue::Instance();
@@ -83,7 +89,7 @@ int main() {
 		gameEngine.AddState("Create", std::make_shared<CreateState>());
 		gameEngine.AddState("Login", std::make_shared<LoginState>());
 		gameEngine.AddState("Join", std::make_shared<JoinState>());
-
+		gameEngine.AddState("Waiting", std::make_shared<WaitingState>());
 		gameEngine.Run("Intro");
 	}
 	return 0;
