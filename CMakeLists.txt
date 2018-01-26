@@ -84,6 +84,8 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/server/Launcher.h
 		${CMAKE_SOURCE_DIR}/src/server/Game.h
 		${CMAKE_SOURCE_DIR}/src/server/Game.cpp
+		${CMAKE_SOURCE_DIR}/src/server/LevelLoader.hpp
+		${CMAKE_SOURCE_DIR}/src/server/LevelLoader.cpp
 		${CMAKE_SOURCE_DIR}/src/server/GameLauncher.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h

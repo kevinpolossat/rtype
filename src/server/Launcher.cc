@@ -7,6 +7,7 @@
 #include "Game.h"
 #include "UDPNonBlockingCommunication.h"
 #include "Events.h"
+#include "LevelLoader.hpp"
 
 bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) 
 {
@@ -67,12 +68,20 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 	
     auto t = std::thread([udp, gl, g]() 
 	{ 
+		std::shared_ptr<LevelLoader> ldl = std::make_shared<LevelLoader>();
+		std::chrono::time_point<std::chrono::high_resolution_clock> time;
 
+		ldl->SelectCurrentLevel(gl->getGameInfo().filename);
 		g->setGameInfo(gl->getGameInfo());
 		for (int i = 0; i < g->getGameInfo().nbPlayerMax; i++)
 			g->CreatePlayer();
-
+		time = std::chrono::high_resolution_clock::now();
+		std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
         for (;;) {
+			time = std::chrono::high_resolution_clock::now();
+			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(time - now);
+			std::vector<std::string> objects = ldl->GetObjects(ms.count());
+
 			g->lt.Start();
 			while (g->lt.Update())
 			{

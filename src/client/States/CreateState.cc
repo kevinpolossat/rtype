@@ -58,6 +58,7 @@ void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEv
 							val.c_game.value.nameGame = nameGame;
 							val.c_game.value.nbPlayerMax = nbPlayers;
 							val.c_game.value.port = val.Port;
+							val.c_game.value.fileName = "Level 1"; // TODO Dynamic Selection ?
 							val.tcpConnection->sendToServer(val.c_game);
 							engine.PushState("Waiting");
 							break;

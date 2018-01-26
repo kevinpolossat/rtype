@@ -37,7 +37,6 @@ int main() {
 			ge::MenuValue &v = ge::MenuValue::Instance();
 			v.gi.clear();
 			v.games.clear();
-			//v.games.push_back("pas de game");
 		}
 		else {
 			ge::MenuValue &v = ge::MenuValue::Instance();
