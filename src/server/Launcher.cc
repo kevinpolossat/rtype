@@ -82,6 +82,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 			std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(time - now);
 			std::vector<std::string> objects = ldl->GetObjects(ms.count());
 
+
 			g->lt.Start();
 			while (g->lt.Update())
 			{

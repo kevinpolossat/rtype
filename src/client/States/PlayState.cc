@@ -98,8 +98,23 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 			case static_cast<int>(ENTITYTYPE::PLAYER) :
 				world_.CreatePlayer(Vector2f(it.x, it.y), playersSprites_[it.id]);
 				break;
-			case static_cast<int>(ENTITYTYPE::PLAYERSHOOT) :
+			case static_cast<int>(ENTITYTYPE::PLAYERSHOOT):
 				world_.CreateShoot(Vector2f(it.x, it.y));
+				break;
+			case static_cast<int>(ENTITYTYPE::BASIC) :
+				std::cout << "BASIC" << std::endl;
+				break;
+			case static_cast<int>(ENTITYTYPE::BOSS) :
+				std::cout << "BOSS" << std::endl;
+				break;
+			case static_cast<int>(ENTITYTYPE::CIRCLE) :
+				std::cout << "CIRCLE" << std::endl;
+				break;
+			case static_cast<int>(ENTITYTYPE::LINEAR) :
+				std::cout << "LINEAR" << std::endl;
+				break;
+			case static_cast<int>(ENTITYTYPE::RANDOM) :
+				std::cout << "RANDOM" << std::endl;
 				break;
 			default:
 				break;

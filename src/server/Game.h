@@ -5,6 +5,7 @@
 #include "TcpProtocol.h"
 #include "../client/GameEngine/Entity/Component.h"
 #include "../client/GameEngine/LoopTimer.h"
+#include "../loadlib/LoadIa.hpp"
 using ge::Vector2f;
 using ge::GameObject;
 class Game
@@ -20,6 +21,9 @@ class Game
 		std::vector<std::unique_ptr<GameObject>> 		players;
 		std::vector<std::unique_ptr<GameObject>> 		projectiles;
 		std::vector<std::unique_ptr<GameObject>> 		ennemy;
+		std::vector<std::unique_ptr<GameObject>> 		ennemy_projectiles;
+		std::unique_ptr<loadIa>			iaLoader_;
+
 		ge::LoopTimer lt;
 		std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 	private:
