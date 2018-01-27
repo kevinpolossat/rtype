@@ -198,3 +198,11 @@ sf::Texture & ge::GameEngine::Texture(std::string const & name) {
 sf::Font & ge::GameEngine::Font(std::string const & name) {
 	return rm_->Font(name);
 }
+
+sf::SoundBuffer & ge::GameEngine::Sound(std::string const & name) {
+	return rm_->Sound(name);
+}
+
+sf::Music & ge::GameEngine::Music(std::string const & name) {
+	return rm_->Music(name);
+}
