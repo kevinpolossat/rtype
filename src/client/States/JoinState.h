@@ -20,7 +20,7 @@ public:
 
 private:
 	void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) override;
-	void UpdateList(ge::Vector2u const & size);
+	void UpdateList(ge::Vector2f const & size);
 
 	std::vector<std::string> _games;
 	std::string _gamechose = "";

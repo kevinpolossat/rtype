@@ -4,7 +4,7 @@ bool IntroState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Font>("arial", "resources/arial.ttf");
 	engine.Load<ge::Resources::Font>("retro", "resources/PressStart2P.ttf");
 
-	ge::Vector2u size = engine.GetSize();
+	ge::Vector2f size = engine.GetSize();
 	world_.CreateText(ge::Vector2f(size.x / 2, size.y / 5.f), "Play", "retro", START, true);
 	world_.CreateText(ge::Vector2f(size.x / 2, size.y / 5.f * 2), "Settings", "retro", SETTINGS, true);
 	world_.CreateText(ge::Vector2f(size.x / 2, size.y / 5.f * 3), "Quit", "retro", QUIT, true);

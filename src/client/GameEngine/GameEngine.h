@@ -39,10 +39,14 @@ namespace ge {
 		bool Init(std::string const & title, Vector2u const & size, bool fullscreen);
 		void Run(std::string const & initState);
 		void Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t display_level);
-		Vector2u GetSize() const;
+		sf::Vector2f GetCoord(ge::Vector2u v) const;
+		sf::Vector2f GetCoord(uint32_t x, uint32_t y) const;
+		Vector2f GetSize() const;
+		Vector2u GetWindowSize() const;
 		void SetSize(uint32_t width, uint32_t height);
 		void SetSize(Vector2u const & size);
 		void SetFullscreen(bool fullscreen);
+		bool IsFullscreen() const;
 		std::vector<Vector2u> GetResolutionsModes() const;
 		void Quit();
 
@@ -96,6 +100,7 @@ namespace ge {
 
 		sf::RenderWindow window_;
 		std::string windowTitle_;
+		bool fullscreen_;
 
 		// Using ptr here to avoid circular dependency
 		std::unique_ptr<network::NetworkManager> nm_;

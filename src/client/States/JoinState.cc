@@ -8,7 +8,7 @@ bool JoinState::Init(ge::GameEngine & engine)
 	return true;
 }
 
-void JoinState::UpdateList(ge::Vector2u const & size)
+void JoinState::UpdateList(ge::Vector2f const & size)
 {
 	if (world_.texts.size() > 0)
 		world_.texts.clear();

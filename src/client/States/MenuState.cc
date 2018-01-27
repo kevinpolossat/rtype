@@ -51,7 +51,7 @@ void MenuState::Display(ge::GameEngine & engine, float) {
 		{
 			sf::Sprite s(engine.Texture(world_.background->GetComponent<ge::Animator>()->GetSprite()));
 			s.setPosition(0, 0);
-			s.scale(1.8f, 1.8f);
+			s.scale(4.6f, 4.6f);
 			engine.Draw(std::make_shared<sf::Sprite>(s), 2);
 		}
 	}
@@ -62,7 +62,7 @@ void MenuState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 		for (auto const & it : world_.texts) {
 			if(it->GetComponent<ge::Text>()) {
 				sf::Text t(ToSFMLText_(engine, *it));
-				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
+				if (t.getGlobalBounds().contains(engine.GetCoord(static_cast<uint32_t >(event.x), static_cast<uint32_t >(event.y)))) {
 					HandleClickOnText_(engine, *it);
 				}
 			}

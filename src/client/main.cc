@@ -84,7 +84,7 @@ int main()
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
 	gameEngine.AddCommunication(tcpConnection);
 	gameEngine.AddCommunication(udp);
-	if (gameEngine.Init("R-Type", 800, 600, false)) {
+	if (gameEngine.Init("R-Type", gameEngine.GetResolutionsModes().front().x, gameEngine.GetResolutionsModes().front().y, false)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
 		gameEngine.AddState("Settings", std::make_shared<SettingsState>());
 		gameEngine.AddState("Play", std::make_shared<PlayState>(udp));

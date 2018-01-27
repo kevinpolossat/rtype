@@ -2,7 +2,7 @@
 
 bool LoginState::Init(ge::GameEngine & engine)
 {
-	ge::Vector2u size = engine.GetSize();
+	ge::Vector2f size = engine.GetSize();
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 6.f), "Enter your login :", "retro", true);
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 6.f * 2), login, "retro", true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 3), "Create",  "retro", CREATE, true);

@@ -37,6 +37,7 @@ void ge::GameEngine::Display_(const float interpolation) {
 
 bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height, bool const fullscreen) {
 	windowTitle_ = title;
+	fullscreen_ = fullscreen;
 	window_.create(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
 	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
 	return true;
@@ -86,7 +87,19 @@ void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_
 	toDraw_.push(PrioritizedDrawable(display_level, drawable));
 }
 
-ge::Vector2u ge::GameEngine::GetSize() const {
+sf::Vector2f ge::GameEngine::GetCoord(ge::Vector2u v) const {
+	return window_.mapPixelToCoords(sf::Vector2i(v.x, v.y));
+}
+
+sf::Vector2f ge::GameEngine::GetCoord(uint32_t x, uint32_t y) const {
+	return window_.mapPixelToCoords(sf::Vector2i(x, y));
+}
+
+ge::Vector2f ge::GameEngine::GetSize() const {
+	return Vector2f(window_.getView().getSize().x, window_.getView().getSize().y);
+}
+
+ge::Vector2u ge::GameEngine::GetWindowSize() const {
 	return Vector2u(window_.getSize().x, window_.getSize().y);
 }
 
@@ -94,7 +107,7 @@ void ge::GameEngine::SetSize(uint32_t width, uint32_t height) {
 	window_.setSize({ width, height });
 	window_.clear();
 	window_.display();
-	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
+//	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
 	window_.setPosition({ 0, 0 });
 }
 
@@ -104,6 +117,11 @@ void ge::GameEngine::SetSize(ge::Vector2u const & size) {
 
 void ge::GameEngine::SetFullscreen(bool fullscreen) {
 	window_.create(sf::VideoMode(window_.getSize().x, window_.getSize().y), windowTitle_, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
+	fullscreen_ = fullscreen;
+}
+
+bool ge::GameEngine::IsFullscreen() const {
+	return fullscreen_;
 }
 
 std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
