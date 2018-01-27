@@ -70,7 +70,7 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
 	if (event.code == sf::Keyboard::Key::Escape) {
-		engine.PopState();
+		engine.ChangeState("Intro");
 	}
 }
 

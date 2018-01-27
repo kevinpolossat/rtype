@@ -18,7 +18,6 @@
 int main() {
 	ge::GameEngine gameEngine;
 
-    ge::network::NetworkManager nm;
 	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
 	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
 		std::cout << "can't connect to server" << std::endl;
@@ -57,7 +56,8 @@ int main() {
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::JOIN_GAME_ANSWER,
-		[](std::string const & json) {
+		[&gameEngine](std::string const & json) {
+			gameEngine.ChangeState("Waiting");
 		std::cout << "JOIN" << std::endl;
 	}
 	);
@@ -73,7 +73,7 @@ int main() {
 		auto p = gs.value.port;
 		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
-		gameEngine.PushState("Play");
+		gameEngine.ChangeState("Play");
 	}
 	);
 	ge::MenuValue &v = ge::MenuValue::Instance();
