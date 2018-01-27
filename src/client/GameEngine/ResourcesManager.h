@@ -1,8 +1,10 @@
 #ifndef RESOURCES_MANAGER_H_
 #define RESOURCES_MANAGER_H_
 
+#include <utility>
 #include <unordered_map>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 
 #include "Settings.h"
@@ -31,6 +33,10 @@ namespace ge {
 					Load_<sf::Font>(name, file, fonts_, "font");
 					break;
 				case Resources::Sound:
+					Load_<sf::SoundBuffer>(name, file, sounds_, "sound");
+					break;
+				case Resources::Music:
+					LoadMusic_(name, file);
 					break;
 				default:
 					break;
@@ -39,6 +45,8 @@ namespace ge {
 
 		sf::Texture & Texture(std::string const & name);
 		sf::Font & Font(std::string const & name);
+		sf::SoundBuffer & Sound(std::string const & name);
+		sf::Music & Music(std::string const & name);
 
 	private:
 		template<class T>
@@ -54,9 +62,12 @@ namespace ge {
 				std::cerr << "ResourcesManager : " << type << " named " << name << " already exist" << std::endl;
 			}
 		}
+		void LoadMusic_(std::string const & name, std::string const & file);
 
 		Map<sf::Texture> textures_;
 		Map<sf::Font> fonts_;
+		Map<sf::SoundBuffer> sounds_;
+		Map<std::unique_ptr<sf::Music>> musics_;
 	};
 }
 

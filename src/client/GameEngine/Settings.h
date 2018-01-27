@@ -23,7 +23,8 @@ namespace ge {
 		enum Type {
 			Texture,
 			Font,
-			Sound
+			Sound,
+			Music
 		};
 	}
 
