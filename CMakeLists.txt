@@ -153,6 +153,7 @@ target_include_directories(rtype_client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/network
+		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/States
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/client/GameEngine/Entity
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/network
