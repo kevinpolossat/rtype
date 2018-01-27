@@ -20,7 +20,6 @@ public:
 
 private:
 	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
-	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) override;
 	void UpdateList(ge::Vector2u const & size);
 
 	std::vector<std::string> _games;

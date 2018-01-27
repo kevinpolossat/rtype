@@ -13,11 +13,6 @@ bool CreateState::Init(ge::GameEngine & engine)
 	return true;
 }
 
-void CreateState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event)
-{
-
-}
-
 void CreateState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
 	ge::MenuValue &val = ge::MenuValue::Instance();
 	if (event.button == sf::Mouse::Button::Left) {

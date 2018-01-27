@@ -39,6 +39,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/States/JoinState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.cc
 		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/SettingsState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/SettingsState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.cc
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.h
 

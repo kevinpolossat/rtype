@@ -9,9 +9,5 @@ bool WaitingState::Init(ge::GameEngine & engine)
 	return true;
 }
 
-void WaitingState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event)
-{
-}
-
 void WaitingState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
 }

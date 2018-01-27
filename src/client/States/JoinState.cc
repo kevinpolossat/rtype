@@ -7,7 +7,6 @@ bool JoinState::Init(ge::GameEngine & engine)
 	world_.CreateBackground();
 	return true;
 }
-void JoinState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event){}
 
 void JoinState::UpdateList(ge::Vector2u const & size)
 {

@@ -20,6 +20,9 @@ void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 		break;
 		case sf::Event::KeyPressed:
 			HandleKey_(engine, event.text);
+			if (event.key.code == sf::Keyboard::Key::Escape) {
+				HandleQuit_(engine);
+			}
 		break;
 		default:
 			break;
@@ -56,4 +59,14 @@ void MenuState::Display(ge::GameEngine & engine, float) {
 			engine.Draw(std::make_shared<sf::Sprite>(s), 2);
 		}
 	}
+}
+
+void MenuState::HandleClick_(ge::GameEngine &, sf::Event::MouseButtonEvent const &) {
+}
+
+void MenuState::HandleKey_(ge::GameEngine &engine, sf::Event::TextEvent const &event) {
+}
+
+void MenuState::HandleQuit_(ge::GameEngine &engine) {
+	engine.PopState();
 }

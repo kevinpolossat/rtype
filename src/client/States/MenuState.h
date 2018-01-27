@@ -41,8 +41,9 @@ protected:
 		NONE
 	};
 
-	virtual void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) = 0;
-	virtual	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) = 0;
+	virtual void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event);
+	virtual	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event);
+	virtual void HandleQuit_(ge::GameEngine &engine);
 
 	IntroWorld world_;
 };
