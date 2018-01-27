@@ -84,6 +84,10 @@ namespace ge {
 
 		sf::Texture & Texture(std::string const & name);
 		sf::Font & Font(std::string const & name);
+
+		sf::SoundBuffer & Sound(std::string const & name);
+		sf::Music & Music(std::string const & name);
+
 		uint32_t playerID;
 	private:
 		// CORE
