@@ -14,20 +14,4 @@ void WaitingState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent cons
 }
 
 void WaitingState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
-	ge::MenuValue &val = ge::MenuValue::Instance();
-	if (event.button == sf::Mouse::Button::Left) {
-		for (auto const & it : world_.texts) {
-		if(it->GetComponent<ge::Text>())
-		{
-			sf::Text t(it->GetComponent<ge::Text>()->text, engine.Font(it->GetComponent<ge::Text>()->fontName));
-			t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
-				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
-					switch (it->GetComponent<ge::Input>()->id) {
-						case NONE:
-							break;
-					}
-				}
-			}
-		}
-	}
 }

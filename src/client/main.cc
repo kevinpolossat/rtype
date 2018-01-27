@@ -58,7 +58,8 @@ int main()
 	);
 	tcpConnection->addHandle(
 		rtype::protocol_tcp::JOIN_GAME_ANSWER,
-		[](std::string const & json) {
+		[&gameEngine](std::string const & json) {
+			gameEngine.ChangeState("Waiting");
 		std::cout << "JOIN" << std::endl;
 	}
 	);
@@ -74,7 +75,7 @@ int main()
 		auto p = gs.value.port;
 		gameEngine.playerID = gs.value.id;
 		udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
-		gameEngine.PushState("Play");
+		gameEngine.ChangeState("Play");
 	}
 	);
 	ge::MenuValue &v = ge::MenuValue::Instance();
