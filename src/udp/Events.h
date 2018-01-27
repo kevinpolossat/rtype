@@ -13,9 +13,10 @@ enum class EVENTTYPE : int
 enum class ENTITYTYPE : int
 {
 	PLAYER = 0,
-	PLAYERSHOOT,
-	ENNEMYSHOOT,
-	ENNEMY
+	PLAYERSHOOT = 1,
+	ENNEMYSHOOT = 2,
+	ENNEMY = 3,
+	ENDGAME = 4
 };
 
 #endif

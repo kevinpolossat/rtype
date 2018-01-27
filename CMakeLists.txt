@@ -90,6 +90,9 @@ set(SERVER_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.cc
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/LoopTimer.h
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp
+		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
 		#[[add source files here]])
 
 set(NETWORK_SOURCES
@@ -188,7 +191,8 @@ target_include_directories(rtype_server
 		PRIVATE ${PROJECT_SOURCE_DIR}/src/udp
 		PRIVATE ./src/client/network)
 target_link_libraries(rtype_server
-		PRIVATE Threads::Threads)
+		PRIVATE Threads::Threads
+		PRIVATE ${CMAKE_DL_LIBS})
 
 enable_testing()
 #test executable

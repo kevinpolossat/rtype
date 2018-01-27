@@ -4,7 +4,7 @@
 #include <string>
 #include <utility>
 #include <sys/types.h>
-#include "IArtificialIntelligence.hpp"
+#include "../../ai/IArtificialIntelligence.hpp"
 
 #if defined (__linux__) || defined (__APPLE__)
   #include <dlfcn.h>
