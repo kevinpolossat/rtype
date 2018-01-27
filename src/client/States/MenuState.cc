@@ -29,18 +29,14 @@ void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	}
 }
 
-void MenuState::Update(ge::GameEngine & game)
-{
-
+void MenuState::Update(ge::GameEngine & game) {
 }
 
 void MenuState::Display(ge::GameEngine & engine, float) {
 	//int i = 0;
 	ge::MenuValue &val = ge::MenuValue::Instance();
 	for (auto const & it : world_.texts) {
-		sf::Text t(it->GetComponent<ge::Text>()->text, engine.Font(it->GetComponent<ge::Text>()->fontName));
-			 t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
-			 engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+		engine.Draw(std::make_shared<sf::Text>(ToSFMLText_(engine, *it)), ge::Layer::UI);
 	}
 	for (auto const & it : world_.buttons) {
 		if(it->GetComponent<ge::Sprite>()) {
@@ -61,12 +57,34 @@ void MenuState::Display(ge::GameEngine & engine, float) {
 	}
 }
 
-void MenuState::HandleClick_(ge::GameEngine &, sf::Event::MouseButtonEvent const &) {
+void MenuState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
+	if (event.button == sf::Mouse::Button::Left) {
+		for (auto const & it : world_.texts) {
+			if(it->GetComponent<ge::Text>()) {
+				sf::Text t(ToSFMLText_(engine, *it));
+				if (t.getGlobalBounds().contains(static_cast<float>(event.x), static_cast<float>(event.y))) {
+					HandleClickOnText_(engine, *it);
+				}
+			}
+		}
+	}
+}
+
+void MenuState::HandleClickOnText_(ge::GameEngine &, ge::GameObject &) {
 }
 
 void MenuState::HandleKey_(ge::GameEngine &engine, sf::Event::TextEvent const &event) {
 }
 
-void MenuState::HandleQuit_(ge::GameEngine &engine) {
+void MenuState::HandleQuit_(ge::GameEngine & engine) {
 	engine.PopState();
+}
+
+sf::Text MenuState::ToSFMLText_(ge::GameEngine & engine, ge::GameObject & obj) const {
+	sf::Text t(obj.GetComponent<ge::Text>()->text, engine.Font(obj.GetComponent<ge::Text>()->fontName));
+	t.setPosition(obj.GetComponent<ge::Position>()->getPos().x, obj.GetComponent<ge::Position>()->getPos().y);
+	if (obj.GetComponent<ge::Text>()->centered) {
+		t.setOrigin(t.getGlobalBounds().width / 2, t.getGlobalBounds().height / 2);
+	}
+	return t;
 }

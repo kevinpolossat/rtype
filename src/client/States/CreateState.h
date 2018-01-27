@@ -18,7 +18,8 @@ public:
 	bool Init(ge::GameEngine & engine) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
+	void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) override;
+
 	int nbPlayers = 1;
 	std::string nameGame = "";
 	std::vector<char> v = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
