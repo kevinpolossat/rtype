@@ -86,7 +86,8 @@ int main()
 	gameEngine.AddCommunication(udp);
 	if (gameEngine.Init("R-Type", gameEngine.GetResolutionsModes().front().x, gameEngine.GetResolutionsModes().front().y, true)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
-		gameEngine.AddState("Settings", std::make_shared<SettingsState>());
+		gameEngine.AddState("SettingsMenu", std::make_shared<SettingsState>(false));
+		gameEngine.AddState("SettingsGame", std::make_shared<SettingsState>(true));
 		gameEngine.AddState("Play", std::make_shared<PlayState>(udp));
 		gameEngine.AddState("Create", std::make_shared<CreateState>());
 		gameEngine.AddState("Login", std::make_shared<LoginState>());

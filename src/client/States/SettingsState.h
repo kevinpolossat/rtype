@@ -6,7 +6,7 @@
 
 class SettingsState : public MenuState {
 public:
-	SettingsState() = default;
+	SettingsState(bool inGameSettings);
 	SettingsState(SettingsState const & other) = delete;
 	SettingsState(SettingsState && other) = delete;
 	~SettingsState() override = default;
@@ -31,6 +31,8 @@ private:
 	void AugmentResolution_(ge::GameEngine & engine) const;
 	void ReduceVolume_(ge::GameEngine & engine) const;
 	void AugmentVolume_(ge::GameEngine & engine) const;
+
+	bool inGameSettings_;
 };
 
 #endif /*SETTINGS_STATE_H*/

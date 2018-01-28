@@ -45,6 +45,7 @@ protected:
 		VOLUME,
 		P_VOLUME,
 		VALID,
+		RESUME,
 		CANCEL,
 		QUIT,
 		NONE

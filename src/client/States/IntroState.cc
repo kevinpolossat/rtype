@@ -20,7 +20,7 @@ void IntroState::HandleClickOnText_(ge::GameEngine &engine, ge::GameObject &obj)
 			engine.PushState("Login");
 			break;
 		case SETTINGS:
-			engine.PushState("Settings");
+			engine.PushState("SettingsMenu");
 			break;
 		case QUIT:
 			engine.Quit();
