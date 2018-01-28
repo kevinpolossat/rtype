@@ -4,7 +4,7 @@
 #include "client/IntroWorld.h"
 #include "AGameState.h"
 #include "GameEngine.h"
-#include	"MenuValue.h"
+#include "MenuValue.h"
 
 class MenuState : public ge::AGameState {
 public:
@@ -33,16 +33,30 @@ protected:
 		CREATE,
 		JOIN,
 		SETTINGS,
+		LESS,
 		PLUS,
-		MOINS,
+		L_RESOLUTION,
+		RESOLUTION,
+		P_RESOLUTION,
+		L_FULLSCREEN,
+		FULLSCREEN,
+		P_FULLSCREEN,
+		L_VOLUME,
+		VOLUME,
+		P_VOLUME,
 		VALID,
+		RESUME,
 		CANCEL,
 		QUIT,
 		NONE
 	};
 
-	virtual void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) = 0;
-	virtual	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) = 0;
+	virtual void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event);
+	virtual void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj);
+	virtual	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event);
+	virtual void HandleQuit_(ge::GameEngine &engine);
+
+	sf::Text ToSFMLText_(ge::GameEngine & engine, ge::GameObject & obj) const;
 
 	IntroWorld world_;
 };

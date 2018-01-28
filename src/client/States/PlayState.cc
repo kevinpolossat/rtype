@@ -72,7 +72,7 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
 	if (event.code == sf::Keyboard::Key::Escape) {
-		engine.ChangeState("Intro");
+		engine.PushState("SettingsGame");
 	}
 }
 
@@ -136,12 +136,14 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 		engine.ChangeState("End");
 		return;
 	}
+	ge::Vector2f size = engine.GetSize();
+
 	if (std::rand() % 600 == 0)
-		starpos_.push_back(Vector2f(800, std::rand() % 600));
+		starpos_.push_back(Vector2f(size.x, std::rand() % static_cast<int>(size.y)));
 
 	for (auto & it : starpos_)
 	{
-		it.x -= 0.1;
+		it.x -= 0.2;
 		sf::Sprite s(engine.Texture("Star"));
 		s.setPosition(it.x, it.y);
 		engine.Draw(std::make_shared<sf::Sprite>(s), 5);
@@ -166,7 +168,6 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 	{
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
 		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
-		std::cout << it->GetComponent<Sprite>()->priority << std::endl;
 		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 	for (auto const & it : world_.ennemy)

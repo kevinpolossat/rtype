@@ -1,6 +1,8 @@
 #include "Boss.h"
 #include "TreeSearch.hpp"
 
+int _width;
+
 AIShoot::AIShoot(AIPosition p, vec2D v, int hitbox)
 {
   _startPos = p;
@@ -14,7 +16,7 @@ const bool AIShoot::increaseShoot()
    _theoryPos.X += static_cast<int>(_direction.X);
    _theoryPos.Y += static_cast<int>(_direction.Y);
 
-   return (_theoryPos.X >= 1 && _theoryPos.X <= 760);
+   return (_theoryPos.X >= 1 && _theoryPos.X <= _width - 40);
 }
 
 const bool AIShoot::collision(AIPosition check, int XBox, int YBox)
@@ -101,8 +103,9 @@ AIPosition& Boss::getNearPlayer(std::vector<AIPosition>& players) const
 Boss::Boss(const int myX, const int myY, const int width, const int height)
 {
   AIPosition p;
-	p.X = 600;
-	p.Y = 300;
+  _width = width;
+	p.X = width - 200;
+	p.Y = height / 2;
 
 	this->setName("Boss");
 	this->setLife(3);

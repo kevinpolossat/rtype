@@ -20,24 +20,23 @@ void MenuState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 		break;
 		case sf::Event::KeyPressed:
 			HandleKey_(engine, event.text);
+			if (event.key.code == sf::Keyboard::Key::Escape) {
+				HandleQuit_(engine);
+			}
 		break;
 		default:
 			break;
 	}
 }
 
-void MenuState::Update(ge::GameEngine & game)
-{
-
+void MenuState::Update(ge::GameEngine & game) {
 }
 
 void MenuState::Display(ge::GameEngine & engine, float) {
 	//int i = 0;
 	ge::MenuValue &val = ge::MenuValue::Instance();
 	for (auto const & it : world_.texts) {
-		sf::Text t(it->GetComponent<ge::Text>()->text, engine.Font(it->GetComponent<ge::Text>()->fontName));
-			 t.setPosition(it->GetComponent<ge::Position>()->getPos().x, it->GetComponent<ge::Position>()->getPos().y);
-			 engine.Draw(std::make_shared<sf::Text>(t), ge::Layer::UI);
+		engine.Draw(std::make_shared<sf::Text>(ToSFMLText_(engine, *it)), ge::Layer::UI);
 	}
 	for (auto const & it : world_.buttons) {
 		if(it->GetComponent<ge::Sprite>()) {
@@ -52,8 +51,40 @@ void MenuState::Display(ge::GameEngine & engine, float) {
 		{
 			sf::Sprite s(engine.Texture(world_.background->GetComponent<ge::Animator>()->GetSprite()));
 			s.setPosition(0, 0);
-			s.scale(1.8f, 1.8f);
+			s.scale(4.6f, 4.6f);
 			engine.Draw(std::make_shared<sf::Sprite>(s), 2);
 		}
 	}
+}
+
+void MenuState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) {
+	if (event.button == sf::Mouse::Button::Left) {
+		for (auto const & it : world_.texts) {
+			if(it->GetComponent<ge::Text>()) {
+				sf::Text t(ToSFMLText_(engine, *it));
+				if (t.getGlobalBounds().contains(engine.GetCoord(static_cast<uint32_t >(event.x), static_cast<uint32_t >(event.y)))) {
+					HandleClickOnText_(engine, *it);
+				}
+			}
+		}
+	}
+}
+
+void MenuState::HandleClickOnText_(ge::GameEngine &, ge::GameObject &) {
+}
+
+void MenuState::HandleKey_(ge::GameEngine &engine, sf::Event::TextEvent const &event) {
+}
+
+void MenuState::HandleQuit_(ge::GameEngine & engine) {
+	engine.PopState();
+}
+
+sf::Text MenuState::ToSFMLText_(ge::GameEngine & engine, ge::GameObject & obj) const {
+	sf::Text t(obj.GetComponent<ge::Text>()->text, engine.Font(obj.GetComponent<ge::Text>()->fontName));
+	t.setPosition(obj.GetComponent<ge::Position>()->getPos().x, obj.GetComponent<ge::Position>()->getPos().y);
+	if (obj.GetComponent<ge::Text>()->centered) {
+		t.setOrigin(t.getGlobalBounds().width / 2, t.getGlobalBounds().height / 2);
+	}
+	return t;
 }

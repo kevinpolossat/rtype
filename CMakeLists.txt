@@ -22,6 +22,7 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/ResourcesManager.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/StatesManager.cc
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/StatesManager.h
+		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Settings.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Vector2D.h
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.cpp
 		${CMAKE_SOURCE_DIR}/src/client/GameEngine/Entity/Component.h
@@ -39,6 +40,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/States/JoinState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.cc
 		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/SettingsState.cc
+		${CMAKE_SOURCE_DIR}/src/client/States/SettingsState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.cc
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/EndState.h
