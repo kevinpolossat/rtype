@@ -15,10 +15,10 @@ bool SettingsState::Init(ge::GameEngine & engine) {
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 5.f * 2), GetCurrentFullscreenText_(engine), "retro", FULLSCREEN, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 5.f * 2), ">", "retro", P_FULLSCREEN, true);
 
-	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 5.f * 3), "Sound :", "retro", true);
-	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 - 170, size.y / 5.f * 3), "<", "retro", L_SOUND, true);
-	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 5.f * 3), GetCurrentSoundText_(engine), "retro", SOUND, true);
-	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 5.f * 3), ">", "retro", P_SOUND, true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 5.f * 3), "Volume :", "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 - 170, size.y / 5.f * 3), "<", "retro", L_VOLUME, true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 5.f * 3), GetCurrentVolumeText_(engine), "retro", VOLUME, true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 5.f * 3), ">", "retro", P_VOLUME, true);
 
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f * 4), "Cancel", "retro", CANCEL, true);
 	return true;
@@ -44,6 +44,16 @@ void SettingsState::AugmentResolution_(ge::GameEngine & engine) const {
 	}
 }
 
+void SettingsState::ReduceVolume_(ge::GameEngine & engine) const {
+	if (engine.GetVolume() > 0)
+		engine.SetVolume(engine.GetVolume() - 5);
+}
+
+void SettingsState::AugmentVolume_(ge::GameEngine & engine) const {
+	if (engine.GetVolume() < 100)
+		engine.SetVolume(engine.GetVolume() + 5);
+}
+
 void SettingsState::UpdateResolutionText_(ge::GameEngine & engine) {
 	for (auto & text : world_.texts) {
 		if (text->GetComponent<ge::Input>() && text->GetComponent<ge::Input>()->id == RESOLUTION) {
@@ -56,6 +66,14 @@ void SettingsState::UpdateFullscreenText_(ge::GameEngine & engine) {
 	for (auto & text : world_.texts) {
 		if (text->GetComponent<ge::Input>() && text->GetComponent<ge::Input>()->id == FULLSCREEN) {
 			text->GetComponent<ge::Text>()->text = GetCurrentFullscreenText_(engine);
+		}
+	}
+}
+
+void SettingsState::UpdateVolumeText_(ge::GameEngine & engine) {
+	for (auto & text : world_.texts) {
+		if (text->GetComponent<ge::Input>() && text->GetComponent<ge::Input>()->id == VOLUME) {
+			text->GetComponent<ge::Text>()->text = GetCurrentVolumeText_(engine);
 		}
 	}
 }
@@ -78,6 +96,14 @@ void SettingsState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject &
 			engine.SetFullscreen(true);
 			UpdateFullscreenText_(engine);
 			break;
+		case L_VOLUME:
+			ReduceVolume_(engine);
+			UpdateVolumeText_(engine);
+			break;
+		case P_VOLUME:
+			AugmentVolume_(engine);
+			UpdateVolumeText_(engine);
+			break;
 		case CANCEL:
 			HandleQuit_(engine);
 			break;
@@ -94,6 +120,6 @@ std::string SettingsState::GetCurrentFullscreenText_(ge::GameEngine & engine) co
 	return engine.IsFullscreen() ? "Yes" : "No";
 }
 
-std::string SettingsState::GetCurrentSoundText_(ge::GameEngine & engine) const {
-	return std::to_string(50);
+std::string SettingsState::GetCurrentVolumeText_(ge::GameEngine & engine) const {
+	return std::to_string(engine.GetVolume());
 }

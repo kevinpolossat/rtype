@@ -21,12 +21,16 @@ private:
 
 	void UpdateResolutionText_(ge::GameEngine & engine);
 	void UpdateFullscreenText_(ge::GameEngine & engine);
+	void UpdateVolumeText_(ge::GameEngine & engine);
+
 	std::string GetCurrentResolutionText_(ge::GameEngine & engine) const;
 	std::string GetCurrentFullscreenText_(ge::GameEngine & engine) const;
-	std::string GetCurrentSoundText_(ge::GameEngine & engine) const;
+	std::string GetCurrentVolumeText_(ge::GameEngine & engine) const;
 
 	void ReduceResolution_(ge::GameEngine & engine) const;
 	void AugmentResolution_(ge::GameEngine & engine) const;
+	void ReduceVolume_(ge::GameEngine & engine) const;
+	void AugmentVolume_(ge::GameEngine & engine) const;
 };
 
 #endif /*SETTINGS_STATE_H*/

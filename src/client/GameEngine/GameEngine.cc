@@ -38,6 +38,7 @@ void ge::GameEngine::Display_(const float interpolation) {
 bool ge::GameEngine::Init(std::string const & title, uint32_t width, uint32_t height, bool fullscreen) {
 	windowTitle_ = title;
 	fullscreen_ = fullscreen;
+	volume_ = 100;
 	CreateWindow_(title, width, height, fullscreen);
 	return true;
 }
@@ -120,6 +121,15 @@ std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
 		resolutions.emplace_back(mode.width, mode.height);
 	}
 	return resolutions;
+}
+
+uint32_t ge::GameEngine::GetVolume() const {
+	return volume_;
+}
+
+void ge::GameEngine::SetVolume(uint32_t volume) {
+	volume_ = volume;
+	rm_->SetVolume(volume);
 }
 
 void ge::GameEngine::Quit() {
