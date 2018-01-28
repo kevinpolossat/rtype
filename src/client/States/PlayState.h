@@ -37,6 +37,8 @@ private:
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 	void HandleUdp_(void *data, std::size_t nbyte);
 
+
+	bool 			endGame_;
 	PlayWorld world_;
 	std::shared_ptr<ge::network::UDPNonBlockingCommuncation> udp_;
 	std::chrono::time_point<std::chrono::high_resolution_clock> time_;

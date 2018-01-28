@@ -8,7 +8,7 @@
 #include "UDPNonBlockingCommunication.h"
 #include "Events.h"
 
-bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl) 
+bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 {
 	std::shared_ptr<Game> g = std::make_shared<Game>();
 
@@ -22,7 +22,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 	  std::chrono::high_resolution_clock::time_point now = std::chrono::high_resolution_clock::now();
 	  std::chrono::milliseconds ms = std::chrono::duration_cast<std::chrono::milliseconds>(now - g->time_);
         auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Event>(static_cast<char *>(data), nbyte);
-        auto seqId = p.h.seqId; 
+        auto seqId = p.h.seqId;
 
          if (seqId > savedSeqId)
          {
@@ -64,36 +64,57 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
         }
     });
     gl->notifyAllGameStart(gs);
-	
-    auto t = std::thread([udp, gl, g]() 
-	{ 
 
+  	auto t = std::thread([udp, gl, g]()
+		{
 		g->setGameInfo(gl->getGameInfo());
 		for (int i = 0; i < g->getGameInfo().nbPlayerMax; i++)
 			g->CreatePlayer();
 
-        for (;;) {
+		bool endGame = true;
+    while (endGame)
+		{
 			g->lt.Start();
 			while (g->lt.Update())
 			{
-				udp->recv(); 
-				g->Update();
+				udp->recv();
 				std::vector<rtype::protocol_udp::Entity> es;
-				for (auto const & it : g->players)
+
+				if (g->players.size() == 0)
 				{
-					std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
-					es.emplace_back(it->id, static_cast<int>(ENTITYTYPE::PLAYER), 0, p->getPos().x, p->getPos().y);
+					endGame = false;
+					es.push_back({static_cast<int>(0), static_cast<int>(ENTITYTYPE::ENDGAME), 0, 0, 0});
 				}
-				for (auto const & it : g->projectiles)
+				else
 				{
-					std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
-					es.emplace_back(it->id, static_cast<int>(ENTITYTYPE::PLAYERSHOOT), 0, p->getPos().x, p->getPos().y);
+					g->Update();
+					for (auto const & it : g->players)
+					{
+						std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+						es.push_back({static_cast<int>(it->id), static_cast<int>(ENTITYTYPE::PLAYER), 0, p->getPos().x, p->getPos().y});
+					}
+					for (auto const & it : g->ennemy)
+					{
+						std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+						es.push_back({static_cast<int>(it->id), static_cast<int>(ENTITYTYPE::ENNEMY), 0, p->getPos().x, p->getPos().y});
+					}
+					for (auto const & it : g->ennemy_projectiles)
+					{
+						std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+						es.push_back({static_cast<int>(it->id), static_cast<int>(ENTITYTYPE::ENNEMYSHOOT), 0, p->getPos().x, p->getPos().y});
+					}
+					for (auto const & it : g->projectiles)
+					{
+						std::shared_ptr<ge::Position> p = it->GetComponent<ge::Position>();
+						es.push_back({static_cast<int>(it->id), static_cast<int>(ENTITYTYPE::PLAYERSHOOT), 0, p->getPos().x, p->getPos().y});
+					}
 				}
 				udp->notifyAll(es);
-				udp->send(); 
+				udp->send();
 			}
-        }
-        udp->close(); 
+    }
+    udp->close();
+		exit(0);
     });
     t.detach();
     return true;

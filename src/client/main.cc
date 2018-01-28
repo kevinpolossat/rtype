@@ -15,8 +15,10 @@
 #include "TcpProtocol.h"
 #include	"MenuValue.h"
 
-int main() {
+int main()
+{
 	ge::GameEngine gameEngine;
+	ge::network::NetworkManager nm;
 
 	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
 	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {

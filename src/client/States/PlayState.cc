@@ -11,6 +11,7 @@ using ge::Collider;
 PlayState::PlayState(std::shared_ptr<ge::network::UDPNonBlockingCommuncation> & t_udp)
 {
 	this->udp_ = t_udp;
+	this->endGame_ = false;
 	this->udp_->addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
 	this->playersSprites_.push_back("Player1");
 	this->playersSprites_.push_back("Player2");
@@ -65,7 +66,7 @@ void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::
 }
 
 void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	
+
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
@@ -90,6 +91,8 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 {
 	auto p = rtype::protocol_udp::extract<rtype::protocol_udp::Entity>(static_cast<char *>(data), nbyte);
 	world_.players.clear();
+	world_.ennemy.clear();
+	world_.ennemy_projectiles.clear();
 	world_.projectiles.clear();
 	for (auto it : p.elements)
 	{
@@ -101,10 +104,17 @@ void PlayState::HandleUdp_(void *data, std::size_t nbyte)
 			case static_cast<int>(ENTITYTYPE::PLAYERSHOOT) :
 				world_.CreateShoot(Vector2f(it.x, it.y));
 				break;
+			case static_cast<int>(ENTITYTYPE::ENNEMY) :
+				world_.CreateEnnemy("Ennemy", it.id, it.x, it.y);
+				break;
+			case static_cast<int>(ENTITYTYPE::ENNEMYSHOOT) :
+				world_.CreateEnnemyShoot(Vector2f(it.x, it.y), "ShootEnnemy");
+				break;
+			case static_cast<int>(ENTITYTYPE::ENDGAME) :
+				this->endGame_ = true;
 			default:
 				break;
 			}
-		//std::cout << "ID=" << it.id << " Type=" << it.type << " State=" << it.state << " X=" << it.x << " Y=" << it.y << std::endl;
 	}
 	auto seqId = p.h.seqId;
 }
@@ -116,98 +126,16 @@ void PlayState::Update(ge::GameEngine & engine)
 		this->udp_->notifyAll(events_);
 		events_.clear();
 	}
-	/*
-	uint32_t i = 0;
-	std::vector<AIPosition> playersPos;
-	std::vector<AIPosition> shoots;
-
-	for (auto const & it : world_.players)
-	{
-		playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->tgePos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-		it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
-		it->GetComponent<Velocity>()->UpdateVel(1.1f);
-		i++;
-	}
-
-	i = 0;
-	for (auto const & it : world_.projectiles)
-	{
-		shoots.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-		ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", world_.ennemy);
-		if (col.point.x != -1) // Collision !
-		{
-			world_.ennemy.erase(world_.ennemy.begin() + col.index);
-			world_.projectiles.erase(world_.projectiles.begin() + i);
-		}
-		else
-		{
-			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
-		}
-		i++;
-	}
-
-	i = 0;
-	for (auto const & it : world_.ennemy_projectiles)
-	{
-		shoots.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-		ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", world_.players);
-		if (col.point.x != -1) // Collision !
-		{
-			world_.players.erase(world_.players.begin() + col.index);
-			world_.ennemy_projectiles.erase(world_.projectiles.begin() + i);
-		}
-		else
-		{
-			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
-		}
-		i++;
-	}
-
-	for (int k = 0; k < world_.projectiles.size(); k++)
-	{
-		if (world_.projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| world_.projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
-			world_.projectiles.erase(world_.projectiles.begin() + k);
-	}
-	for (int k = 0; k < world_.ennemy_projectiles.size(); k++)
-	{
-		if (world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
-				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| world_.ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
-			world_.ennemy_projectiles.erase(world_.ennemy_projectiles.begin() + k);
-	}
-
-	
-	static int lapin = 0;
-	if (world_.ennemy.size() == 0)
-		world_.CreateEnnemy("Ennemy", (lapin++) % 5);
-
-	i = 0;
-	for (auto const & it : world_.ennemy)
-	{
-		Action action = it->GetComponent<Ia>()->ia->actualize(playersPos, shoots, {static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-		Vector2f v(static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().X), static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().Y));
-
-		it->GetComponent<Position>()->setPos(v);
-		if (action == Action::SHOOT)
-		{
-			Vector2f v1(static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().X) * -10, static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().Y) * -10);
-			world_.CreateEnnemyShoot(it->GetComponent<Position>()->getPos(), v1, "ShootEnnemy");
-		}
-		else if (action == Action::DEAD)
-			world_.ennemy.erase(world_.ennemy.begin() + i);
-		i++;
-	}
-	playersPos.clear();
-	shoots.clear();
-	*/
 }
 
 void PlayState::Display(ge::GameEngine & engine, const float)
 {
+	if (this->endGame_)
+	{
+		//engine.ChangeState("End");
+		exit(0);
+		return;
+	}
 	for (auto const & it : world_.players)
 	{
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
