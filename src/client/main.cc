@@ -95,6 +95,7 @@ int main()
 		gameEngine.AddState("Join", std::make_shared<JoinState>());
 		gameEngine.AddState("Waiting", std::make_shared<WaitingState>());
 		gameEngine.AddState("End", std::make_shared<EndState>());
+		gameEngine.SetDefaultState("Intro");
 		gameEngine.Run("Intro");
 	}
 	return 0;
