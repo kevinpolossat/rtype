@@ -41,6 +41,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/States/MenuState.h
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.cc
 		${CMAKE_SOURCE_DIR}/src/client/States/WaitingState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/EndState.h
+		${CMAKE_SOURCE_DIR}/src/client/States/EndState.cpp
 
 		# GAME
 		${CMAKE_SOURCE_DIR}/src/client/IntroWorld.cc

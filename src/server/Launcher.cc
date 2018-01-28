@@ -80,7 +80,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				udp->recv();
 				std::vector<rtype::protocol_udp::Entity> es;
 
-				if (g->players.size() == 0)
+				if (g->players.size() == 0 || g->endGame_)
 				{
 					endGame = false;
 					es.push_back({static_cast<int>(0), static_cast<int>(ENTITYTYPE::ENDGAME), 0, 0, 0});
@@ -111,10 +111,12 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				}
 				udp->notifyAll(es);
 				udp->send();
+				es.clear();
 			}
     }
+		std::cout << "ON EST LA" << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(1));
     udp->close();
-		exit(0);
     });
     t.detach();
     return true;

@@ -105,7 +105,7 @@ Boss::Boss(const int myX, const int myY, const int width, const int height)
 	p.Y = 300;
 
 	this->setName("Boss");
-	this->setLife(10);
+	this->setLife(3);
 	this->setPosition(p);
 	this->setWidth(width);
 	this->setHeight(height);
@@ -120,7 +120,7 @@ Action Boss::actualize(std::vector<AIPosition>& enemies, std::vector<AIPosition>
   this->setTurn(this->getTurn() + 1);
   this->setPosition(myPos);
   this->_selectMove(shoots);
-  if (this->getTurn() % 20 == 0)
+  if (this->getTurn() % 10 == 0)
   {
       this->_selectShoot(enemies);
       return (Action::SHOOT);
@@ -137,7 +137,7 @@ void        Boss::_selectMove(std::vector<AIPosition>& shoots)
     for (auto &x : shoots)
     {
       if (x.X > 0)
-        Cshoots.push_back(new AIShoot(x, {5, 0}, 0));
+        Cshoots.push_back(new AIShoot(x, {10, 0}, 0));
     }
 
     AIPosition p;

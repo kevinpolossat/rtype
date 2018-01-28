@@ -17,8 +17,8 @@ MCTS::TreeSearch::TreeSearch(const std::vector<AIShoot *> s, AIPosition p, int w
   _pos = p;
   _width = w;
   _height = h;
-  _treeDepth = 10;
-  _simuDepth = 70;
+  _treeDepth = 25;
+  _simuDepth = 50;
   _root = new MCTS::Node(nullptr, p, MCTS::Direction::NONE, 0);
 }
 

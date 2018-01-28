@@ -29,9 +29,12 @@ class Game
 		std::vector<std::unique_ptr<GameObject>> 		ennemy_projectiles;
 		ge::LoopTimer lt;
 		std::chrono::time_point<std::chrono::high_resolution_clock> time_;
+		bool endGame_;
+
 	private:
 		rtype::protocol_tcp::GameInfo gi_;
 		std::unique_ptr<loadIa>			iaLoader_;
+		int idxennemy_;
 
 };
 #endif

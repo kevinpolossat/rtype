@@ -9,6 +9,8 @@ Game::Game()
 {
 	time_ = std::chrono::high_resolution_clock::now();
 	iaLoader_ = std::make_unique<loadIa>("resources/ai", 800, 600);
+	endGame_ = false;
+	idxennemy_ = 5;
 }
 
 Game::~Game()
@@ -106,7 +108,7 @@ void Game::Update()
 				ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", ennemy);
 				if (col.point.x != -1)
 				{
-					ennemy.erase(ennemy.begin() + col.index);
+					ennemy.at(i)->GetComponent<Ia>()->ia->setDamages(1);
 					projectiles.erase(projectiles.begin() + i);
 					f = true;
 					break;
@@ -156,7 +158,7 @@ void Game::Update()
 		while (f)
 		{
 			f = false;
-			for (int k = 0; k < projectiles.size(); k++)
+			for (int k = 0; k < ennemy_projectiles.size(); k++)
 			{
 				if (ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
 				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
@@ -169,16 +171,11 @@ void Game::Update()
 			}
 		}
 
-		static int idxennemy = 5;
-		static int lvl = 0;
+		if (idxennemy_ == -1 && ennemy.size() == 0)
+			endGame_ = true;
 
-		if (idxennemy == -1)
-		{
-			lvl += 1;
-			idxennemy = 5;
-		}
-		if (ennemy.size() == lvl)
-			CreateEnnemy((idxennemy--));
+		if (ennemy.size() == 0 && idxennemy_ >= 0)
+			CreateEnnemy((idxennemy_--));
 
 		i = 0;
 		for (auto const & it : ennemy)

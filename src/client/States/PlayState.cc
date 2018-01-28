@@ -132,8 +132,7 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	if (this->endGame_)
 	{
-		//engine.ChangeState("End");
-		exit(0);
+		engine.ChangeState("End");
 		return;
 	}
 	for (auto const & it : world_.players)
