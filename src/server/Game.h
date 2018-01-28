@@ -8,10 +8,10 @@
 #include "../loadlib/LoadIa.hpp"
 using ge::Vector2f;
 using ge::GameObject;
+static constexpr uint32_t width = 1920;
+static constexpr uint32_t height = 1080;
 class Game {
 public:
-	static constexpr uint32_t width = 1920;
-	static constexpr uint32_t height = 1080;
 
 	Game();
 	~Game() = default;

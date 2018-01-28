@@ -151,7 +151,7 @@ void Game::Update()
 		while (f)
 		{
 			f = false;
-			for (int k = 0; k < projectiles.size(); k++)
+			for (int k = 0; k < ennemy_projectiles.size(); k++)
 			{
 				if (ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
 				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > width
