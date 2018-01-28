@@ -26,6 +26,7 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Player4", "resources/green.png");
 
 	engine.Load<ge::Resources::Texture>("Shoot", "resources/Shoot.png");
+	engine.Load<ge::Resources::Texture>("Star", "resources/star2.png");
 	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
 	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
 	this->time_ = std::chrono::high_resolution_clock::now();
@@ -132,9 +133,36 @@ void PlayState::Display(ge::GameEngine & engine, const float)
 {
 	if (this->endGame_)
 	{
-		//engine.ChangeState("End");
-		exit(0);
+		engine.ChangeState("End");
 		return;
+	}
+	ge::Vector2f size = engine.GetSize();
+
+	if (std::rand() % 600 == 0)
+		starpos_.push_back(Vector2f(size.x, std::rand() % static_cast<int>(size.y)));
+
+	for (auto & it : starpos_)
+	{
+		it.x -= 0.2;
+		sf::Sprite s(engine.Texture("Star"));
+		s.setPosition(it.x, it.y);
+		engine.Draw(std::make_shared<sf::Sprite>(s), 5);
+	}
+	bool f = true;
+	while (f)
+	{
+		f = false;
+		int i = 0;
+		for (auto const & it : starpos_)
+		{
+			if (it.x < 0)
+				{
+					starpos_.erase(starpos_.begin() + i);
+					f = true;
+					break;
+				}
+			i += 1;
+		}
 	}
 	for (auto const & it : world_.players)
 	{

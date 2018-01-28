@@ -9,6 +9,8 @@ Game::Game()
 {
 	time_ = std::chrono::high_resolution_clock::now();
 	iaLoader_ = std::make_unique<loadIa>("resources/ai", width, height);
+	endGame_ = false;
+	idxennemy_ = 5;
 }
 
 void Game::setGameInfo(rtype::protocol_tcp::GameInfo const &t_gi)
@@ -101,7 +103,8 @@ void Game::Update()
 				ge::Collision col = it->GetComponent<Collider>()->CollisionPrediction(it, "Player", ennemy);
 				if (col.point.x != -1)
 				{
-					ennemy.erase(ennemy.begin() + col.index);
+					//ennemy.erase(ennemy.begin() + col.index);
+					ennemy.at(col.index)->GetComponent<Ia>()->ia->setDamages(1);
 					projectiles.erase(projectiles.begin() + i);
 					f = true;
 					break;
@@ -138,9 +141,9 @@ void Game::Update()
 			for (int k = 0; k < projectiles.size(); k++)
 			{
 				if (projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| projectiles.at(k)->GetComponent<Position>()->getPos().x > width
+				|| projectiles.at(k)->GetComponent<Position>()->getPos().x > width - 10
 				|| projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| projectiles.at(k)->GetComponent<Position>()->getPos().y > height)
+				|| projectiles.at(k)->GetComponent<Position>()->getPos().y > height - 10)
 				{
 					f = true;
 					projectiles.erase(projectiles.begin() + k);
@@ -154,9 +157,9 @@ void Game::Update()
 			for (int k = 0; k < ennemy_projectiles.size(); k++)
 			{
 				if (ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > width
+				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > width - 10
 				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > height)
+				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > height - 10)
 				{
 					f = true;
 					ennemy_projectiles.erase(ennemy_projectiles.begin() + k);
@@ -164,16 +167,11 @@ void Game::Update()
 			}
 		}
 
-		static int idxennemy = 5;
-		static int lvl = 0;
+		if (idxennemy_ == -1 && ennemy.size() == 0)
+			endGame_ = true;
 
-		if (idxennemy == -1)
-		{
-			lvl += 1;
-			idxennemy = 5;
-		}
-		if (ennemy.size() == lvl)
-			CreateEnnemy((idxennemy--));
+		if (ennemy.size() == 0 && idxennemy_ >= 0)
+			CreateEnnemy((idxennemy_--));
 
 		i = 0;
 		for (auto const & it : ennemy)

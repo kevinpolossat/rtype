@@ -24,16 +24,18 @@ public:
 	void CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_velocity);
 	void Update();
 
+		std::vector<std::unique_ptr<GameObject>> 		players;
+		std::vector<std::unique_ptr<GameObject>> 		projectiles;
+		std::vector<std::unique_ptr<GameObject>> 		ennemy;
+		std::vector<std::unique_ptr<GameObject>> 		ennemy_projectiles;
+		ge::LoopTimer lt;
+		std::chrono::time_point<std::chrono::high_resolution_clock> time_;
+		bool endGame_;
 
-	std::vector<std::unique_ptr<GameObject>> 		players;
-	std::vector<std::unique_ptr<GameObject>> 		projectiles;
-	std::vector<std::unique_ptr<GameObject>> 		ennemy;
-	std::vector<std::unique_ptr<GameObject>> 		ennemy_projectiles;
-	ge::LoopTimer lt;
-	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
-private:
-	rtype::protocol_tcp::GameInfo gi_;
-	std::unique_ptr<loadIa>			iaLoader_;
+	private:
+		rtype::protocol_tcp::GameInfo gi_;
+		std::unique_ptr<loadIa>			iaLoader_;
+		int idxennemy_;
 
 };
 #endif
