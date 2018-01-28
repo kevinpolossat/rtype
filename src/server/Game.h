@@ -31,6 +31,7 @@ public:
 		ge::LoopTimer lt;
 		std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 		bool endGame_;
+		std::vector<int> dead_;
 
 	private:
 		rtype::protocol_tcp::GameInfo gi_;
