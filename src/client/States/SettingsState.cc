@@ -52,6 +52,14 @@ void SettingsState::UpdateResolutionText_(ge::GameEngine & engine) {
 	}
 }
 
+void SettingsState::UpdateFullscreenText_(ge::GameEngine & engine) {
+	for (auto & text : world_.texts) {
+		if (text->GetComponent<ge::Input>() && text->GetComponent<ge::Input>()->id == FULLSCREEN) {
+			text->GetComponent<ge::Text>()->text = GetCurrentFullscreenText_(engine);
+		}
+	}
+}
+
 void SettingsState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case L_RESOLUTION:
@@ -61,6 +69,14 @@ void SettingsState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject &
 		case P_RESOLUTION:
 			AugmentResolution_(engine);
 			UpdateResolutionText_(engine);
+			break;
+		case L_FULLSCREEN:
+			engine.SetFullscreen(false);
+			UpdateFullscreenText_(engine);
+			break;
+		case P_FULLSCREEN:
+			engine.SetFullscreen(true);
+			UpdateFullscreenText_(engine);
 			break;
 		case CANCEL:
 			HandleQuit_(engine);

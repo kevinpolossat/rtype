@@ -95,6 +95,7 @@ namespace ge {
 		uint32_t playerID;
 	private:
 		// CORE
+		void CreateWindow_(std::string const & title, uint32_t width, uint32_t height, bool fullscreen);
 		void HandleEvents_();
 		void Display_(float interpolation);
 

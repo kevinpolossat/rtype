@@ -20,6 +20,7 @@ private:
 	void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) override;
 
 	void UpdateResolutionText_(ge::GameEngine & engine);
+	void UpdateFullscreenText_(ge::GameEngine & engine);
 	std::string GetCurrentResolutionText_(ge::GameEngine & engine) const;
 	std::string GetCurrentFullscreenText_(ge::GameEngine & engine) const;
 	std::string GetCurrentSoundText_(ge::GameEngine & engine) const;
