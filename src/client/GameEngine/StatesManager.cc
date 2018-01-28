@@ -7,6 +7,10 @@ ge::StatesManager::~StatesManager() {
 	}
 }
 
+void ge::StatesManager::SetDefaultState(std::string const & name) {
+	defaultState_ = name;
+}
+
 void ge::StatesManager::AddState(std::string const & name, const std::shared_ptr<ge::AGameState> & state) {
 	states_.insert(std::make_pair(name, state));
 }
@@ -52,6 +56,9 @@ void ge::StatesManager::PopState() {
 	}
 }
 
-std::shared_ptr<ge::AGameState> & ge::StatesManager::GetCurrentState() {
+std::shared_ptr<ge::AGameState> & ge::StatesManager::GetCurrentState(ge::GameEngine & engine) {
+	if (stack_.empty()) {
+		ChangeState(engine, defaultState_);
+	}
 	return stack_.top();
 }

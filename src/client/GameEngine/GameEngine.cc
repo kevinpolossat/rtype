@@ -19,7 +19,7 @@ void ge::GameEngine::HandleEvents_() {
 				Quit();
 				break;
 			default:
-				st_->GetCurrentState()->HandleEvent(*this, event);
+				st_->GetCurrentState(*this)->HandleEvent(*this, event);
 				break;
 		}
 	}
@@ -27,7 +27,7 @@ void ge::GameEngine::HandleEvents_() {
 
 void ge::GameEngine::Display_(const float interpolation) {
 	window_.clear();
-	st_->GetCurrentState()->Display(*this, interpolation);
+	st_->GetCurrentState(*this)->Display(*this, interpolation);
 	while (!toDraw_.empty()) {
 		window_.draw(*toDraw_.top().second);
 		toDraw_.pop();
@@ -61,7 +61,7 @@ void ge::GameEngine::Run(std::string const & initState) {
 		while (timer.Update()) {
 			nm_->handleRecvEvent();
 			HandleEvents_();
-			st_->GetCurrentState()->Update(*this);
+			st_->GetCurrentState(*this)->Update(*this);
 			nm_->handleSendEvent();
 		}
 		Display_(timer.GetInterpolation());
@@ -181,6 +181,10 @@ const ge::Component &ge::GameEngine::operator[](std::string const & name) const 
 /*
 **** STATES
 */
+void ge::GameEngine::SetDefaultState(std::string const & name) {
+	st_->SetDefaultState(name);
+}
+
 void ge::GameEngine::AddState(std::string const & name, std::shared_ptr<AGameState> const & state) {
 	st_->AddState(name, state);
 }
