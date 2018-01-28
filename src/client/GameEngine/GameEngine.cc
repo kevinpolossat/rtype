@@ -39,7 +39,7 @@ bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint3
 	windowTitle_ = title;
 	fullscreen_ = fullscreen;
 	window_.create(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
-	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
+	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, 1920.f, 1080.f)));
 	return true;
 }
 
