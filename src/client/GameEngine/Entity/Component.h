@@ -22,11 +22,11 @@ namespace ge {
 	#define CLASS_DECLARATION( classname )                                                      \
 	public:                                                                                     \
 	    static const std::size_t Type;                                                          \
-	    virtual bool IsClassType( const std::size_t classType ) const override;                 \
+	    virtual bool IsClassType(std::size_t classType ) const override;                        \
 
 	#define CLASS_DEFINITION( parentclass, childclass )                                         \
 	const std::size_t childclass::Type = std::hash< std::string >()( TO_STRING( childclass ) ); \
-	bool childclass::IsClassType( const std::size_t classType ) const {                         \
+	bool childclass::IsClassType(std::size_t classType ) const {                                \
 	        if ( classType == childclass::Type )                                                \
 	            return true;                                                                    \
 	        return parentclass::IsClassType( classType );                                       \
@@ -50,7 +50,7 @@ namespace ge {
 	public:
 		Position();
 		Position(const Vector2f &rhs);
-		~Position();
+		~Position() override = default;
 		void UpdatePos(Vector2f const &v, uint32_t widht, uint32_t height, uint32_t offset);
 		Vector2f getPos() const;
 		void setPos(const ge::Vector2f& x);
@@ -66,9 +66,9 @@ namespace ge {
 
 		Velocity(const Vector2f &rhs);
 
-		~Velocity();
+		~Velocity() override = default;
 
-		void UpdateVel(float const v);
+		void UpdateVel(float v);
 
 		Vector2f getVel() const;
 
@@ -79,9 +79,9 @@ namespace ge {
 	CLASS_DECLARATION(Sprite)
 
 	public:
-		Sprite(std::string const &t_textureName, uint32_t const t_priority);
+		Sprite(std::string const &t_textureName, uint32_t t_priority);
 
-		~Sprite();
+		~Sprite() override = default;
 
 		std::string textureName;
 		uint32_t priority;
@@ -91,12 +91,13 @@ namespace ge {
 	CLASS_DECLARATION(Text)
 
 	public:
-		Text(std::string const &t_text, std::string const &t_fontName);
+		Text(std::string const &t_text, std::string const &t_fontName, bool centered = false);
 
-		~Text();
+		~Text() override = default;
 
 		std::string text;
 		std::string fontName;
+		bool centered;
 	};
 
 	class Input : public Component {
@@ -105,7 +106,7 @@ namespace ge {
 	public:
 		Input(int t_inputId);
 
-		~Input();
+		~Input() override = default;
 
 		int id;
 	};
@@ -116,7 +117,7 @@ namespace ge {
 	public:
 		Ia(std::shared_ptr<IArtificialIntelligence>);
 
-		~Ia();
+		~Ia() override = default;
 
 		std::shared_ptr<IArtificialIntelligence> ia;
 	};
@@ -137,7 +138,7 @@ namespace ge {
 	public:
 		Animator();
 
-		~Animator();
+		~Animator() override = default;
 
 		void AddAnimation(std::string const &name, Animation const &animation);
 
@@ -163,8 +164,8 @@ namespace ge {
 
 	class GameObject {
 	public:
-		GameObject() {}
-		~GameObject() {}
+		GameObject() = default;
+		~GameObject() = default;
 
 		template<class ComponentType, typename... Args>
 		void AddComponent(Args &&... params);
@@ -196,7 +197,7 @@ namespace ge {
 
 	public:
 		Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRight, std::string const & t_tag);
-		~Collider();
+		~Collider() override = default;
 		Collision CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<GameObject>> const & t_gameObjects);
 	private:
 		bool AABBCircleIntersecQuick(Vector2f const &topLeftAABB, Vector2f const & AABBSize, Vector2f const & circleCenter, double radius);
@@ -245,3 +246,5 @@ namespace ge {
 }
 
 #endif // !COMPONENTS
+
+

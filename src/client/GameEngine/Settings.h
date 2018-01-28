@@ -32,6 +32,7 @@ namespace ge {
 
 	using Vector2f = Vector2D<float>;
 	using Vector2u = Vector2D<uint32_t>;
+	using Vector2i = Vector2D<int32_t>;
 }
 
 #endif /*SETTINGS_H*/

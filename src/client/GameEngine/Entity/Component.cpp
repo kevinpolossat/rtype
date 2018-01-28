@@ -28,11 +28,6 @@ ge::Position::Position(const Vector2f& rhs) : Component("Position")
 	this->m_pos = rhs;
 }
 
-ge::Position::~Position()
-{
-
-}
-
 void ge::Position::UpdatePos(ge::Vector2f const & v, uint32_t widht, uint32_t height, uint32_t offset)
 {
 	this->m_pos.x += v.x;
@@ -71,11 +66,6 @@ ge::Velocity::Velocity(const ge::Vector2f& rhs) : ge::Component("Velocity")
 	this->m_pos = rhs;
 }
 
-ge::Velocity::~Velocity()
-{
-
-}
-
 void ge::Velocity::UpdateVel(float const v)
 {
 	this->m_pos.x /= v;
@@ -95,22 +85,12 @@ ge::Sprite::Sprite(std::string const & t_textureName, uint32_t const t_priority)
 {
 }
 
-ge::Sprite::~Sprite()
-{
-
-}
-
 /*
 	Text Member Functions
 */
 
-ge::Text::Text(std::string const & t_text, std::string const & t_fontName) : ge::Component("Text"), text(t_text), fontName(t_fontName)
+ge::Text::Text(std::string const & t_text, std::string const & t_fontName, bool centered) : ge::Component("Text"), text(t_text), fontName(t_fontName), centered(centered)
 {
-}
-
-ge::Text::~Text()
-{
-
 }
 
 /*
@@ -121,11 +101,6 @@ ge::Input::Input(int t_inputId) : ge::Component("Input"), id(t_inputId)
 {
 }
 
-ge::Input::~Input()
-{
-
-}
-
 /*
 	IA Member Functions
 */
@@ -134,21 +109,11 @@ ge::Ia::Ia(std::shared_ptr<IArtificialIntelligence> x) : ge::Component("Ia"), ia
 {
 }
 
-ge::Ia::~Ia()
-{
-}
-
-
 /*
 	Animator memver functions
 */
 
 ge::Animator::Animator() : ge::Component("Animator")
-{
-
-}
-
-ge::Animator::~Animator()
 {
 
 }
@@ -239,10 +204,6 @@ ge::Collider::Collider(Vector2f const & t_topLeft, Vector2f const & t_bottomRigh
 {
 }
 
-ge::Collider::~Collider()
-{
-
-}
 ge::Collision ge::Collider::CollisionPrediction(std::unique_ptr<GameObject> const & t_current, std::string const & t_tagToCheck, std::vector<std::unique_ptr<ge::GameObject>> const & t_gameObjects)
 {
 	Collision col{Vector2f(-1,-1), 0};

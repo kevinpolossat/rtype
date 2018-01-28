@@ -18,7 +18,7 @@ public:
 	bool Init(ge::GameEngine & engine) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
+	void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) override;
 	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) override;
 	ge::MenuValue *val;
 	std::string login = "";

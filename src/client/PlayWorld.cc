@@ -7,7 +7,7 @@ using ge::Ia;
 
 PlayWorld::PlayWorld()
 {
-	iaLoader_ = std::make_unique<loadIa>("resources/ai", 800, 600);
+	iaLoader_ = std::make_unique<loadIa>("resources/ai", 1920, 1080);
 }
 
 void PlayWorld::CreatePlayer(ge::Vector2f const & t_position, ge::Vector2f const & t_velocity)
