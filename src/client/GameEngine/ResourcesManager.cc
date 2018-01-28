@@ -1,5 +1,11 @@
 #include "ResourcesManager.h"
 
+void ge::ResourcesManager::SetVolume(uint32_t volume) {
+	for (auto & music : musics_) {
+		music.second->setVolume(volume);
+	}
+}
+
 sf::Texture & ge::ResourcesManager::Texture(std::string const & name) {
 	return textures_[name];
 }

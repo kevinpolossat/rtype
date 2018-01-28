@@ -8,12 +8,7 @@ using ge::Ia;
 Game::Game()
 {
 	time_ = std::chrono::high_resolution_clock::now();
-	iaLoader_ = std::make_unique<loadIa>("resources/ai", 800, 600);
-}
-
-Game::~Game()
-{
-
+	iaLoader_ = std::make_unique<loadIa>("resources/ai", width, height);
 }
 
 void Game::setGameInfo(rtype::protocol_tcp::GameInfo const &t_gi)
@@ -30,9 +25,9 @@ void Game::CreatePlayer()
 {
 	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
-	g->AddComponent<Position>(Vector2f(0, 300));
+	g->AddComponent<Position>(Vector2f(0, height / 2));
 	g->AddComponent<Velocity>(Vector2f(0,0));
-	g->AddComponent<Collider>(Vector2f(300, 0), Vector2f(60, 60), "Player");
+	g->AddComponent<Collider>(Vector2f(height / 2, 0), Vector2f(60, 60), "Player");
 	g->id = this->players.size();
 	this->players.push_back(std::move(g));
 }
@@ -53,7 +48,7 @@ void Game::CreateEnnemy(const int t_id)
 	std::unique_ptr<GameObject> g = std::make_unique<GameObject>();
 
 	std::shared_ptr<IArtificialIntelligence> ia = iaLoader_->getIa(t_id);
-	Vector2f v(static_cast<double>(ia->getPosition().X), static_cast<double>(ia->getPosition().Y));
+	Vector2f v(static_cast<float>(ia->getPosition().X), static_cast<float>(ia->getPosition().Y));
 
 	g->AddComponent<Ia>(ia);
 	g->AddComponent<Position>(v);
@@ -76,7 +71,7 @@ void Game::CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_vel
 
 void Game::Update()
 {
-		if (players.size() == 0)
+		if (players.empty())
 			return;
 
 		std::vector<AIPosition> playersPos;
@@ -85,13 +80,13 @@ void Game::Update()
 		for (auto const & it : players)
 		{
 			playersPos.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 800, 600, 60);
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), width, height, 60);
 			it->GetComponent<Velocity>()->UpdateVel(1.1f);
 		}
 		for (auto const & it : projectiles)
 		{
 			shoots.push_back({static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), width, height, 30);
 		}
 
 		bool f = true;
@@ -116,10 +111,10 @@ void Game::Update()
 		}
 
 		for (auto const & it : ennemy_projectiles)
-			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), 1000, 800, 30);
+			it->GetComponent<Position>()->UpdatePos(it->GetComponent<Velocity>()->getVel(), width, height, 30);
 
 		f = true;
-		while (f && players.size() > 0)
+		while (f && !players.empty())
 		{
 			f = false;
 			i = 0;
@@ -143,9 +138,9 @@ void Game::Update()
 			for (int k = 0; k < projectiles.size(); k++)
 			{
 				if (projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
+				|| projectiles.at(k)->GetComponent<Position>()->getPos().x > width
 				|| projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
+				|| projectiles.at(k)->GetComponent<Position>()->getPos().y > height)
 				{
 					f = true;
 					projectiles.erase(projectiles.begin() + k);
@@ -156,12 +151,12 @@ void Game::Update()
 		while (f)
 		{
 			f = false;
-			for (int k = 0; k < projectiles.size(); k++)
+			for (int k = 0; k < ennemy_projectiles.size(); k++)
 			{
 				if (ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x <= 0
-				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > 800
+				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().x > width
 				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y <= 0
-				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > 600)
+				|| ennemy_projectiles.at(k)->GetComponent<Position>()->getPos().y > height)
 				{
 					f = true;
 					ennemy_projectiles.erase(ennemy_projectiles.begin() + k);
@@ -184,12 +179,12 @@ void Game::Update()
 		for (auto const & it : ennemy)
 		{
 			Action action = it->GetComponent<Ia>()->ia->actualize(playersPos, shoots, {static_cast<int>(it->GetComponent<Position>()->getPos().x), static_cast<int>(it->GetComponent<Position>()->getPos().y)});
-			Vector2f v(static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().X), static_cast<double>(it->GetComponent<Ia>()->ia->getPosition().Y));
+			Vector2f v(static_cast<float>(it->GetComponent<Ia>()->ia->getPosition().X), static_cast<float>(it->GetComponent<Ia>()->ia->getPosition().Y));
 
 			it->GetComponent<Position>()->setPos(v);
 			if (action == Action::SHOOT)
 			{
-				Vector2f v1(static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().X) * -10, static_cast<double>(it->GetComponent<Ia>()->ia->getShootVector().Y) * -10);
+				Vector2f v1(it->GetComponent<Ia>()->ia->getShootVector().X * -10, it->GetComponent<Ia>()->ia->getShootVector().Y * -10);
 				CreateEnnemyShoot(it->GetComponent<Position>()->getPos(), v1);
 			}
 			else if (action == Action::DEAD)

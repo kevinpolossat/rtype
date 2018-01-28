@@ -35,15 +35,21 @@ void ge::GameEngine::Display_(const float interpolation) {
 	window_.display();
 }
 
-bool ge::GameEngine::Init(std::string const & title, uint32_t const width, uint32_t const height, bool const fullscreen) {
+bool ge::GameEngine::Init(std::string const & title, uint32_t width, uint32_t height, bool fullscreen) {
 	windowTitle_ = title;
-	window_.create(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
-	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
+	fullscreen_ = fullscreen;
+	volume_ = 100;
+	CreateWindow_(title, width, height, fullscreen);
 	return true;
 }
 
-bool ge::GameEngine::Init(std::string const & title, ge::Vector2u const & size, bool const fullscreen) {
+bool ge::GameEngine::Init(std::string const & title, ge::Vector2u const & size, bool fullscreen) {
 	return Init(title, size.x, size.y, fullscreen);
+}
+
+void ge::GameEngine::CreateWindow_(std::string const & title, uint32_t width, uint32_t height, bool fullscreen) {
+	window_.create(sf::VideoMode(width, height), title, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
+	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, 1920.f, 1080.f)));
 }
 
 void ge::GameEngine::Run(std::string const & initState) {
@@ -60,42 +66,37 @@ void ge::GameEngine::Run(std::string const & initState) {
 		}
 		Display_(timer.GetInterpolation());
 	}
-
-/*	auto nextGameTick = std::chrono::high_resolution_clock::now();
-	int loops;
-	float interpolation;
-
-	while (window_.isOpen()) {
-		timer.Start();
-		while (std::chrono::high_resolution_clock::now() > nextGameTick && loops < maxFrameSkip) {
-			nm_->handleRecvEvent();
-			HandleEvents_();
-			st_->GetCurrentState()->Update(*this);
-			nextGameTick += std::chrono::milliseconds(msToSkip);
-			nm_->handleSendEvent();
-			++loops;
-		}
-
-		interpolation = std::chrono::duration<float, std::milli>(std::chrono::high_resolution_clock::now() + std::chrono::duration<float, std::milli>(msToSkip) - nextGameTick)
-		                / std::chrono::duration<float, std::milli>(msToSkip);
-		Display_(interpolation);
-	}*/
 }
 
 void ge::GameEngine::Draw(std::shared_ptr<sf::Drawable> const & drawable, int32_t const display_level) {
 	toDraw_.push(PrioritizedDrawable(display_level, drawable));
 }
 
-ge::Vector2u ge::GameEngine::GetSize() const {
+sf::Vector2f ge::GameEngine::GetCoord(ge::Vector2u v) const {
+	return window_.mapPixelToCoords(sf::Vector2i(v.x, v.y));
+}
+
+sf::Vector2f ge::GameEngine::GetCoord(uint32_t x, uint32_t y) const {
+	return window_.mapPixelToCoords(sf::Vector2i(x, y));
+}
+
+ge::Vector2f ge::GameEngine::GetSize() const {
+	return Vector2f(window_.getView().getSize().x, window_.getView().getSize().y);
+}
+
+ge::Vector2u ge::GameEngine::GetWindowSize() const {
 	return Vector2u(window_.getSize().x, window_.getSize().y);
 }
 
 void ge::GameEngine::SetSize(uint32_t width, uint32_t height) {
-	window_.setSize({ width, height });
-	window_.clear();
-	window_.display();
-	window_.setView(sf::View(sf::FloatRect(0.f, 0.f, static_cast<float>(width), static_cast<float>(height))));
-	window_.setPosition({ 0, 0 });
+	if (fullscreen_) {
+		CreateWindow_(windowTitle_, width, height, true);
+	} else {
+		window_.setSize({ width, height });
+		window_.clear();
+		window_.display();
+		window_.setPosition({ 0, 0 });
+	}
 }
 
 void ge::GameEngine::SetSize(ge::Vector2u const & size) {
@@ -103,7 +104,14 @@ void ge::GameEngine::SetSize(ge::Vector2u const & size) {
 }
 
 void ge::GameEngine::SetFullscreen(bool fullscreen) {
-	window_.create(sf::VideoMode(window_.getSize().x, window_.getSize().y), windowTitle_, fullscreen ? sf::Style::Fullscreen : sf::Style::Titlebar | sf::Style::Close);
+	if (fullscreen_ != fullscreen) {
+		CreateWindow_(windowTitle_, window_.getSize().x, window_.getSize().y, fullscreen);
+		fullscreen_ = fullscreen;
+	}
+}
+
+bool ge::GameEngine::IsFullscreen() const {
+	return fullscreen_;
 }
 
 std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
@@ -113,6 +121,15 @@ std::vector<ge::Vector2u> ge::GameEngine::GetResolutionsModes() const {
 		resolutions.emplace_back(mode.width, mode.height);
 	}
 	return resolutions;
+}
+
+uint32_t ge::GameEngine::GetVolume() const {
+	return volume_;
+}
+
+void ge::GameEngine::SetVolume(uint32_t volume) {
+	volume_ = volume;
+	rm_->SetVolume(volume);
 }
 
 void ge::GameEngine::Quit() {

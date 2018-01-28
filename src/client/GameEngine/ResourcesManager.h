@@ -43,6 +43,8 @@ namespace ge {
 			}
 		}
 
+		void SetVolume(uint32_t volume);
+
 		sf::Texture & Texture(std::string const & name);
 		sf::Font & Font(std::string const & name);
 		sf::SoundBuffer & Sound(std::string const & name);

@@ -19,9 +19,8 @@ public:
 	bool Init(ge::GameEngine & engine) override;
 
 private:
-	void HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEvent const & event) override;
-	void HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const & event) override;
-	void UpdateList(ge::Vector2u const & size);
+	void HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) override;
+	void UpdateList(ge::Vector2f const & size);
 
 	std::vector<std::string> _games;
 	std::string _gamechose = "";
