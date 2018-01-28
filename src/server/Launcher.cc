@@ -114,9 +114,9 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				es.clear();
 			}
     }
-		std::cout << "ON EST LA" << std::endl;
-		std::this_thread::sleep_for(std::chrono::seconds(1));
-    udp->close();
+		udp->close();
+		while(true)
+			std::this_thread::sleep_for(std::chrono::seconds(1));
     });
     t.detach();
     return true;

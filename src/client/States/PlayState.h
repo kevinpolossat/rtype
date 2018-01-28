@@ -44,7 +44,7 @@ private:
 	std::chrono::time_point<std::chrono::high_resolution_clock> time_;
 	std::vector<std::string> playersSprites_;
 	std::vector<rtype::protocol_udp::Event> events_;
-
+	std::vector<Vector2f> starpos_;
 };
 
 #endif /*PLAYSTATE_H_*/
