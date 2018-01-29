@@ -71,6 +71,7 @@ namespace ge {
 		*/
 
 		// STATES
+		void SetDefaultState(std::string const & name);
 		void AddState(std::string const & name, std::shared_ptr<AGameState> const & state);
 		void ChangeState(std::string const & stateName);
 		void PushState(std::string const & stateName);

@@ -21,16 +21,18 @@ namespace ge {
 		StatesManager & operator=(StatesManager const & other) = delete;
 		StatesManager & operator=(StatesManager && other) = delete;
 
+		void SetDefaultState(std::string const & name);
 		void AddState(std::string const & name, std::shared_ptr<AGameState> const & state);
 		void ChangeState(ge::GameEngine & engine, std::string const & stateName);
 		void PushState(ge::GameEngine & engine, std::string const & stateName);
 		void PopState();
 
-		std::shared_ptr<ge::AGameState> & GetCurrentState();
+		std::shared_ptr<ge::AGameState> & GetCurrentState(ge::GameEngine & engine);
 
 	private:
 		std::unordered_map<std::string, std::shared_ptr<AGameState>> states_;
 		std::stack<std::shared_ptr<AGameState>> stack_;
+		std::string defaultState_;
 	};
 }
 
