@@ -9,11 +9,6 @@
 #include "client/States/JoinState.h"
 #include "client/States/EndState.h"
 #include "client/States/WaitingState.h"
-#include "NetworkManager.h"
-#include "TCPNonBlockingCommunication.h"
-#include "UDPNonBlockingCommunication.h"
-#include "TcpProtocol.h"
-#include "MenuValue.h"
 
 int main()
 {
@@ -21,7 +16,8 @@ int main()
 	ge::network::NetworkManager nm;
 
 	auto tcpConnection = std::make_shared<ge::network::TCPNonBlockingCommunication>();
-	if (!tcpConnection->open("localhost"/*SERVER HOSTNAME*/, "4242")) {
+	GameConfiguration conf = ge::MenuValue::Instance().getGameConfiguration();
+	if (!tcpConnection->open(conf.domain(), conf.port())) {
 		std::cout << "can't connect to server" << std::endl;
 		return 0;
 	}
