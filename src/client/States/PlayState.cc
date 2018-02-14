@@ -11,7 +11,6 @@ using ge::Collider;
 PlayState::PlayState(std::shared_ptr<ge::network::UDPNonBlockingCommuncation> & t_udp)
 {
 	this->udp_ = t_udp;
-	this->endGame_ = false;
 	this->udp_->addHandle(std::bind(&PlayState::HandleUdp_, this, std::placeholders::_1, std::placeholders::_2));
 	this->playersSprites_.push_back("Player1");
 	this->playersSprites_.push_back("Player2");
@@ -30,6 +29,7 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
 	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
 	this->time_ = std::chrono::high_resolution_clock::now();
+	this->endGame_ = false;
 	return true;
 }
 
