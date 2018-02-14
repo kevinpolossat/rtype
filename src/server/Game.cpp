@@ -70,7 +70,6 @@ void Game::CreateEnnemyShoot(Vector2f const & t_position, Vector2f const & t_vel
 	this->ennemy_projectiles.push_back(std::move(g));
 }
 
-
 void Game::Update()
 {
 		if (players.empty())
@@ -127,7 +126,8 @@ void Game::Update()
 				if (col.point.x != -1)
 				{
 					f = true;
-					players.erase(players.begin() + col.index);
+					dead_.push_back(col.index);
+					//players.erase(players.begin() + col.index);
 					ennemy_projectiles.erase(ennemy_projectiles.begin() + i);
 					break;
 				}
@@ -189,6 +189,12 @@ void Game::Update()
 				ennemy.erase(ennemy.begin() + i);
 			i++;
 		}
+
+		for (auto x : dead_)
+		{
+			players.at(x)->GetComponent<Position>()->setPos(Vector2f(5000, 5000));
+		}
+
 		playersPos.clear();
 		shoots.clear();
 }

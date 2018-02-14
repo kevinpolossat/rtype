@@ -23,7 +23,6 @@ private:
 	void UpdateList(ge::Vector2f const & size);
 
 	std::vector<std::string> _games;
-	std::string _gamechose = "";
 };
 
 #endif /*JoinState_H_*/

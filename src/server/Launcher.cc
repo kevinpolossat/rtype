@@ -32,7 +32,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				   switch (it.type)
 				   {
 				   case static_cast<int>(EVENTTYPE::PLAYERUP):
-					   g->players[it.from -1]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
+					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.y -= 10;
 					   break;
 				   case static_cast<int>(EVENTTYPE::PLAYERDOWN):
 					   g->players[it.from - 1]->GetComponent<ge::Velocity>()->m_pos.y += 10;
@@ -80,7 +80,7 @@ bool rtype::Launcher::launch(std::shared_ptr<rtype::GameLobby> gl)
 				udp->recv();
 				std::vector<rtype::protocol_udp::Entity> es;
 
-				if (g->players.size() == 0 || g->endGame_)
+				if (g->dead_.size() == g->players.size() || g->endGame_)
 				{
 					endGame = false;
 					es.push_back({static_cast<int>(0), static_cast<int>(ENTITYTYPE::ENDGAME), 0, 0, 0});

@@ -3,9 +3,9 @@
 bool CreateState::Init(ge::GameEngine & engine)
 {
 	ge::Vector2f size = engine.GetSize();
-	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f), "Number of players :", "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f), "Number of players :", "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 5.f * 2), "-", "retro", LESS, true);
-	world_.CreateText(ge::Vector2f(size.x / 4.f * 2, size.y / 5.f * 2), std::to_string(nbPlayers), "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f * 2, size.y / 5.f * 2), std::to_string(nbPlayers), "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 5.f * 2), "+", "retro", PLUS, true);
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f * 3), "Valid", "retro", VALID, true);
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f * 4), "Cancel",  "retro", CANCEL, true);

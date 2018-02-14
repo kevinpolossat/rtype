@@ -140,7 +140,7 @@ void        Boss::_selectMove(std::vector<AIPosition>& shoots)
     for (auto &x : shoots)
     {
       if (x.X > 0)
-        Cshoots.push_back(new AIShoot(x, {10, 0}, 0));
+        Cshoots.push_back(new AIShoot(x, {5, 0}, 0));
     }
 
     AIPosition p;

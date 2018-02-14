@@ -9,17 +9,17 @@ bool SettingsState::Init(ge::GameEngine & engine) {
 
 	ge::Vector2f size = engine.GetSize();
 
-	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 2), "Resolution :", "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 2), "Resolution :", "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 - 170, size.y / 6.f * 2), "<", "retro", L_RESOLUTION, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 6.f * 2), GetCurrentResolutionText_(engine), "retro", RESOLUTION, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 6.f * 2), ">", "retro", P_RESOLUTION, true);
 
-	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 3), "Fullscreen :", "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 3), "Fullscreen :", "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 - 170, size.y / 6.f * 3), "<", "retro", L_FULLSCREEN, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 6.f * 3), GetCurrentFullscreenText_(engine), "retro", FULLSCREEN, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 6.f * 3), ">", "retro", P_FULLSCREEN, true);
 
-	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 4), "Volume :", "retro", true);
+	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 4), "Volume :", "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 - 170, size.y / 6.f * 4), "<", "retro", L_VOLUME, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3, size.y / 6.f * 4), GetCurrentVolumeText_(engine), "retro", VOLUME, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f * 3 + 170, size.y / 6.f * 4), ">", "retro", P_VOLUME, true);
