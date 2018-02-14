@@ -15,7 +15,7 @@ bool CreateState::Init(ge::GameEngine & engine)
 }
 
 void CreateState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case PLUS:
 			if (nbPlayers < 4) {

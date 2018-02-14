@@ -25,7 +25,7 @@ void LoginState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const 
 }
 
 void LoginState::HandleClickOnText_(ge::GameEngine &engine, ge::GameObject &obj) {
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case CREATE:
 			val.c_game.value.playerName = login;

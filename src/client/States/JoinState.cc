@@ -12,7 +12,7 @@ void JoinState::UpdateList(ge::Vector2f const & size)
 {
 	if (!world_.texts.empty())
 		world_.texts.clear();
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	_games = val.games;
 	int i = 1;
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 10.f), "GAMES :", "retro", true);
@@ -24,7 +24,7 @@ void JoinState::UpdateList(ge::Vector2f const & size)
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 10.f * (i + 1)), "Cancel", "retro", CANCEL, true);
 }
 void JoinState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case CANCEL:
 			engine.PopState();

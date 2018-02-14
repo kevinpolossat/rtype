@@ -34,7 +34,7 @@ void MenuState::Update(ge::GameEngine & game) {
 
 void MenuState::Display(ge::GameEngine & engine, float) {
 	//int i = 0;
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	for (auto const & it : world_.texts) {
 		engine.Draw(std::make_shared<sf::Text>(ToSFMLText_(engine, *it)), ge::Layer::UI);
 	}
