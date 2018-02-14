@@ -27,6 +27,14 @@ bool PlayState::Init(ge::GameEngine & engine) {
 	engine.Load<ge::Resources::Texture>("Star", "resources/star2.png");
 	engine.Load<ge::Resources::Texture>("Ennemy", "resources/mechant.png");
 	engine.Load<ge::Resources::Texture>("ShootEnnemy", "resources/mechantshoot.png");
+	for (uint32_t i = 1; i < 5; ++i) {
+		engine.Load<ge::Resources::Texture>("Basic" + std::to_string(i), "resources/Spaceship/Basic/Basic" + std::to_string(i) + ".png");
+		engine.Load<ge::Resources::Texture>("Boss" + std::to_string(i), "resources/Spaceship/Boss/Boss" + std::to_string(i) + ".png");
+		engine.Load<ge::Resources::Texture>("Circle" + std::to_string(i), "resources/Spaceship/Circle/Circle" + std::to_string(i) + ".png");
+		engine.Load<ge::Resources::Texture>("Linear" + std::to_string(i), "resources/Spaceship/Linear/Linear" + std::to_string(i) + ".png");
+		engine.Load<ge::Resources::Texture>("Random" + std::to_string(i), "resources/Spaceship/Random/Random" + std::to_string(i) + ".png");
+		engine.Load<ge::Resources::Texture>("Sinus" + std::to_string(i), "resources/Spaceship/Sinus/Sinus" + std::to_string(i) + ".png");
+	}
 	this->time_ = std::chrono::high_resolution_clock::now();
 	this->endGame_ = false;
 	return true;
@@ -163,9 +171,11 @@ void PlayState::Display(ge::GameEngine & engine, const float) {
 		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
 	}
 	for (auto const & it : world_.ennemy) {
-		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
+		sf::Sprite s(engine.Texture(it->GetComponent<ge::Animator>()->GetSprite()));
+		s.rotate(-90.f);
+		s.setScale(2.f, 2.f);
 		s.setPosition(it->GetComponent<Position>()->getPos().x, it->GetComponent<Position>()->getPos().y);
-		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<Sprite>()->priority);
+		engine.Draw(std::make_shared<sf::Sprite>(s), it->GetComponent<ge::Animator>()->GetPriority());
 	}
 	for (auto const & it : world_.projectiles) {
 		sf::Sprite s(engine.Texture(it->GetComponent<Sprite>()->textureName));
