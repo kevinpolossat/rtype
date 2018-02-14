@@ -32,7 +32,7 @@ public:
 	void Display(ge::GameEngine & engine, float interpolation) override;
 
 private:
-	void HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
+	void HandlePlayerMovement_(ge::GameEngine const & engine, sf::Keyboard::Key const & key);
 	void HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event);
 	void HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event);
 	void HandleUdp_(void *data, std::size_t nbyte);

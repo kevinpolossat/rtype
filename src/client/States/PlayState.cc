@@ -41,8 +41,8 @@ void PlayState::Pause() {
 void PlayState::Resume() {
 }
 
-void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Event::KeyEvent const & event) {
-	switch (event.code) {
+void PlayState::HandlePlayerMovement_(ge::GameEngine const & engine, sf::Keyboard::Key const & key) {
+	switch (key) {
 		case sf::Keyboard::Key::Left:
 			events_.emplace_back(engine.playerID, static_cast<int>(EVENTTYPE::PLAYERLEFT));
 			break;
@@ -67,21 +67,29 @@ void PlayState::HandlePlayerAnimation_(ge::GameEngine const & engine, sf::Event:
 }
 
 void PlayState::HandleQuit_(ge::GameEngine & engine, sf::Event::KeyEvent const & event) {
-	if (event.code == sf::Keyboard::Key::Escape) {
+	if (event.code == sf::Keyboard::Key::Escape)
 		engine.PushState("SettingsGame");
-	}
 }
 
 void PlayState::HandleEvent(ge::GameEngine & engine, sf::Event const & event) {
 	switch (event.type) {
 		case sf::Event::KeyPressed:
-			HandlePlayerMovement_(engine, event.key);
 			HandlePlayerAnimation_(engine, event.key);
 			HandleQuit_(engine, event.key);
 			break;
 		default:
 			break;
 	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left))
+		HandlePlayerMovement_(engine, sf::Keyboard::Key::Left);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Right))
+		HandlePlayerMovement_(engine, sf::Keyboard::Key::Right);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up))
+		HandlePlayerMovement_(engine, sf::Keyboard::Key::Up);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Down))
+		HandlePlayerMovement_(engine, sf::Keyboard::Key::Down);
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+		HandlePlayerMovement_(engine, sf::Keyboard::Key::Space);
 }
 
 void PlayState::HandleUdp_(void *data, std::size_t nbyte) {
