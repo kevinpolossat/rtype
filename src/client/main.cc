@@ -66,7 +66,7 @@ int main()
 	);
 	tcpConnection->addHandle(
 			rtype::protocol_tcp::GAME_START,
-			[&udp, &gameEngine](std::string const & json) {
+			[&udp, &gameEngine, &conf](std::string const & json) {
 				auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 				auto p = gs.value.port;
 				gameEngine.playerID = gs.value.id;
@@ -81,6 +81,15 @@ int main()
 	tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(ql);
 	gameEngine.AddCommunication(tcpConnection);
 	gameEngine.AddCommunication(udp);
+	gameEngine.Load<ge::Resources::Sound>("menu_accept", "./resources/Sound/menu_accept.wav");
+	gameEngine.Load<ge::Resources::Sound>("menu_cancel", "./resources/Sound/menu_cancel.wav");
+	sf::Music resource;
+	if (resource.openFromFile("./resources/Sound/theme.ogg")) {
+		resource.setLoop(true);
+		resource.play();
+		gameEngine.LoadMusic(resource);
+	}
+
 	if (gameEngine.Init("R-Type", gameEngine.GetResolutionsModes().front().x, gameEngine.GetResolutionsModes().front().y, true)) {
 		gameEngine.AddState("Intro", std::make_shared<IntroState>());
 		gameEngine.AddState("SettingsMenu", std::make_shared<SettingsState>(false));

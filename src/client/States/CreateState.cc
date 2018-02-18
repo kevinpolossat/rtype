@@ -10,11 +10,14 @@ bool CreateState::Init(ge::GameEngine & engine)
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f * 3), "Valid", "retro", VALID, true);
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 5.f * 4), "Cancel",  "retro", CANCEL, true);
 	world_.CreateBackground();
+	nameGame = "";
+	nbPlayers = 1;
 
 	return true;
 }
 
 void CreateState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
+	MenuState::HandleClickOnText_(engine, obj);
 	MenuValue &val = MenuValue::Instance();
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case PLUS:
@@ -45,9 +48,7 @@ void CreateState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & o
 			engine.PushState("Waiting");
 			break;
 		case CANCEL:
-			nameGame = "";
-			nbPlayers = 1;
-			engine.PopState();
+			HandleQuit_(engine);
 			break;
 		default:
 			break;

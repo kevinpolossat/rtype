@@ -70,13 +70,17 @@ void MenuState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 	}
 }
 
-void MenuState::HandleClickOnText_(ge::GameEngine &, ge::GameObject &) {
+void MenuState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
+	if (obj.GetComponent<ge::Input>()->id != CANCEL && obj.GetComponent<ge::Input>()->id != QUIT) {
+		engine.Play("menu_accept");
+	}
 }
 
 void MenuState::HandleKey_(ge::GameEngine &engine, sf::Event::TextEvent const &event) {
 }
 
 void MenuState::HandleQuit_(ge::GameEngine & engine) {
+	engine.Play("menu_cancel");
 	engine.PopState();
 }
 

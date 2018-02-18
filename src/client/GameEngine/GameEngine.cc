@@ -132,6 +132,12 @@ void ge::GameEngine::SetVolume(uint32_t volume) {
 	rm_->SetVolume(volume);
 }
 
+void ge::GameEngine::Play(std::string const & soundName) {
+	sounds_.emplace_back(sf::Sound(Sound(soundName)));
+	sounds_.back().setVolume(volume_);
+	sounds_.back().play();
+}
+
 void ge::GameEngine::Quit() {
 	window_.close();
 }
@@ -204,6 +210,10 @@ void ge::GameEngine::PopState() {
 /*
 **** RESOURCES
 */
+void ge::GameEngine::LoadMusic(sf::Music & music) {
+	rm_->LoadMusic(music);
+}
+
 void ge::GameEngine::Load(Animator const & animator) {
 	for (auto & animation : animator.GetAnimationsList()) {
 		for (auto & sprite : animation.second.sprites) {
@@ -222,8 +232,4 @@ sf::Font & ge::GameEngine::Font(std::string const & name) {
 
 sf::SoundBuffer & ge::GameEngine::Sound(std::string const & name) {
 	return rm_->Sound(name);
-}
-
-sf::Music & ge::GameEngine::Music(std::string const & name) {
-	return rm_->Music(name);
 }
