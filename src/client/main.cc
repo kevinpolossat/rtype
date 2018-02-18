@@ -70,7 +70,7 @@ int main()
 				auto gs = rtype::protocol_tcp::extract<rtype::protocol_tcp::GameStart>(json);
 				auto p = gs.value.port;
 				gameEngine.playerID = gs.value.id;
-				udp->addDest("localhost"/* SERVER HOST NAME*/, gs.value.port);
+				udp->addDest(conf.domain(), gs.value.port);
 				gameEngine.ChangeState("Play");
 			}
 	);
