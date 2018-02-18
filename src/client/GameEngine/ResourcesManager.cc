@@ -1,9 +1,7 @@
 #include "ResourcesManager.h"
 
 void ge::ResourcesManager::SetVolume(uint32_t volume) {
-	for (auto & music : musics_) {
-		music.second->setVolume(volume);
-	}
+	musics_->setVolume(volume);
 }
 
 sf::Texture & ge::ResourcesManager::Texture(std::string const & name) {
@@ -18,19 +16,6 @@ sf::SoundBuffer & ge::ResourcesManager::Sound(std::string const &name) {
 	return sounds_[name];
 }
 
-sf::Music & ge::ResourcesManager::Music(std::string const &name) {
-	return *musics_[name];
-}
-
-void ge::ResourcesManager::LoadMusic_(std::string const & name, std::string const & file) {
-	if (musics_.find(name) == musics_.end()) {
-		std::unique_ptr<sf::Music> resource;
-		if (resource->openFromFile(file)) {
-			musics_.insert(std::pair<std::string, std::unique_ptr<sf::Music>>(name, std::move(resource)));
-		} else {
-			std::cerr << "ResourcesManager : Can't load " << file << std::endl;
-		}
-	} else {
-		std::cerr << "ResourcesManager : music named " << name << " already exist" << std::endl;
-	}
+void ge::ResourcesManager::LoadMusic(sf::Music & music) {
+	musics_ = &music;
 }

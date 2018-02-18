@@ -54,6 +54,8 @@ set(CLIENT_SOURCES
 		${CMAKE_SOURCE_DIR}/src/client/PlayWorld.h
 		${CMAKE_SOURCE_DIR}/src/client/MenuValue.h
 		${CMAKE_SOURCE_DIR}/src/client/MenuValue.cc
+		${CMAKE_SOURCE_DIR}/src/client/RandomGenerator.h
+		${CMAKE_SOURCE_DIR}/src/client/RandomGenerator.cc
 
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.cc
 		${CMAKE_SOURCE_DIR}/src/loadlib/LoadIa.hpp

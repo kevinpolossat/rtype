@@ -11,10 +11,14 @@ bool IntroState::Init(ge::GameEngine & engine) {
 
 	world_.CreateBackground();
 	engine.Load(*world_.background->GetComponent<ge::Animator>());
+	engine.Load<ge::Resources::Music>("theme", "resources/Sound/theme.ogg");
+//	engine.Music("theme").setLoop(true);
+//	engine.Music("theme").play();
 	return true;
 }
 
 void IntroState::HandleClickOnText_(ge::GameEngine &engine, ge::GameObject &obj) {
+	MenuState::HandleClickOnText_(engine, obj);
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case START:
 			engine.PushState("Login");

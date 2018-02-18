@@ -52,6 +52,7 @@ namespace ge {
 
 		uint32_t GetVolume() const;
 		void SetVolume(uint32_t volume);
+		void Play(std::string const & soundName);
 
 		void Quit();
 
@@ -78,6 +79,8 @@ namespace ge {
 		void PopState();
 
 		// RESOURCES
+		void LoadMusic(sf::Music & music);
+
 		template<Resources::Type T>
 		void Load(std::unordered_map<std::string, std::string> const & files) {
 			for (auto & file : files) {
@@ -96,7 +99,6 @@ namespace ge {
 		sf::Font & Font(std::string const & name);
 
 		sf::SoundBuffer & Sound(std::string const & name);
-		sf::Music & Music(std::string const & name);
 
 		uint32_t playerID;
 	private:
@@ -109,6 +111,7 @@ namespace ge {
 		std::string windowTitle_;
 		bool fullscreen_;
 		uint32_t volume_;
+		std::vector<sf::Sound> sounds_;
 
 		// Using ptr here to avoid circular dependency
 		std::unique_ptr<network::NetworkManager> nm_;

@@ -34,7 +34,7 @@ void MenuState::Update(ge::GameEngine & game) {
 
 void MenuState::Display(ge::GameEngine & engine, float) {
 	//int i = 0;
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuValue &val = MenuValue::Instance();
 	for (auto const & it : world_.texts) {
 		engine.Draw(std::make_shared<sf::Text>(ToSFMLText_(engine, *it)), ge::Layer::UI);
 	}
@@ -70,13 +70,17 @@ void MenuState::HandleClick_(ge::GameEngine & engine, sf::Event::MouseButtonEven
 	}
 }
 
-void MenuState::HandleClickOnText_(ge::GameEngine &, ge::GameObject &) {
+void MenuState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
+	if (obj.GetComponent<ge::Input>()->id != CANCEL && obj.GetComponent<ge::Input>()->id != QUIT) {
+		engine.Play("menu_accept");
+	}
 }
 
 void MenuState::HandleKey_(ge::GameEngine &engine, sf::Event::TextEvent const &event) {
 }
 
 void MenuState::HandleQuit_(ge::GameEngine & engine) {
+	engine.Play("menu_cancel");
 	engine.PopState();
 }
 

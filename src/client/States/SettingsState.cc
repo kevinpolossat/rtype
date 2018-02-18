@@ -30,6 +30,8 @@ bool SettingsState::Init(ge::GameEngine & engine) {
 	} else {
 		world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 6.f * 5), "Cancel", "retro", CANCEL, true);
 	}
+	world_.CreateBackground();
+	engine.Load(*world_.background->GetComponent<ge::Animator>());
 	return true;
 }
 
@@ -88,6 +90,7 @@ void SettingsState::UpdateVolumeText_(ge::GameEngine & engine) {
 }
 
 void SettingsState::HandleClickOnText_(ge::GameEngine & engine, ge::GameObject & obj) {
+	MenuState::HandleClickOnText_(engine, obj);
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case L_RESOLUTION:
 			ReduceResolution_(engine);

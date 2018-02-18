@@ -3,6 +3,7 @@
 bool LoginState::Init(ge::GameEngine & engine)
 {
 	ge::Vector2f size = engine.GetSize();
+	login = "";
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 6.f), "Enter your login :", "retro",NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 2.f, size.y / 6.f * 2), login, "retro", NONE, true);
 	world_.CreateText(ge::Vector2f(size.x / 4.f, size.y / 6.f * 3), "Create",  "retro", CREATE, true);
@@ -25,22 +26,20 @@ void LoginState::HandleKey_(ge::GameEngine & engine, sf::Event::TextEvent const 
 }
 
 void LoginState::HandleClickOnText_(ge::GameEngine &engine, ge::GameObject &obj) {
-	ge::MenuValue &val = ge::MenuValue::Instance();
+	MenuState::HandleClickOnText_(engine, obj);
+	MenuValue &val = MenuValue::Instance();
 	switch (obj.GetComponent<ge::Input>()->id) {
 		case CREATE:
 			val.c_game.value.playerName = login;
-			login = "";
 			engine.PushState("Create");
 			break;
 		case JOIN:
 			val.j_game.value.playerName = login;
-			login = "";
 			val.tcpConnection->sendToServer<rtype::protocol_tcp::QueryList>(val.l_game);
 			engine.PushState("Join");
 			break;
 		case CANCEL:
-			login = "";
-			engine.PopState();
+			HandleQuit_(engine);
 			break;
 		default:
 			break;
